@@ -1,0 +1,22 @@
+LIN
+INDEX
+${drilling.index}
+LINKS
+1
+L
+2
+DIAM_UT
+0
+X1
+${drilling.x;decimal(0.##)} I
+Y1
+${drilling.y;decimal(0.##)} I
+X2
+${drilling.endX;decimal(0.##)} I
+Y2
+${drilling.endY;decimal(0.##)} I
+LUNG
+0
+ANG
+0
+\LIN

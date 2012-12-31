@@ -1,0 +1,178 @@
+package tdm.cam.tlf;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CamPart implements ITlfNode {
+
+	private String id;
+
+	private String orderId;
+
+	private String name;
+
+	private String matId;
+
+	private String barcode;
+
+	private PartDimensions dimensions = new PartDimensions();
+
+	private CamPartSide frontSide = new FrontPartSide(dimensions);
+
+	private CamPartSide backSide = new BackPartSide(dimensions);
+
+	public CamPart() {
+
+	}
+
+	public void moveThroughDrillingsToFrontside() {
+		// FIXME better rule: move all to one side (prefer inner side) if possible
+		List<Drilling> toMove = new ArrayList<Drilling>();
+		for (Drilling drilling : backSide.getDrillings()) {
+			if (drilling.isThrough()) {
+				toMove.add(drilling);
+			}
+		}
+		for (Drilling drilling : toMove) {
+			if (!backSide.removeDrilling(drilling)) {
+				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
+			}
+			frontSide.addDrilling(drilling);
+		}
+	}
+
+	public String exportFrontSideTlf() {
+		return frontSide.exportTlf();
+	}
+
+	public String exportBackSideTlf() {
+		return backSide.exportTlf();
+	}
+
+	public void setThick(int thick) {
+		this.dimensions.setThick(thick);
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getMatId() {
+		return matId;
+	}
+
+	public void setMatId(String matId) {
+		this.matId = matId;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public double getLength() {
+		return dimensions.getLength();
+	}
+
+	public void setLength(double length) {
+		this.dimensions.setLength(length);
+	}
+
+	public double getWidth() {
+		return dimensions.getWidth();
+	}
+
+	public void setWidth(double width) {
+		this.dimensions.setWidth(width);
+	}
+
+	public double getThick() {
+		return dimensions.getThick();
+	}
+
+	public void setThick(double thick) {
+		this.dimensions.setThick(thick);
+	}
+
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+
+	public PartDimensions getDimensions() {
+		return dimensions;
+	}
+
+	public void setDimensions(PartDimensions dimensions) {
+		this.dimensions = dimensions;
+	}
+
+	public CamPartSide getFrontSide() {
+		return frontSide;
+	}
+
+	public CamPartSide getBackSide() {
+		return backSide;
+	}
+
+	public void addDrilling(Drilling drilling) {
+		if (angleMatch(drilling, 0, 0, 0) || angleMatch(drilling, 0, 0, 90) || angleMatch(drilling, 0, 0, -90)
+				|| angleMatch(drilling, 0, 0, 180)) {
+			frontSide.addDrilling(drilling);
+		} else if (angleMatch(drilling, 180, 0, 0) || angleMatch(drilling, 180, 0, 90) || angleMatch(drilling, 180, 0, -90)
+				|| angleMatch(drilling, 180, 0, 180) || angleMatch(drilling, 180, 0, -180) || angleMatch(drilling, -180, 0, 0)
+				|| angleMatch(drilling, -180, 0, 90) || angleMatch(drilling, -180, 0, -90) || angleMatch(drilling, -180, 0, 180)
+				|| angleMatch(drilling, -180, 0, -180)) {
+			backSide.addDrilling(drilling);
+		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)) {
+			frontSide.addPlane1Drilling(drilling);
+		} else if (angleMatch(drilling, -90, 0, 180)) {
+			frontSide.addPlane2Drilling(drilling);
+		} else if (angleMatch(drilling, -90, 0, -90) || angleMatch(drilling, 90, 0, 90) || angleMatch(drilling, 0, 90, 0)) {
+			frontSide.addPlane3Drilling(drilling);
+		} else if (angleMatch(drilling, -90, 0, 90) || angleMatch(drilling, 0, -90, 0)) {
+			frontSide.addPlane4Drilling(drilling);
+		} else {
+			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
+		}
+	}
+
+	private boolean angleMatch(Drilling d, double ax, double ay, double az) {
+		return d.getAngleX() == ax && d.getAngleY() == ay && d.getAngleZ() == az;
+	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("CamPart { ");
+		sb.append("id=").append(id).append(", ");
+		sb.append("orderId=").append(orderId).append(", ");
+		sb.append("name=").append(name).append(", ");
+		sb.append("matId=").append(matId).append(", ");
+		sb.append("barcode=").append(barcode).append(", ");
+		sb.append("length=").append(dimensions.getLength()).append(", ");
+		sb.append("width=").append(dimensions.getWidth()).append(", ");
+		sb.append("thick=").append(dimensions.getThick()).append(", ");
+		sb.append("frontSide={ ").append(frontSide).append(" }");
+		sb.append(" }");
+		return sb.toString();
+	}
+
+}
