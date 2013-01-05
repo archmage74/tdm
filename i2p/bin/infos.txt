@@ -1,7 +1,0 @@
-protime:
-staerke -> imos.mat -> protime.artikel
-kantenstaerke -> imos.kanten-mat -> protime.artikel
-kante v/n -> imos.kanten-mat -> protime.artikel
-
-
-20101097
