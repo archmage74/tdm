@@ -24,7 +24,7 @@ public class FrontPartSide extends CamPartSide {
 	@Override
 	public void addPlane1Drilling(Drilling drilling) {
 		double x = drilling.getX();
-		double y = drilling.getY();
+//		double y = drilling.getY();
 		double z = drilling.getZ();
 		
 		drilling.setZ(0.0); // FIXME -> offset in tlf
@@ -37,7 +37,7 @@ public class FrontPartSide extends CamPartSide {
 	@Override
 	public void addPlane2Drilling(Drilling drilling) {
 		double x = drilling.getX();
-		double y = drilling.getY();
+//		double y = drilling.getY();
 		double z = drilling.getZ();
 		
 		drilling.setZ(0.0); // FIXME -> offset in tlf
@@ -49,7 +49,7 @@ public class FrontPartSide extends CamPartSide {
 
 	@Override
 	public void addPlane3Drilling(Drilling drilling) {
-		double x = drilling.getX();
+//		double x = drilling.getX();
 		double y = drilling.getY();
 		double z = drilling.getZ();
 		
@@ -62,7 +62,7 @@ public class FrontPartSide extends CamPartSide {
 
 	@Override
 	public void addPlane4Drilling(Drilling drilling) {
-		double x = drilling.getX();
+//		double x = drilling.getX();
 		double y = drilling.getY();
 		double z = drilling.getZ();
 		
