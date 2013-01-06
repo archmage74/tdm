@@ -45,16 +45,6 @@ public class RowDrilling extends Drilling {
 		return tlf.toString();
 	}
 
-	public void mirrorX() {
-		endX = dimensions.getLength() - endX;
-		super.mirrorX();
-	}
-
-	public void mirrorY() {
-		endY = dimensions.getWidth() - endY;
-		super.mirrorY();
-	}
-
 	public double getEndX() {
 		return endX;
 	}

@@ -8,9 +8,9 @@ L
 DIAM_UT
 0
 X1
-${drilling.x;decimal(0.##)} I
+${drilling.planeX;decimal(0.##)} I
 Y1
-${drilling.y;decimal(0.##)} I
+${drilling.planeY;decimal(0.##)} I
 X2
 ${drilling.endX;decimal(0.##)} I
 Y2

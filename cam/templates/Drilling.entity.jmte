@@ -8,9 +8,9 @@ L
 DIAM_UT
 0
 X
-${drilling.x;decimal(0.##)} I
+${drilling.planeX;decimal(0.##)} I
 Y
-${drilling.y;decimal(0.##)} I
+${drilling.planeY;decimal(0.##)} I
 R
 ${drilling.radius;decimal(0.#)}
 \CIR

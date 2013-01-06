@@ -41,6 +41,51 @@ public class CamPart implements ITlfNode {
 		}
 	}
 
+	public void moveHorizontalToBackside() {
+		List<Drilling> toMove = new ArrayList<Drilling>();
+		toMove.clear();
+		for (Drilling drilling : frontSide.getPlane1Drillings()) {
+			toMove.add(drilling);
+		}
+		for (Drilling drilling : toMove) {
+			if (!frontSide.removePlane1Drilling(drilling)) {
+				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
+			}
+			backSide.addPlane1Drilling(drilling);
+		}
+		toMove.clear();
+		for (Drilling drilling : frontSide.getPlane2Drillings()) {
+			toMove.add(drilling);
+		}
+		for (Drilling drilling : toMove) {
+			if (!frontSide.removePlane2Drilling(drilling)) {
+				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
+			}
+			backSide.addPlane2Drilling(drilling);
+		}
+		toMove.clear();
+		for (Drilling drilling : frontSide.getPlane3Drillings()) {
+			toMove.add(drilling);
+		}
+		for (Drilling drilling : toMove) {
+			if (!frontSide.removePlane3Drilling(drilling)) {
+				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
+			}
+			backSide.addPlane4Drilling(drilling);
+		}
+		toMove.clear();
+		for (Drilling drilling : frontSide.getPlane4Drillings()) {
+			toMove.add(drilling);
+		}
+		for (Drilling drilling : toMove) {
+			if (!frontSide.removePlane4Drilling(drilling)) {
+				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
+			}
+			backSide.addPlane3Drilling(drilling);
+		}
+		toMove.clear();
+	}
+	
 	public String exportFrontSideTlf() {
 		return frontSide.exportTlf();
 	}
@@ -173,6 +218,14 @@ public class CamPart implements ITlfNode {
 		sb.append("frontSide={ ").append(frontSide).append(" }");
 		sb.append(" }");
 		return sb.toString();
+	}
+
+	public void optimizeSides() {
+		moveThroughDrillingsToFrontside();
+		if (!backSide.isEmpty() && frontSide.hasOnlyHorizontalDrillings()) {
+			moveHorizontalToBackside();
+		}
+		
 	}
 
 }

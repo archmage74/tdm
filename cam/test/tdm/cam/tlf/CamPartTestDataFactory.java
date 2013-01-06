@@ -179,7 +179,38 @@ public class CamPartTestDataFactory {
 		return camPart;
 	}
 	
+	public CamPart createDrilling10BacksideAndPlane3Drilling5CamPart() {
+		CamPart camPart = new CamPart();
+		camPart.setLength(714.0);
+		camPart.setWidth(404.0);
+		camPart.setThick(19.0);
+		camPart.setBarcode("createDrilling10BacksideAndPlane3Drilling5CamPart");
+		
+		DrillingTemplate dt5 = drillTemplates.get("5");
+		Drilling drilling5 = dt5.createDrilling(camPart.getDimensions());
+		drilling5.setX(0);
+		drilling5.setY(50);
+		drilling5.setZ(8);
+		drilling5.setAngleX(-90);
+		drilling5.setAngleY(0);
+		drilling5.setAngleZ(-90);
+		drilling5.setDeep(15);
+		camPart.addDrilling(drilling5);
 
+		DrillingTemplate dt10 = drillTemplates.get("10");
+		Drilling drilling10 = dt10.createDrilling(camPart.getDimensions());
+		drilling10.setX(74);
+		drilling10.setY(378);
+		drilling10.setZ(19);
+		drilling10.setAngleX(180);
+		drilling10.setAngleY(0);
+		drilling10.setAngleZ(180);
+		drilling10.setDeep(11);
+		camPart.addDrilling(drilling10);
+
+		return camPart;
+	}
+	
 	public CamPart createPlane4Drilling5CamPart() {
 		CamPart camPart = new CamPart();
 		camPart.setLength(714.0);

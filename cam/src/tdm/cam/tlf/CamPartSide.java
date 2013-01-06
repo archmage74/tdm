@@ -37,9 +37,17 @@ public abstract class CamPartSide implements ITlfNode {
 		plane1Drillings.add(drilling);
 	}
 
+	public boolean removePlane1Drilling(Drilling drilling) {
+		return plane1Drillings.remove(drilling);
+	}
+
 	public void addPlane2Drilling(Drilling drilling) {
 		drilling.setIndex(plane2Drillings.size());
 		plane2Drillings.add(drilling);
+	}
+
+	public boolean removePlane2Drilling(Drilling drilling) {
+		return plane2Drillings.remove(drilling);
 	}
 
 	public void addPlane3Drilling(Drilling drilling) {
@@ -47,9 +55,17 @@ public abstract class CamPartSide implements ITlfNode {
 		plane3Drillings.add(drilling);
 	}
 
+	public boolean removePlane3Drilling(Drilling drilling) {
+		return plane3Drillings.remove(drilling);
+	}
+
 	public void addPlane4Drilling(Drilling drilling) {
 		drilling.setIndex(plane4Drillings.size());
 		plane4Drillings.add(drilling);
+	}
+
+	public boolean removePlane4Drilling(Drilling drilling) {
+		return plane4Drillings.remove(drilling);
 	}
 
 	public String exportTlf() {
@@ -112,8 +128,63 @@ public abstract class CamPartSide implements ITlfNode {
 				&& plane4Drillings.isEmpty();
 	}
 
+	public boolean hasOnlyHorizontalDrillings() {
+		if (!drillings.isEmpty()) {
+			return false;
+		}
+		if (plane1Drillings.isEmpty() && plane2Drillings.isEmpty() && plane3Drillings.isEmpty() && plane4Drillings.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	public double mirrorX(double x) {
+		return dimensions.getLength() - x;
+	}
+
+	public double mirrorY(double y) {
+		return dimensions.getWidth() - y;
+	}
+
+	public double mirrorZ(double z) {
+		return dimensions.getThick() - z;
+	}
+
 	public List<Drilling> getDrillings() {
 		return drillings;
+	}
+
+
+	public List<Drilling> getPlane1Drillings() {
+		return plane1Drillings;
+	}
+
+	public void setPlane1Drillings(List<Drilling> plane1Drillings) {
+		this.plane1Drillings = plane1Drillings;
+	}
+
+	public List<Drilling> getPlane2Drillings() {
+		return plane2Drillings;
+	}
+
+	public void setPlane2Drillings(List<Drilling> plane2Drillings) {
+		this.plane2Drillings = plane2Drillings;
+	}
+
+	public List<Drilling> getPlane3Drillings() {
+		return plane3Drillings;
+	}
+
+	public void setPlane3Drillings(List<Drilling> plane3Drillings) {
+		this.plane3Drillings = plane3Drillings;
+	}
+
+	public List<Drilling> getPlane4Drillings() {
+		return plane4Drillings;
+	}
+
+	public void setPlane4Drillings(List<Drilling> plane4Drillings) {
+		this.plane4Drillings = plane4Drillings;
 	}
 
 	public void setDrillings(List<Drilling> drillings) {
@@ -151,5 +222,4 @@ public abstract class CamPartSide implements ITlfNode {
 		sb.append(" }");
 		return sb.toString();
 	}
-
 }

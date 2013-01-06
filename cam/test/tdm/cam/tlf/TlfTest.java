@@ -27,6 +27,7 @@ public class TlfTest {
 	private static final String EXPECTED_PLANE_4_DRILLING_5 = EXPECTED_PREFIX + "plane4Drilling5.tlf";
 	private static final String EXPECTED_DRILLING_10_BACKSIDE = EXPECTED_PREFIX + "drilling10_backside.tlf";
 	private static final String EXPECTED_DRILLING_10_THROUGH = EXPECTED_PREFIX + "drilling10_through.tlf";
+	private static final String EXPECTED_PLANE_4_AND_BACKSIDE = EXPECTED_PREFIX + "plane3FromBackside.tlf";
 
 	@Before
 	public void setup() {
@@ -44,7 +45,6 @@ public class TlfTest {
 		TlfAssert.assertEquals(docs.size(), 1);
 		TlfDocument doc = docs.get(0);
 
-		textFileWriter.printEscapedTlf(doc.getTlf(), System.out);
 		String fileName = "./tlf/test/" + doc.getName();
 		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
 
@@ -62,7 +62,6 @@ public class TlfTest {
 		TlfAssert.assertEquals(docs.size(), 1);
 		TlfDocument doc = docs.get(0);
 
-		textFileWriter.printEscapedTlf(doc.getTlf(), System.out);
 		String fileName = "./tlf/test/" + doc.getName();
 		TlfAssert.assertTrue(fileName.contains("_backside"));
 		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
@@ -81,7 +80,6 @@ public class TlfTest {
 		TlfAssert.assertEquals(docs.size(), 1);
 		TlfDocument doc = docs.get(0);
 
-		textFileWriter.printEscapedTlf(doc.getTlf(), System.out);
 		String fileName = "./tlf/test/" + doc.getName();
 		TlfAssert.assertTrue(fileName.contains("_frontside")); // only through drilling from backside -> same as frontside
 		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
@@ -99,7 +97,6 @@ public class TlfTest {
 		TlfAssert.assertEquals(docs.size(), 1);
 		TlfDocument doc = docs.get(0);
 
-		textFileWriter.printEscapedTlf(doc.getTlf(), System.out);
 		String fileName = "./tlf/test/" + doc.getName();
 		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
 
@@ -117,7 +114,6 @@ public class TlfTest {
 		TlfAssert.assertEquals(docs.size(), 1);
 		TlfDocument doc = docs.get(0);
 
-		textFileWriter.printEscapedTlf(doc.getTlf(), System.out);
 		String fileName = "./tlf/test/" + doc.getName();
 		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
 
@@ -135,7 +131,6 @@ public class TlfTest {
 		TlfAssert.assertEquals(docs.size(), 1);
 		TlfDocument doc = docs.get(0);
 
-		textFileWriter.printEscapedTlf(doc.getTlf(), System.out);
 		String fileName = "./tlf/test/" + doc.getName();
 		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
 
@@ -153,7 +148,6 @@ public class TlfTest {
 		TlfAssert.assertEquals(docs.size(), 1);
 		TlfDocument doc = docs.get(0);
 
-		textFileWriter.printEscapedTlf(doc.getTlf(), System.out);
 		String fileName = "./tlf/test/" + doc.getName();
 		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
 
@@ -171,11 +165,27 @@ public class TlfTest {
 		TlfAssert.assertEquals(docs.size(), 1);
 		TlfDocument doc = docs.get(0);
 
-		textFileWriter.printEscapedTlf(doc.getTlf(), System.out);
 		String fileName = "./tlf/test/" + doc.getName();
 		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
 
 		TlfAssert.assertFileEquals(EXPECTED_PLANE_4_DRILLING_5, fileName);
+	}
+	
+	@Test
+	public void drilling10BacksideAndPlane3Drilling5Test() {
+		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane3Drilling5CamPart();
+
+		TlfEngine engine = new TlfEngine();
+		List<TlfDocument> docs = engine.createTlfDocuments(camPart);
+		TextFileWriter textFileWriter = new TextFileWriter();
+
+		TlfAssert.assertEquals(docs.size(), 1);
+		TlfDocument doc = docs.get(0);
+
+		String fileName = "./tlf/test/" + doc.getName();
+		textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
+
+		TlfAssert.assertFileEquals(EXPECTED_PLANE_4_AND_BACKSIDE, fileName);
 	}
 	
 	@Test
