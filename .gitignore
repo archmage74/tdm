@@ -1,5 +1,6 @@
 .metadata
 cam/bin
+cam/tlf/test/*
 cam/.settings
 cam/.classpath
 cam/.project
