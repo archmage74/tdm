@@ -7,7 +7,7 @@ public class RowDrillingAdderFrontSide extends DrillingAdderFrontSide {
 		RowDrilling rd = convertToRowDrilling(drilling);
 		rd.setPlaneEndX(rd.getEndX());
 		rd.setPlaneX(drilling.getX());
-		rd.setPlaneEndY(side.mirrorY(rd.getPlaneEndY()));
+		rd.setPlaneEndY(side.mirrorY(rd.getEndY()));
 		rd.setPlaneY(side.mirrorY(drilling.getY()));
 		side.addDrilling(drilling);
 	}
