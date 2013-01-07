@@ -30,6 +30,10 @@ public class RowDrilling extends Drilling {
 		return new RowDrillingAdderFrontSide();
 	}
 	
+	public IDrillingAdder getBackSideAdder() {
+		return new RowDrillingAdderBackSide();
+	}
+	
 	public Object exportEntity(PartDimensions dimensions) {
 		StringBuffer tlf = new StringBuffer();
 	

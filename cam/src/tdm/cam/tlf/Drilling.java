@@ -41,6 +41,10 @@ public class Drilling implements ITlfNode {
 		return new DrillingAdderFrontSide();
 	}
 	
+	public IDrillingAdder getBackSideAdder() {
+		return new DrillingAdderBackSide();
+	}
+	
 	public Drilling(DrillingTemplate template, PartDimensions dimensions) {
 		this(dimensions);		
 		this.setDiameter(template.getDiameter());

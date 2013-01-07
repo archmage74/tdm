@@ -34,10 +34,11 @@ public class CamPart implements ITlfNode {
 			}
 		}
 		for (Drilling drilling : toMove) {
+			IDrillingAdder frontSideAdder = drilling.getFrontSideAdder();
 			if (!backSide.removeDrilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			frontSide.addDrilling(drilling);
+			frontSideAdder.addDrilling(frontSide, drilling);
 		}
 	}
 
@@ -51,7 +52,8 @@ public class CamPart implements ITlfNode {
 			if (!frontSide.removePlane1Drilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			backSide.addPlane1Drilling(drilling);
+			IDrillingAdder backSideAdder = drilling.getBackSideAdder();
+			backSideAdder.addPlane1Drilling(backSide, drilling);
 		}
 		toMove.clear();
 		for (Drilling drilling : frontSide.getPlane2Drillings()) {
@@ -61,7 +63,8 @@ public class CamPart implements ITlfNode {
 			if (!frontSide.removePlane2Drilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			backSide.addPlane2Drilling(drilling);
+			IDrillingAdder backSideAdder = drilling.getBackSideAdder();
+			backSideAdder.addPlane2Drilling(backSide, drilling);
 		}
 		toMove.clear();
 		for (Drilling drilling : frontSide.getPlane3Drillings()) {
@@ -71,7 +74,8 @@ public class CamPart implements ITlfNode {
 			if (!frontSide.removePlane3Drilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			backSide.addPlane4Drilling(drilling);
+			IDrillingAdder backSideAdder = drilling.getBackSideAdder();
+			backSideAdder.addPlane4Drilling(backSide, drilling);
 		}
 		toMove.clear();
 		for (Drilling drilling : frontSide.getPlane4Drillings()) {
@@ -81,7 +85,8 @@ public class CamPart implements ITlfNode {
 			if (!frontSide.removePlane4Drilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			backSide.addPlane3Drilling(drilling);
+			IDrillingAdder backSideAdder = drilling.getBackSideAdder();
+			backSideAdder.addPlane3Drilling(backSide, drilling);
 		}
 		toMove.clear();
 
@@ -181,10 +186,11 @@ public class CamPart implements ITlfNode {
 
 	public void addDrilling(Drilling drilling) {
 		IDrillingAdder frontSideAdder = drilling.getFrontSideAdder();
+		IDrillingAdder backSideAdder = drilling.getBackSideAdder();
 		if (angleMatch(drilling, 0, 0)) {
 			frontSideAdder.addDrilling(frontSide, drilling);
 		} else if (angleMatch(drilling, 180, 0) || angleMatch(drilling, -180, 0)) {
-			backSide.addDrilling(drilling);
+			backSideAdder.addDrilling(backSide, drilling);
 		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)
 				|| angleMatch(drilling, -90, -90, 0) || angleMatch(drilling, -90, 90, 0)) {
 			frontSideAdder.addPlane1Drilling(frontSide, drilling);
