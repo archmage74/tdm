@@ -84,8 +84,9 @@ public class CamPart implements ITlfNode {
 			backSide.addPlane3Drilling(drilling);
 		}
 		toMove.clear();
+
 	}
-	
+
 	public String exportFrontSideTlf() {
 		return frontSide.exportTlf();
 	}
@@ -179,15 +180,16 @@ public class CamPart implements ITlfNode {
 	}
 
 	public void addDrilling(Drilling drilling) {
-		if (angleMatch(drilling, 0, 0, 0) || angleMatch(drilling, 0, 0, 90) || angleMatch(drilling, 0, 0, -90)
-				|| angleMatch(drilling, 0, 0, 180)) {
-			frontSide.addDrilling(drilling);
+		IDrillingAdder frontSideAdder = drilling.getFrontSideAdder();
+		if (angleMatch(drilling, 0, 0, 0) || angleMatch(drilling, 0, 0, 90) || angleMatch(drilling, 0, 0, -90) || angleMatch(drilling, 0, 0, 180)) {
+			frontSideAdder.addDrilling(frontSide, drilling);
 		} else if (angleMatch(drilling, 180, 0, 0) || angleMatch(drilling, 180, 0, 90) || angleMatch(drilling, 180, 0, -90)
 				|| angleMatch(drilling, 180, 0, 180) || angleMatch(drilling, 180, 0, -180) || angleMatch(drilling, -180, 0, 0)
 				|| angleMatch(drilling, -180, 0, 90) || angleMatch(drilling, -180, 0, -90) || angleMatch(drilling, -180, 0, 180)
 				|| angleMatch(drilling, -180, 0, -180)) {
 			backSide.addDrilling(drilling);
-		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)) {
+		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)
+				|| angleMatch(drilling, -90, -90, 0)) {
 			frontSide.addPlane1Drilling(drilling);
 		} else if (angleMatch(drilling, -90, 0, 180)) {
 			frontSide.addPlane2Drilling(drilling);
@@ -225,7 +227,7 @@ public class CamPart implements ITlfNode {
 		if (!backSide.isEmpty() && frontSide.hasOnlyHorizontalDrillings()) {
 			moveHorizontalToBackside();
 		}
-		
+
 	}
 
 }
