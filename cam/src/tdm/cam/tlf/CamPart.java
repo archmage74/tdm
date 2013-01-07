@@ -134,13 +134,9 @@ public class CamPart implements ITlfNode {
 	}
 
 	public void addDrilling(Drilling drilling) {
-		if (angleMatch(drilling, 0, 0, 0) || angleMatch(drilling, 0, 0, 90) || angleMatch(drilling, 0, 0, -90)
-				|| angleMatch(drilling, 0, 0, 180)) {
+		if (angleMatch(drilling, 0, 0)) {
 			frontSide.addDrilling(drilling);
-		} else if (angleMatch(drilling, 180, 0, 0) || angleMatch(drilling, 180, 0, 90) || angleMatch(drilling, 180, 0, -90)
-				|| angleMatch(drilling, 180, 0, 180) || angleMatch(drilling, 180, 0, -180) || angleMatch(drilling, -180, 0, 0)
-				|| angleMatch(drilling, -180, 0, 90) || angleMatch(drilling, -180, 0, -90) || angleMatch(drilling, -180, 0, 180)
-				|| angleMatch(drilling, -180, 0, -180)) {
+		} else if (angleMatch(drilling, 180, 0) || angleMatch(drilling, -180, 0)) {
 			backSide.addDrilling(drilling);
 		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)) {
 			frontSide.addPlane1Drilling(drilling);
@@ -153,6 +149,10 @@ public class CamPart implements ITlfNode {
 		} else {
 			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
 		}
+	}
+
+	private boolean angleMatch(Drilling d, double ax, double ay) {
+		return d.getAngleX() == ax && d.getAngleY() == ay;
 	}
 
 	private boolean angleMatch(Drilling d, double ax, double ay, double az) {
