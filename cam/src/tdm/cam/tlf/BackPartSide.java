@@ -8,41 +8,37 @@ public class BackPartSide extends CamPartSide {
 
 	@Override
 	public void addDrilling(Drilling drilling) {
-		drilling.mirrorX();
-		drilling.mirrorY();
+		drilling.setPlaneX(mirrorX(drilling.getX()));
+		drilling.setPlaneY(mirrorY(drilling.getY()));
 		super.addDrilling(drilling);
 	}
 	
 	@Override
-	public boolean removeDrilling(Drilling drilling) {
-		boolean removed = super.removeDrilling(drilling);
-		drilling.mirrorX();
-		drilling.mirrorY();
-		return removed;
-	}
-	
-	@Override
 	public void addPlane1Drilling(Drilling drilling) {
-		// FIXME 
-		throw new UnsupportedOperationException("backside does not support horizontal drillings");
+		drilling.setPlaneX(mirrorX(drilling.getX()));
+		drilling.setPlaneY(mirrorZ(drilling.getZ()));
+		super.addPlane1Drilling(drilling);
 	}
 
 	@Override
 	public void addPlane2Drilling(Drilling drilling) {
-		// FIXME 
-		throw new UnsupportedOperationException("backside does not support horizontal drillings");
+		drilling.setPlaneX(mirrorX(drilling.getX()));
+		drilling.setPlaneY(mirrorZ(drilling.getZ()));
+		super.addPlane2Drilling(drilling);
 	}
 
 	@Override
 	public void addPlane3Drilling(Drilling drilling) {
-		// FIXME 
-		throw new UnsupportedOperationException("backside does not support horizontal drillings");
+		drilling.setPlaneX(mirrorY(drilling.getY()));
+		drilling.setPlaneY(mirrorZ(drilling.getZ()));
+		super.addPlane3Drilling(drilling);
 	}
 
 	@Override
 	public void addPlane4Drilling(Drilling drilling) {
-		// FIXME 
-		throw new UnsupportedOperationException("backside does not support horizontal drillings");
+		drilling.setPlaneX(drilling.getY());
+		drilling.setPlaneY(mirrorZ(drilling.getZ()));
+		super.addPlane4Drilling(drilling);
 	}
 
 }

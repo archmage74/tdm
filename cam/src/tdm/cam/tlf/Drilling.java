@@ -19,7 +19,10 @@ public class Drilling implements ITlfNode {
 	protected double angleZ;
 	protected double deep;
 
-	// FIXME add plane-X/Y/Z coords, so drillings can easily be removed and added to another side/plane
+	/** resulting X coordinate on the masterwork plane */ 
+	protected double planeX;
+	/** resulting Y coordinate on the masterwork plane */ 
+	protected double planeY;
 	
 	protected PartDimensions dimensions;
 	
@@ -62,14 +65,6 @@ public class Drilling implements ITlfNode {
 		tlf.append(ENGINE.transform(work, drillingModel));
 	
 		return tlf.toString();
-	}
-
-	public void mirrorX() {
-		x = (dimensions.getLength() - x);
-	}
-
-	public void mirrorY() {
-		y = (dimensions.getWidth() - y);
 	}
 
 	public int getIndex() {
@@ -145,6 +140,22 @@ public class Drilling implements ITlfNode {
 		} else {
 			return this.deep;
 		}
+	}
+
+	public double getPlaneX() {
+		return planeX;
+	}
+
+	public void setPlaneX(double planeX) {
+		this.planeX = planeX;
+	}
+
+	public double getPlaneY() {
+		return planeY;
+	}
+
+	public void setPlaneY(double planeY) {
+		this.planeY = planeY;
 	}
 
 	public double getDiameter() {

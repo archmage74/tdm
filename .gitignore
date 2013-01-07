@@ -1,0 +1,11 @@
+.metadata
+cam/bin
+cam/tlf/test/*
+cam/.settings
+cam/.classpath
+cam/.project
+i2p/bin
+i2p/.settings
+i2p/.classpath
+i2p/.project
+camui

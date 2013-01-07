@@ -19,7 +19,7 @@ public class TlfEngine {
 	
 	public List<TlfDocument> createTlfDocuments(CamPart camPart) {
 		init();
-		camPart.moveThroughDrillingsToFrontside();
+		camPart.optimizeSides();
 		TlfPart tlfPart = new TlfPart();
 		return tlfPart.createTlfDocuments(camPart);
 	}
