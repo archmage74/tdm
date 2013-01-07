@@ -84,8 +84,9 @@ public class CamPart implements ITlfNode {
 			backSide.addPlane3Drilling(drilling);
 		}
 		toMove.clear();
+
 	}
-	
+
 	public String exportFrontSideTlf() {
 		return frontSide.exportTlf();
 	}
@@ -179,18 +180,20 @@ public class CamPart implements ITlfNode {
 	}
 
 	public void addDrilling(Drilling drilling) {
+		IDrillingAdder frontSideAdder = drilling.getFrontSideAdder();
 		if (angleMatch(drilling, 0, 0)) {
-			frontSide.addDrilling(drilling);
+			frontSideAdder.addDrilling(frontSide, drilling);
 		} else if (angleMatch(drilling, 180, 0) || angleMatch(drilling, -180, 0)) {
 			backSide.addDrilling(drilling);
-		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)) {
-			frontSide.addPlane1Drilling(drilling);
+		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)
+				|| angleMatch(drilling, -90, -90, 0) || angleMatch(drilling, -90, 90, 0)) {
+			frontSideAdder.addPlane1Drilling(frontSide, drilling);
 		} else if (angleMatch(drilling, -90, 0, 180)) {
-			frontSide.addPlane2Drilling(drilling);
+			frontSideAdder.addPlane2Drilling(frontSide, drilling);
 		} else if (angleMatch(drilling, -90, 0, -90) || angleMatch(drilling, 90, 0, 90) || angleMatch(drilling, 0, 90, 0)) {
-			frontSide.addPlane3Drilling(drilling);
-		} else if (angleMatch(drilling, -90, 0, 90) || angleMatch(drilling, 0, -90, 0)) {
-			frontSide.addPlane4Drilling(drilling);
+			frontSideAdder.addPlane3Drilling(frontSide, drilling);
+		} else if (angleMatch(drilling, -90, 0, 90) || angleMatch(drilling, 0, -90, 0) || angleMatch(drilling, 180, 90, 0)) {
+			frontSideAdder.addPlane4Drilling(frontSide, drilling);
 		} else {
 			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
 		}
@@ -225,7 +228,7 @@ public class CamPart implements ITlfNode {
 		if (!backSide.isEmpty() && frontSide.hasOnlyHorizontalDrillings()) {
 			moveHorizontalToBackside();
 		}
-		
+
 	}
 
 }

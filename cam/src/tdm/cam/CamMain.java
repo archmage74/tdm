@@ -11,6 +11,8 @@ import tdm.cam.export.Exporter;
 
 public class CamMain {
 	
+	private static final String ORDER_ID = "testtuer";
+	
 	public static final String EXPORT_PATH = "./tlf";
 	
 	public static void main(String[] args) {
@@ -22,7 +24,7 @@ public class CamMain {
 		Exporter exporter = new Exporter();
 		exporter.setImosService(createImosService());
 		exporter.setExportPath(EXPORT_PATH);
-		exporter.export("test18");
+		exporter.export(ORDER_ID);
 	}
 	
 	private IImosService createImosService() {
