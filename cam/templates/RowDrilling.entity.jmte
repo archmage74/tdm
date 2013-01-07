@@ -12,9 +12,9 @@ ${drilling.planeX;decimal(0.##)} I
 Y1
 ${drilling.planeY;decimal(0.##)} I
 X2
-${drilling.endX;decimal(0.##)} I
+${drilling.planeEndX;decimal(0.##)} I
 Y2
-${drilling.endY;decimal(0.##)} I
+${drilling.planeEndY;decimal(0.##)} I
 LUNG
 0
 ANG
