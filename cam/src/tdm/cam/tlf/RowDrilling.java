@@ -13,7 +13,10 @@ public class RowDrilling extends Drilling {
 	protected double endX;
 	protected double endY;
 	protected int numDrillings; 
-	
+
+	protected double planeEndX;
+	protected double planeEndY;
+
 	public RowDrilling(PartDimensions dimensions) {
 		super(dimensions);
 		this.dimensions = dimensions;
@@ -67,6 +70,22 @@ public class RowDrilling extends Drilling {
 
 	public void setNumDrillings(int numDrillings) {
 		this.numDrillings = numDrillings;
+	}
+
+	public double getPlaneEndX() {
+		return planeEndX;
+	}
+
+	public void setPlaneEndX(double planeEndX) {
+		this.planeEndX = planeEndX;
+	}
+
+	public double getPlaneEndY() {
+		return planeEndY;
+	}
+
+	public void setPlaneEndY(double planeEndY) {
+		this.planeEndY = planeEndY;
 	}
 
 	public String toString() {
