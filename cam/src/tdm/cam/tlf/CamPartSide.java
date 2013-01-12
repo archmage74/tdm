@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class CamPartSide implements ITlfNode {
+public abstract class CamPartSide implements ITlfEngineHolder {
 
 	public static String pargen = "CamPartSide.pargen.jmte";
 	public static String entities = "CamPartSide.entities.jmte";
@@ -35,6 +35,7 @@ public abstract class CamPartSide implements ITlfNode {
 	public void addPlane1Drilling(Drilling drilling) {
 		drilling.setIndex(plane1Drillings.size());
 		plane1Drillings.add(drilling);
+		drilling.setHorizontalDrilling(true);
 	}
 
 	public boolean removePlane1Drilling(Drilling drilling) {
@@ -44,6 +45,7 @@ public abstract class CamPartSide implements ITlfNode {
 	public void addPlane2Drilling(Drilling drilling) {
 		drilling.setIndex(plane2Drillings.size());
 		plane2Drillings.add(drilling);
+		drilling.setHorizontalDrilling(true);
 	}
 
 	public boolean removePlane2Drilling(Drilling drilling) {
@@ -53,6 +55,7 @@ public abstract class CamPartSide implements ITlfNode {
 	public void addPlane3Drilling(Drilling drilling) {
 		drilling.setIndex(plane3Drillings.size());
 		plane3Drillings.add(drilling);
+		drilling.setHorizontalDrilling(true);
 	}
 
 	public boolean removePlane3Drilling(Drilling drilling) {
@@ -62,6 +65,7 @@ public abstract class CamPartSide implements ITlfNode {
 	public void addPlane4Drilling(Drilling drilling) {
 		drilling.setIndex(plane4Drillings.size());
 		plane4Drillings.add(drilling);
+		drilling.setHorizontalDrilling(true);
 	}
 
 	public boolean removePlane4Drilling(Drilling drilling) {
@@ -99,7 +103,7 @@ public abstract class CamPartSide implements ITlfNode {
 	private String createPlaneEntities(List<Drilling> drillings) {
 		StringBuffer drillingsBuffer = new StringBuffer();
 		for (Drilling drilling : drillings) {
-			drillingsBuffer.append(drilling.exportEntity(dimensions));
+			drillingsBuffer.append(drilling.exportEntity());
 		}
 		return drillingsBuffer.toString();
 	}
@@ -118,7 +122,7 @@ public abstract class CamPartSide implements ITlfNode {
 	private String createPlaneWorks(List<Drilling> drillings) {
 		StringBuffer drillingsBuffer = new StringBuffer();
 		for (Drilling drilling : drillings) {
-			drillingsBuffer.append(drilling.exportWork(dimensions));
+			drillingsBuffer.append(drilling.exportWork());
 		}
 		return drillingsBuffer.toString();
 	}

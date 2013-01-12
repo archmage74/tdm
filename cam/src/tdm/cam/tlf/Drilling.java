@@ -3,7 +3,7 @@ package tdm.cam.tlf;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Drilling implements ITlfNode {
+public class Drilling implements ITlfEngineHolder, ITlfNode {
 
 	public static final double THROUGH_ADD_ON = 4.0;
 	
@@ -18,6 +18,9 @@ public class Drilling implements ITlfNode {
 	protected double angleY;
 	protected double angleZ;
 	protected double deep;
+	
+	/** flag to mark horizontal drillings, e.g. leads to isThrough always false */
+	protected boolean horizontalDrilling = false;
 
 	/** resulting X coordinate on the masterwork plane */ 
 	protected double planeX;
@@ -53,22 +56,22 @@ public class Drilling implements ITlfNode {
 		this.setParamVelentrata(template.getParamVelentrata());
 	}
 
-	public Object exportEntity(PartDimensions dimensions) {
+	@Override
+	public Object exportEntity() {
 		StringBuffer tlf = new StringBuffer();
 	
 		Map<String, Object> drillingModel = new HashMap<String, Object>();
-		drillingModel.put("dimensions", dimensions);
 		drillingModel.put("drilling", this);
 		tlf.append(ENGINE.transform(entity, drillingModel));
 	
 		return tlf.toString();
 	}
 
-	public Object exportWork(PartDimensions dimensions) {
+	@Override
+	public Object exportWork() {
 		StringBuffer tlf = new StringBuffer();
 	
 		Map<String, Object> drillingModel = new HashMap<String, Object>();
-		drillingModel.put("dimensions", dimensions);
 		drillingModel.put("drilling", this);
 		tlf.append(ENGINE.transform(work, drillingModel));
 	
@@ -150,6 +153,14 @@ public class Drilling implements ITlfNode {
 		}
 	}
 
+	public boolean isHorizontalDrilling() {
+		return horizontalDrilling;
+	}
+
+	public void setHorizontalDrilling(boolean horizontalDrilling) {
+		this.horizontalDrilling = horizontalDrilling;
+	}
+
 	public double getPlaneX() {
 		return planeX;
 	}
@@ -207,15 +218,9 @@ public class Drilling implements ITlfNode {
 	}
 
 	public boolean isThrough() {
-		// FIXME: check orientation first for horizontal drillings
-
-		if (angleX == 90 || angleX == -90) {
+		if (horizontalDrilling) {
 			return false;
 		}
-//		if (angleY == 90 || angleY == -90) {
-//			return false;
-//		}
-		
 		if (deep >= (dimensions.getThick() - 0.01)) { // 0.01mm epsilon to compare doubles  
 			return true;
 		} else {

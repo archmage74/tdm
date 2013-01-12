@@ -3,7 +3,7 @@ package tdm.cam.tlf;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CamPart implements ITlfNode {
+public class CamPart implements ITlfEngineHolder {
 
 	private String id;
 

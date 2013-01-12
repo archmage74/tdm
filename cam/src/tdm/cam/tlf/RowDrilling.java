@@ -34,7 +34,8 @@ public class RowDrilling extends Drilling {
 		return new RowDrillingAdderBackSide();
 	}
 	
-	public Object exportEntity(PartDimensions dimensions) {
+	@Override
+	public Object exportEntity() {
 		StringBuffer tlf = new StringBuffer();
 	
 		Map<String, Object> drillingModel = new HashMap<String, Object>();
@@ -45,7 +46,8 @@ public class RowDrilling extends Drilling {
 		return tlf.toString();
 	}
 
-	public Object exportWork(PartDimensions dimensions) {
+	@Override
+	public Object exportWork() {
 		StringBuffer tlf = new StringBuffer();
 	
 		Map<String, Object> drillingModel = new HashMap<String, Object>();

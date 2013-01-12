@@ -29,8 +29,8 @@ public class TlfEngine {
 			return;
 		}
 		
-		ITlfNode.ENGINE.registerNamedRenderer(new NamedIntRenderer());
-		ITlfNode.ENGINE.registerNamedRenderer(new NamedDecimalRenderer());
+		ITlfEngineHolder.ENGINE.registerNamedRenderer(new NamedIntRenderer());
+		ITlfEngineHolder.ENGINE.registerNamedRenderer(new NamedDecimalRenderer());
 		
 		TlfPart.header = textFileReader.readTemplate(TEMPLATE_PATH + TlfPart.header);
 		TlfPart.footer = textFileReader.readTemplate(TEMPLATE_PATH + TlfPart.footer);

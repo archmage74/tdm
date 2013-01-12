@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TlfPart implements ITlfNode {
+public class TlfPart implements ITlfEngineHolder {
 
 	public static String header = "TlfDocument.header.jmte";
 	public static String footer = "TlfDocument.footer.jmte";
