@@ -159,15 +159,15 @@ public class PartProfile implements ITlfNode, ITlfEngineHolder {
 	@Override
 	public void calculatePlaneCoordinates(PartDimensions dimensions) {
 		if (prfNo == ProfileType.POS_V.getValue()) {
-			planeX1 = planeCoordinatesTransformer.getPlaneX(dimensions, 0, dimensions.getWidth() - thick, 0);
-			planeY1 = planeCoordinatesTransformer.getPlaneY(dimensions, 0, dimensions.getWidth() - thick, 0);
-			planeX2 = planeCoordinatesTransformer.getPlaneX(dimensions, dimensions.getLength(), dimensions.getWidth() - thick, 0);
-			planeY2 = planeCoordinatesTransformer.getPlaneY(dimensions, dimensions.getLength(), dimensions.getWidth() - thick, 0);
-		} else if (prfNo == ProfileType.POS_H.getValue()) {
 			planeX1 = planeCoordinatesTransformer.getPlaneX(dimensions, 0, thick, 0);
 			planeY1 = planeCoordinatesTransformer.getPlaneY(dimensions, 0, thick, 0);
 			planeX2 = planeCoordinatesTransformer.getPlaneX(dimensions, dimensions.getLength(), thick, 0);
 			planeY2 = planeCoordinatesTransformer.getPlaneY(dimensions, dimensions.getLength(), thick, 0);
+		} else if (prfNo == ProfileType.POS_H.getValue()) {
+			planeX1 = planeCoordinatesTransformer.getPlaneX(dimensions, 0, dimensions.getWidth() - thick, 0);
+			planeY1 = planeCoordinatesTransformer.getPlaneY(dimensions, 0, dimensions.getWidth() - thick, 0);
+			planeX2 = planeCoordinatesTransformer.getPlaneX(dimensions, dimensions.getLength(), dimensions.getWidth() - thick, 0);
+			planeY2 = planeCoordinatesTransformer.getPlaneY(dimensions, dimensions.getLength(), dimensions.getWidth() - thick, 0);
 		} else if (prfNo == ProfileType.POS_L.getValue()) {
 			planeX1 = planeCoordinatesTransformer.getPlaneX(dimensions, thick, 0, 0);
 			planeY1 = planeCoordinatesTransformer.getPlaneY(dimensions, thick, 0, 0);
