@@ -8,6 +8,12 @@ public class PartDimensions {
 	public PartDimensions() {
 	}
 
+	public PartDimensions(double length, double width, double thick) {
+		this.length = length;
+		this.width = width;
+		this.thick = thick;
+	}
+
 	public double getLength() {
 		return length;
 	}

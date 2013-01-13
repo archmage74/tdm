@@ -1,7 +1,7 @@
 package tdm.cam.tlf;
 
 
-public class DrillingTemplate implements ITlfNode {
+public class DrillingTemplate implements ITlfEngineHolder {
 
 	public static final char PREFIX_THROUGH = 'V';
 	

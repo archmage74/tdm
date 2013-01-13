@@ -6,12 +6,10 @@ import java.util.List;
 import tdm.cam.db.imos.IImosService;
 import tdm.cam.tlf.CamPart;
 import tdm.cam.tlf.TlfDocument;
-import tdm.cam.tlf.TlfEngine;
 import tdm.cam.util.TextFileWriter;
 
 public class Exporter {
 
-	private TlfEngine engine = new TlfEngine();
 	private TextFileWriter textFileWriter = new TextFileWriter();
 	private IImosService imosService;
 
@@ -23,7 +21,7 @@ public class Exporter {
 		File exportDir = createEmptySubfolder(orderId);
 
 		for (CamPart camPart : camParts) {
-			for (TlfDocument doc : engine.createTlfDocuments(camPart)) {
+			for (TlfDocument doc : camPart.createTlfDocuments()) {
 				textFileWriter.writeEscapedTlf(doc.getTlf(), exportDir.getPath() + '/' + doc.getName());
 			}
 		}

@@ -1,0 +1,34 @@
+POL
+INDEX
+${profile.index}
+LINKS
+0
+L
+1
+DIAM_UT
+0
+X
+${profile.planeX1;decimal(0.##)} I
+Y
+${profile.planeY1;decimal(0.##)} I
+Z
+0 0
+V
+X
+${profile.planeX2;decimal(0.##)} I
+Y
+${profile.planeY2;decimal(0.##)} I
+Z
+0 0
+B
+0
+PARTDEF
+0
+S
+0
+\V
+C
+0
+P0DEF
+0
+\POL

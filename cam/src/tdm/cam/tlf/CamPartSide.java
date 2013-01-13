@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class CamPartSide implements ITlfNode {
+import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
+
+public abstract class CamPartSide implements ITlfEngineHolder {
 
 	public static String pargen = "CamPartSide.pargen.jmte";
 	public static String entities = "CamPartSide.entities.jmte";
@@ -13,64 +15,85 @@ public abstract class CamPartSide implements ITlfNode {
 
 	protected PartDimensions dimensions;
 
-	protected List<Drilling> drillings = new ArrayList<Drilling>();
-	protected List<Drilling> plane1Drillings = new ArrayList<Drilling>();
-	protected List<Drilling> plane2Drillings = new ArrayList<Drilling>();
-	protected List<Drilling> plane3Drillings = new ArrayList<Drilling>();
-	protected List<Drilling> plane4Drillings = new ArrayList<Drilling>();
+	protected List<ITlfNode> drillings = new ArrayList<ITlfNode>();
+	protected List<ITlfNode> plane1Drillings = new ArrayList<ITlfNode>();
+	protected List<ITlfNode> plane2Drillings = new ArrayList<ITlfNode>();
+	protected List<ITlfNode> plane3Drillings = new ArrayList<ITlfNode>();
+	protected List<ITlfNode> plane4Drillings = new ArrayList<ITlfNode>();
 
 	public CamPartSide(PartDimensions dimensions) {
 		this.dimensions = dimensions;
 	}
 
-	public void addDrilling(Drilling drilling) {
-		drilling.setIndex(drillings.size());
-		drillings.add(drilling);
+	protected abstract IPlaneCoordinatesTransformer getUpTransformer();
+
+	protected abstract IPlaneCoordinatesTransformer getTopTransformer();
+
+	protected abstract IPlaneCoordinatesTransformer getBottomTransformer();
+
+	protected abstract IPlaneCoordinatesTransformer getLeftTransformer();
+
+	protected abstract IPlaneCoordinatesTransformer getRightTransformer();
+
+	private HashMap<Integer, PartProfile> profileMap = new HashMap<Integer, PartProfile>(4);
+
+	public void addNode(ITlfNode node) {
+		node.setIndex(drillings.size());
+		node.setPlaneCoordinatesTransformer(getUpTransformer());
+		drillings.add(node);
 	}
 
-	public boolean removeDrilling(Drilling drilling) {
-		return drillings.remove(drilling);
+	public boolean removeDrilling(ITlfNode node) {
+		return drillings.remove(node);
 	}
 
-	public void addPlane1Drilling(Drilling drilling) {
-		drilling.setIndex(plane1Drillings.size());
-		plane1Drillings.add(drilling);
+	public void addPlane1Drilling(ITlfNode node) {
+		node.setIndex(plane1Drillings.size());
+		node.setPlaneCoordinatesTransformer(getBottomTransformer());
+		plane1Drillings.add(node);
+		node.setHorizontal(true);
 	}
 
-	public boolean removePlane1Drilling(Drilling drilling) {
-		return plane1Drillings.remove(drilling);
+	public boolean removePlane1Drilling(ITlfNode node) {
+		return plane1Drillings.remove(node);
 	}
 
-	public void addPlane2Drilling(Drilling drilling) {
-		drilling.setIndex(plane2Drillings.size());
-		plane2Drillings.add(drilling);
+	public void addPlane2Drilling(ITlfNode node) {
+		node.setIndex(plane2Drillings.size());
+		node.setPlaneCoordinatesTransformer(getTopTransformer());
+		plane2Drillings.add(node);
+		node.setHorizontal(true);
 	}
 
-	public boolean removePlane2Drilling(Drilling drilling) {
-		return plane2Drillings.remove(drilling);
+	public boolean removePlane2Drilling(ITlfNode node) {
+		return plane2Drillings.remove(node);
 	}
 
-	public void addPlane3Drilling(Drilling drilling) {
-		drilling.setIndex(plane3Drillings.size());
-		plane3Drillings.add(drilling);
+	public void addPlane3Drilling(ITlfNode node) {
+		node.setIndex(plane3Drillings.size());
+		node.setPlaneCoordinatesTransformer(getLeftTransformer());
+		plane3Drillings.add(node);
+		node.setHorizontal(true);
 	}
 
-	public boolean removePlane3Drilling(Drilling drilling) {
-		return plane3Drillings.remove(drilling);
+	public boolean removePlane3Drilling(ITlfNode node) {
+		return plane3Drillings.remove(node);
 	}
 
-	public void addPlane4Drilling(Drilling drilling) {
-		drilling.setIndex(plane4Drillings.size());
-		plane4Drillings.add(drilling);
+	public void addPlane4Drilling(ITlfNode node) {
+		node.setIndex(plane4Drillings.size());
+		node.setPlaneCoordinatesTransformer(getRightTransformer());
+		plane4Drillings.add(node);
+		node.setHorizontal(true);
 	}
 
-	public boolean removePlane4Drilling(Drilling drilling) {
+	public boolean removePlane4Drilling(ITlfNode drilling) {
 		return plane4Drillings.remove(drilling);
 	}
 
 	public String exportTlf() {
 		StringBuffer tlf = new StringBuffer();
-
+		
 		tlf.append(createPargenTlf());
 		tlf.append(createEntitiesTlf());
 		tlf.append(createWorksTlf());
@@ -87,7 +110,17 @@ public abstract class CamPartSide implements ITlfNode {
 
 	private String createEntitiesTlf() {
 		Map<String, Object> entitiesModel = new HashMap<String, Object>();
-		entitiesModel.put("entitiesPlane0", createPlaneEntities(drillings));
+		String p0 = createPlaneEntities(drillings);
+		
+		StringBuffer lineBuffer = new StringBuffer();
+		for (ITlfNode node : profileMap.values()) {
+			node.setPlaneCoordinatesTransformer(getUpTransformer());
+			node.calculatePlaneCoordinates(dimensions);
+			lineBuffer.append(node.exportEntity());
+		}
+		p0 += lineBuffer.toString();
+
+		entitiesModel.put("entitiesPlane0", p0);
 		entitiesModel.put("entitiesPlane1", createPlaneEntities(plane1Drillings));
 		entitiesModel.put("entitiesPlane2", createPlaneEntities(plane2Drillings));
 		entitiesModel.put("entitiesPlane3", createPlaneEntities(plane3Drillings));
@@ -96,10 +129,11 @@ public abstract class CamPartSide implements ITlfNode {
 		return entitiesTlf;
 	}
 
-	private String createPlaneEntities(List<Drilling> drillings) {
+	private String createPlaneEntities(List<ITlfNode> drillings) {
 		StringBuffer drillingsBuffer = new StringBuffer();
-		for (Drilling drilling : drillings) {
-			drillingsBuffer.append(drilling.exportEntity(dimensions));
+		for (ITlfNode node : drillings) {
+			node.calculatePlaneCoordinates(dimensions);
+			drillingsBuffer.append(node.exportEntity());
 		}
 		return drillingsBuffer.toString();
 	}
@@ -115,10 +149,10 @@ public abstract class CamPartSide implements ITlfNode {
 		return worksTlf;
 	}
 
-	private String createPlaneWorks(List<Drilling> drillings) {
+	private String createPlaneWorks(List<ITlfNode> drillings) {
 		StringBuffer drillingsBuffer = new StringBuffer();
-		for (Drilling drilling : drillings) {
-			drillingsBuffer.append(drilling.exportWork(dimensions));
+		for (ITlfNode drilling : drillings) {
+			drillingsBuffer.append(drilling.exportWork());
 		}
 		return drillingsBuffer.toString();
 	}
@@ -150,49 +184,33 @@ public abstract class CamPartSide implements ITlfNode {
 		return dimensions.getThick() - z;
 	}
 
-	public List<Drilling> getDrillings() {
+	public List<ITlfNode> getDrillings() {
 		return drillings;
 	}
 
 
-	public List<Drilling> getPlane1Drillings() {
+	public List<ITlfNode> getPlane1Drillings() {
 		return plane1Drillings;
 	}
 
-	public void setPlane1Drillings(List<Drilling> plane1Drillings) {
-		this.plane1Drillings = plane1Drillings;
-	}
-
-	public List<Drilling> getPlane2Drillings() {
+	public List<ITlfNode> getPlane2Drillings() {
 		return plane2Drillings;
 	}
 
-	public void setPlane2Drillings(List<Drilling> plane2Drillings) {
-		this.plane2Drillings = plane2Drillings;
-	}
-
-	public List<Drilling> getPlane3Drillings() {
+	public List<ITlfNode> getPlane3Drillings() {
 		return plane3Drillings;
 	}
 
-	public void setPlane3Drillings(List<Drilling> plane3Drillings) {
-		this.plane3Drillings = plane3Drillings;
-	}
-
-	public List<Drilling> getPlane4Drillings() {
+	public List<ITlfNode> getPlane4Drillings() {
 		return plane4Drillings;
-	}
-
-	public void setPlane4Drillings(List<Drilling> plane4Drillings) {
-		this.plane4Drillings = plane4Drillings;
-	}
-
-	public void setDrillings(List<Drilling> drillings) {
-		this.drillings = new ArrayList<Drilling>(drillings);
 	}
 
 	public PartDimensions getDimensions() {
 		return dimensions;
+	}
+
+	public void setProfileMap(HashMap<Integer, PartProfile> profileMap) {
+		this.profileMap = profileMap;
 	}
 
 	public String toString() {
@@ -213,7 +231,7 @@ public abstract class CamPartSide implements ITlfNode {
 		if (drillings == null) {
 			sb.append("null");
 		} else {
-			for (Drilling drilling : drillings) {
+			for (ITlfNode drilling : drillings) {
 				sb.append(drilling.toString()).append(", ");
 			}
 		}
@@ -222,4 +240,5 @@ public abstract class CamPartSide implements ITlfNode {
 		sb.append(" }");
 		return sb.toString();
 	}
+
 }

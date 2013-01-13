@@ -1,9 +1,27 @@
 package tdm.cam.tlf;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CamPart implements ITlfNode {
+/**
+ *              plane 2
+ *                top
+ *         |---------------| 
+ *         |               |
+ * plane 3 |               | plane 4
+ *  left   |               |  right
+ *         |               |
+ *         |---------------| 
+ *              plane 1
+ *              bottom
+ *
+ */
+public class CamPart implements ITlfEngineHolder {
+
+	public static String header = "TlfDocument.header.jmte";
+	public static String footer = "TlfDocument.footer.jmte";
 
 	private String id;
 
@@ -21,83 +39,113 @@ public class CamPart implements ITlfNode {
 
 	private CamPartSide backSide = new BackPartSide(dimensions);
 
+	private HashMap<Integer, PartProfile> profileMap = new HashMap<Integer, PartProfile>(4);
+
 	public CamPart() {
 
 	}
 
+	public List<TlfDocument> createTlfDocuments() {
+		List<TlfDocument> docs = new ArrayList<TlfDocument>();
+		if (!getFrontSide().isEmpty()) {
+			String name = getBarcode() + TlfDocument.FRONT_SIDE_SUFFIX;
+			String tlf = exportFrontSideTlf();
+			docs.add(new TlfDocument(name, tlf));
+		}
+		if (!getBackSide().isEmpty()) {
+			String name = getBarcode() + TlfDocument.BACK_SIDE_SUFFIX;
+			String tlf = exportBackSideTlf();
+			docs.add(new TlfDocument(name, tlf));
+		}
+		return docs;
+	}
+	
+	public String exportFrontSideTlf() {
+		StringBuffer tlf = new StringBuffer();
+		Map<String, Object> docModel = new HashMap<String, Object>();
+		
+		// FIXME: profiles for both sides + where to put index generation
+		frontSide.setProfileMap(profileMap);
+		int index = frontSide.getDrillings().size();
+		for (PartProfile profile : profileMap.values()) {
+			profile.setIndex(index++);
+		}
+		
+		tlf.append(ENGINE.transform(header, docModel));
+		tlf.append(frontSide.exportTlf());
+		tlf.append(ENGINE.transform(footer, docModel));
+		return tlf.toString();
+	}
+
+	public String exportBackSideTlf() {
+		StringBuffer tlf = new StringBuffer();
+		Map<String, Object> docModel = new HashMap<String, Object>();
+		tlf.append(ENGINE.transform(header, docModel));
+		tlf.append(backSide.exportTlf());
+		tlf.append(ENGINE.transform(footer, docModel));
+		return tlf.toString();
+	}
+
 	public void moveThroughDrillingsToFrontside() {
 		// FIXME better rule: move all to one side (prefer inner side) if possible
-		List<Drilling> toMove = new ArrayList<Drilling>();
-		for (Drilling drilling : backSide.getDrillings()) {
-			if (drilling.isThrough()) {
+		List<ITlfNode> toMove = new ArrayList<ITlfNode>();
+		for (ITlfNode drilling : backSide.getDrillings()) {
+			if (drilling.isSideIndependent()) {
 				toMove.add(drilling);
 			}
 		}
-		for (Drilling drilling : toMove) {
-			IDrillingAdder frontSideAdder = drilling.getFrontSideAdder();
+		for (ITlfNode drilling : toMove) {
 			if (!backSide.removeDrilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			frontSideAdder.addDrilling(frontSide, drilling);
+			frontSide.addNode(drilling);
 		}
 	}
 
 	public void moveHorizontalToBackside() {
-		List<Drilling> toMove = new ArrayList<Drilling>();
+		List<ITlfNode> toMove = new ArrayList<ITlfNode>();
 		toMove.clear();
-		for (Drilling drilling : frontSide.getPlane1Drillings()) {
+		for (ITlfNode drilling : frontSide.getPlane1Drillings()) {
 			toMove.add(drilling);
 		}
-		for (Drilling drilling : toMove) {
+		for (ITlfNode drilling : toMove) {
 			if (!frontSide.removePlane1Drilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			IDrillingAdder backSideAdder = drilling.getBackSideAdder();
-			backSideAdder.addPlane1Drilling(backSide, drilling);
+			backSide.addPlane1Drilling(drilling);
 		}
 		toMove.clear();
-		for (Drilling drilling : frontSide.getPlane2Drillings()) {
+		for (ITlfNode drilling : frontSide.getPlane2Drillings()) {
 			toMove.add(drilling);
 		}
-		for (Drilling drilling : toMove) {
+		for (ITlfNode drilling : toMove) {
 			if (!frontSide.removePlane2Drilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			IDrillingAdder backSideAdder = drilling.getBackSideAdder();
-			backSideAdder.addPlane2Drilling(backSide, drilling);
+			backSide.addPlane2Drilling(drilling);
 		}
 		toMove.clear();
-		for (Drilling drilling : frontSide.getPlane3Drillings()) {
+		for (ITlfNode drilling : frontSide.getPlane3Drillings()) {
 			toMove.add(drilling);
 		}
-		for (Drilling drilling : toMove) {
+		for (ITlfNode drilling : toMove) {
 			if (!frontSide.removePlane3Drilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			IDrillingAdder backSideAdder = drilling.getBackSideAdder();
-			backSideAdder.addPlane4Drilling(backSide, drilling);
+			backSide.addPlane4Drilling(drilling);
 		}
 		toMove.clear();
-		for (Drilling drilling : frontSide.getPlane4Drillings()) {
+		for (ITlfNode drilling : frontSide.getPlane4Drillings()) {
 			toMove.add(drilling);
 		}
-		for (Drilling drilling : toMove) {
+		for (ITlfNode drilling : toMove) {
 			if (!frontSide.removePlane4Drilling(drilling)) {
 				throw new RuntimeException("Could not move drilling, could not find it anymore :-(");
 			}
-			IDrillingAdder backSideAdder = drilling.getBackSideAdder();
-			backSideAdder.addPlane3Drilling(backSide, drilling);
+			backSide.addPlane3Drilling(drilling);
 		}
 		toMove.clear();
 
-	}
-
-	public String exportFrontSideTlf() {
-		return frontSide.exportTlf();
-	}
-
-	public String exportBackSideTlf() {
-		return backSide.exportTlf();
 	}
 
 	public void setThick(int thick) {
@@ -185,24 +233,26 @@ public class CamPart implements ITlfNode {
 	}
 
 	public void addDrilling(Drilling drilling) {
-		IDrillingAdder frontSideAdder = drilling.getFrontSideAdder();
-		IDrillingAdder backSideAdder = drilling.getBackSideAdder();
 		if (angleMatch(drilling, 0, 0)) {
-			frontSideAdder.addDrilling(frontSide, drilling);
+			frontSide.addNode(drilling);
 		} else if (angleMatch(drilling, 180, 0) || angleMatch(drilling, -180, 0)) {
-			backSideAdder.addDrilling(backSide, drilling);
-		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)
+			backSide.addNode(drilling);
+		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180)
 				|| angleMatch(drilling, -90, -90, 0) || angleMatch(drilling, -90, 90, 0)) {
-			frontSideAdder.addPlane1Drilling(frontSide, drilling);
-		} else if (angleMatch(drilling, -90, 0, 180) || angleMatch(drilling, 90, 0, 0)) {
-			frontSideAdder.addPlane2Drilling(frontSide, drilling);
+			frontSide.addPlane1Drilling(drilling);
+		} else if (angleMatch(drilling, -90, 0, 180) || angleMatch(drilling, 90, 0, 0) || angleMatch(drilling, 90, -90, 0)) {
+			frontSide.addPlane2Drilling(drilling);
 		} else if (angleMatch(drilling, -90, 0, -90) || angleMatch(drilling, 90, 0, 90) || angleMatch(drilling, 0, 90, 0)) {
-			frontSideAdder.addPlane3Drilling(frontSide, drilling);
+			frontSide.addPlane3Drilling(drilling);
 		} else if (angleMatch(drilling, -90, 0, 90) || angleMatch(drilling, 0, -90, 0) || angleMatch(drilling, 180, 90, 0)) {
-			frontSideAdder.addPlane4Drilling(frontSide, drilling);
+			frontSide.addPlane4Drilling(drilling);
 		} else {
 			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
 		}
+	}
+	
+	public void addProfile(PartProfile profile) {
+		profileMap.put(profile.getPrfNo(), profile);
 	}
 
 	private boolean angleMatch(Drilling d, double ax, double ay) {
