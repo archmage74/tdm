@@ -1,6 +1,6 @@
 POL
 INDEX
-0
+${profile.index}
 LINKS
 0
 L
@@ -8,16 +8,16 @@ L
 DIAM_UT
 0
 X
-0 I
+${profile.planeX1;decimal(0.##)} I
 Y
-498 F
+${profile.planeY1;decimal(0.##)} I
 Z
 0 0
 V
 X
-1000 F
+${profile.planeX2;decimal(0.##)} I
 Y
-498 F
+${profile.planeY2;decimal(0.##)} I
 Z
 0 0
 B

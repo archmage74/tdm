@@ -12,6 +12,7 @@ import tdm.cam.db.DrillingFactory;
 import tdm.cam.tlf.CamPart;
 import tdm.cam.tlf.Drilling;
 import tdm.cam.tlf.DrillingAngleException;
+import tdm.cam.tlf.PartProfile;
 
 public class ImosService implements IImosService {
 
@@ -30,6 +31,8 @@ public class ImosService implements IImosService {
 		List<CamPart> parts = readCamParts(orderId);
 		for (CamPart part : parts) {
 			readDrillings(part);
+			readProfiles(part);
+			part.optimizeSides();
 		}
 		return parts;
 	}
@@ -50,24 +53,12 @@ public class ImosService implements IImosService {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (ps != null) {
-				try {
-					ps.close();
-					ps = null;
-				} catch (SQLException e) {
-				}
-			}
-			if (partResultSet != null) {
-				try {
-					partResultSet.close();
-					partResultSet = null;
-				} catch (SQLException e) {
-				}
-			}
+			closePsAndRs(ps, partResultSet);
 		}
 		return parts;
 	}
 
+	@SuppressWarnings("resource")
 	private void readDrillings(CamPart camPart) {
 		ResultSet drillResultSet = null;
 		PreparedStatement ps = null;
@@ -90,19 +81,49 @@ public class ImosService implements IImosService {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (ps != null) {
-				try {
-					ps.close();
-					ps = null;
-				} catch (SQLException e) {
-				}
+			closePsAndRs(ps, drillResultSet);
+		}
+	}
+	
+	private void readProfiles(CamPart part) {
+		PreparedStatement ps = null;
+		ResultSet profileResultSet = null;
+		String readProfileSql = "SELECT prfno, prfid, prflen, prfthk, prfp, prfb FROM idbprf WHERE orderid=? AND id=?";
+		try {
+			ps = dbConnection.prepareStatement(readProfileSql);
+			ps.setString(1, part.getOrderId());
+			ps.setString(2, part.getId());
+			profileResultSet = ps.executeQuery();
+
+			PartProfile profile = null;
+			while (profileResultSet.next()) {
+				profile = new PartProfile();
+				profile.setPrfNo(profileResultSet.getInt("prfno"));
+				profile.setPrfId(profileResultSet.getString("prfid"));
+				profile.setPrfLen(profileResultSet.getDouble("prflen"));
+				profile.setThick(profileResultSet.getDouble("prfthk"));
+				profile.setPrfp(profileResultSet.getInt("prfp"));
+				profile.setPrfb(profileResultSet.getInt("prfb"));
+				part.addProfile(profile);
 			}
-			if (drillResultSet != null) {
-				try {
-					drillResultSet.close();
-					drillResultSet = null;
-				} catch (SQLException e) {
-				}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closePsAndRs(ps, profileResultSet);
+		}
+	}
+
+	private void closePsAndRs(PreparedStatement ps, ResultSet rs) {
+		if (ps != null) {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+			}
+		}
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
 			}
 		}
 	}

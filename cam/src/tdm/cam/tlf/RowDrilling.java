@@ -26,16 +26,15 @@ public class RowDrilling extends Drilling {
 		super(template, dimensions);		
 	}
 
-	public IDrillingAdder getFrontSideAdder() {
-		return new RowDrillingAdderFrontSide();
-	}
-	
-	public IDrillingAdder getBackSideAdder() {
-		return new RowDrillingAdderBackSide();
-	}
-	
 	@Override
-	public Object exportEntity() {
+	public void calculatePlaneCoordinates(PartDimensions dimensions) {
+		super.calculatePlaneCoordinates(dimensions);
+		planeEndX = planeCoordinatesTransformer.getPlaneX(dimensions, endX, endY, 0);
+		planeEndY = planeCoordinatesTransformer.getPlaneY(dimensions, endX, endY, 0);
+	};
+
+	@Override
+	public String exportEntity() {
 		StringBuffer tlf = new StringBuffer();
 	
 		Map<String, Object> drillingModel = new HashMap<String, Object>();
@@ -47,7 +46,7 @@ public class RowDrilling extends Drilling {
 	}
 
 	@Override
-	public Object exportWork() {
+	public String exportWork() {
 		StringBuffer tlf = new StringBuffer();
 	
 		Map<String, Object> drillingModel = new HashMap<String, Object>();

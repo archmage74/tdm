@@ -3,13 +3,15 @@ package tdm.cam.tlf;
 import java.util.HashMap;
 import java.util.Map;
 
+import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
+
 public class Drilling implements ITlfEngineHolder, ITlfNode {
 
 	public static final double THROUGH_ADD_ON = 4.0;
-	
+
 	public static String entity = "Drilling.entity.jmte";
 	public static String work = "Drilling.work.jmte";
-	
+
 	protected int index;
 	protected double x;
 	protected double y;
@@ -18,70 +20,72 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 	protected double angleY;
 	protected double angleZ;
 	protected double deep;
-	
-	/** flag to mark horizontal drillings, e.g. leads to isThrough always false */
-	protected boolean horizontalDrilling = false;
 
-	/** resulting X coordinate on the masterwork plane */ 
+	/** flag to mark horizontal drillings, e.g. leads to isThrough always false */
+	protected boolean horizontal = false;
+
+	/** resulting X coordinate on the masterwork plane */
 	protected double planeX;
-	/** resulting Y coordinate on the masterwork plane */ 
+	/** resulting Y coordinate on the masterwork plane */
 	protected double planeY;
+
+	protected IPlaneCoordinatesTransformer planeCoordinatesTransformer;
 	
 	protected PartDimensions dimensions;
-	
+
 	protected double diameter;
 	protected int paramVelentrata;
 	protected int paramRallforo;
 	protected int paramTipounta;
-	
+
 	// FIXME check if it makes sense to add dimensions in camPart.addDrilling()
 	public Drilling(PartDimensions dimensions) {
 		super();
 		this.dimensions = dimensions;
 	}
-	
-	public IDrillingAdder getFrontSideAdder() {
-		return new DrillingAdderFrontSide();
-	}
-	
-	public IDrillingAdder getBackSideAdder() {
-		return new DrillingAdderBackSide();
-	}
-	
+
 	public Drilling(DrillingTemplate template, PartDimensions dimensions) {
-		this(dimensions);		
+		this(dimensions);
 		this.setDiameter(template.getDiameter());
 		this.setParamRallforo(template.getParamRallforo());
 		this.setParamTipounta(template.getParamTipounta());
 		this.setParamVelentrata(template.getParamVelentrata());
 	}
-
-	@Override
-	public Object exportEntity() {
-		StringBuffer tlf = new StringBuffer();
 	
+	@Override
+	public void calculatePlaneCoordinates(PartDimensions dimensions) {
+		planeX = planeCoordinatesTransformer.getPlaneX(dimensions, x, y, z);
+		planeY = planeCoordinatesTransformer.getPlaneY(dimensions, x, y, z);
+	};
+	
+	@Override
+	public String exportEntity() {
+		StringBuffer tlf = new StringBuffer();
+
 		Map<String, Object> drillingModel = new HashMap<String, Object>();
 		drillingModel.put("drilling", this);
 		tlf.append(ENGINE.transform(entity, drillingModel));
-	
+
 		return tlf.toString();
 	}
 
 	@Override
-	public Object exportWork() {
+	public String exportWork() {
 		StringBuffer tlf = new StringBuffer();
-	
+
 		Map<String, Object> drillingModel = new HashMap<String, Object>();
 		drillingModel.put("drilling", this);
 		tlf.append(ENGINE.transform(work, drillingModel));
-	
+
 		return tlf.toString();
 	}
 
+	@Override
 	public int getIndex() {
 		return index;
 	}
 
+	@Override
 	public void setIndex(int index) {
 		this.index = index;
 	}
@@ -144,21 +148,23 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 			this.deep *= -1;
 		}
 	}
-	
+
 	public double getMachineDeep() {
-		if (isThrough()) {
-			return this.deep + Drilling.THROUGH_ADD_ON; 
+		if (isSideIndependent()) {
+			return this.deep + Drilling.THROUGH_ADD_ON;
 		} else {
 			return this.deep;
 		}
 	}
 
-	public boolean isHorizontalDrilling() {
-		return horizontalDrilling;
+	@Override
+	public boolean isHorizontal() {
+		return horizontal;
 	}
 
-	public void setHorizontalDrilling(boolean horizontalDrilling) {
-		this.horizontalDrilling = horizontalDrilling;
+	@Override
+	public void setHorizontal(boolean horizontal) {
+		this.horizontal = horizontal;
 	}
 
 	public double getPlaneX() {
@@ -177,6 +183,11 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		this.planeY = planeY;
 	}
 
+	@Override
+	public void setPlaneCoordinatesTransformer(IPlaneCoordinatesTransformer planeCoordinatesTransformer) {
+		this.planeCoordinatesTransformer = planeCoordinatesTransformer;
+	}
+
 	public double getDiameter() {
 		return diameter;
 	}
@@ -188,7 +199,7 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 	public double getRadius() {
 		return this.diameter / 2.0;
 	}
-	
+
 	public int getParamVelentrata() {
 		return paramVelentrata;
 	}
@@ -217,11 +228,12 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		return dimensions;
 	}
 
-	public boolean isThrough() {
-		if (horizontalDrilling) {
+	@Override
+	public boolean isSideIndependent() {
+		if (horizontal) {
 			return false;
 		}
-		if (deep >= (dimensions.getThick() - 0.01)) { // 0.01mm epsilon to compare doubles  
+		if (deep >= (dimensions.getThick() - 0.01)) { // 0.01mm epsilon to compare doubles
 			return true;
 		} else {
 			return false;

@@ -40,7 +40,7 @@ public class DrillingFactory {
 		double deep = rs.getDouble("de");
 		Drilling drilling = createDrillingForDiameter(diameter, dimensions);
 		fillStandardDrillingValues(rs, deep, drilling);
-		if (drilling.isThrough()) {
+		if (drilling.isSideIndependent()) {
 			drilling = createThroughDrillingForDiameter(diameter, dimensions);
 			fillStandardDrillingValues(rs, deep, drilling);
 		}
@@ -52,7 +52,7 @@ public class DrillingFactory {
 		double deep = rs.getDouble("de");
 		RowDrilling drilling = createRowDrillingForDiameter(diameter, dimensions);
 		fillStandardDrillingValues(rs, deep, drilling);
-		if (drilling.isThrough()) {
+		if (drilling.isSideIndependent()) {
 			drilling = createRowThroughDrillingForDiameter(diameter, dimensions);
 			fillStandardDrillingValues(rs, deep, drilling);
 		}
