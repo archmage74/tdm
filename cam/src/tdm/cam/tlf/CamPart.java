@@ -194,7 +194,7 @@ public class CamPart implements ITlfNode {
 		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180) || angleMatch(drilling, 90, -90, 0)
 				|| angleMatch(drilling, -90, -90, 0) || angleMatch(drilling, -90, 90, 0)) {
 			frontSideAdder.addPlane1Drilling(frontSide, drilling);
-		} else if (angleMatch(drilling, -90, 0, 180)) {
+		} else if (angleMatch(drilling, -90, 0, 180) || angleMatch(drilling, 90, 0, 0)) {
 			frontSideAdder.addPlane2Drilling(frontSide, drilling);
 		} else if (angleMatch(drilling, -90, 0, -90) || angleMatch(drilling, 90, 0, 90) || angleMatch(drilling, 0, 90, 0)) {
 			frontSideAdder.addPlane3Drilling(frontSide, drilling);
