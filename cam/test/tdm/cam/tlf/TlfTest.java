@@ -34,7 +34,10 @@ public class TlfTest {
 	private static final String EXPECTED_PLANE_4_DRILLING_5 = EXPECTED_PREFIX + "plane4Drilling5.tlf";
 	private static final String EXPECTED_DRILLING_10_BACKSIDE = EXPECTED_PREFIX + "drilling10_backside.tlf";
 	private static final String EXPECTED_DRILLING_10_THROUGH = EXPECTED_PREFIX + "drilling10_through.tlf";
-	private static final String EXPECTED_PLANE_4_AND_BACKSIDE = EXPECTED_PREFIX + "plane3FromBackside.tlf";
+	private static final String EXPECTED_PLANE_1_AND_BACKSIDE = EXPECTED_PREFIX + "plane1FromBackside.tlf";
+	private static final String EXPECTED_PLANE_2_AND_BACKSIDE = EXPECTED_PREFIX + "plane2FromBackside.tlf";
+	private static final String EXPECTED_PLANE_3_AND_BACKSIDE = EXPECTED_PREFIX + "plane3FromBackside.tlf";
+	private static final String EXPECTED_PLANE_4_AND_BACKSIDE = EXPECTED_PREFIX + "plane4FromBackside.tlf";
 
 	private static final String EXPECTED_ROW_DRILLING_FRONTSIDE = EXPECTED_PREFIX + "rowDrilling_frontside.tlf";
 	private static final String EXPECTED_ROW_DRILLING_BACKSIDE = EXPECTED_PREFIX + "rowDrilling_backside.tlf";
@@ -156,8 +159,41 @@ public class TlfTest {
 	}
 	
 	@Test
+	public void drilling10BacksideAndPlane1Drilling5Test() {
+		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane1Drilling5CamPart();
+
+		List<TlfDocument> docs = camPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+
+		TlfAssert.assertFileEquals(EXPECTED_PLANE_1_AND_BACKSIDE, fileName);
+	}
+	
+	@Test
+	public void drilling10BacksideAndPlane2Drilling5Test() {
+		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane2Drilling5CamPart();
+
+		List<TlfDocument> docs = camPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+
+		TlfAssert.assertFileEquals(EXPECTED_PLANE_2_AND_BACKSIDE, fileName);
+	}
+	
+	@Test
 	public void drilling10BacksideAndPlane3Drilling5Test() {
 		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane3Drilling5CamPart();
+
+		List<TlfDocument> docs = camPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+
+		TlfAssert.assertFileEquals(EXPECTED_PLANE_3_AND_BACKSIDE, fileName);
+	}
+	
+	@Test
+	public void drilling10BacksideAndPlane4Drilling5Test() {
+		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane4Drilling5CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());

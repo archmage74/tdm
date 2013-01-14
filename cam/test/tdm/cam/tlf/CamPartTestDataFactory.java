@@ -82,10 +82,19 @@ public class CamPartTestDataFactory {
 		return camPart;
 	}
 	
-	public CamPart createDrilling10BacksideAndPlane3Drilling5CamPart() {
+	public CamPart createPlane4Drilling5CamPart() {
 		CamPart camPart = createCamPart();
 		
-		Drilling drilling5 = new TestDrillingParameters().drill("5").x(0).y(50).z(8).angleX(-90).angleZ(-90).deep(15).create();
+		Drilling drilling = new TestDrillingParameters().drill("5").x(0).y(50).z(8).angleX(-90).angleZ(90).deep(11).create();
+		camPart.addDrilling(drilling);
+		camPart.optimizeSides();
+		return camPart;
+	}
+	
+	public CamPart createDrilling10BacksideAndPlane1Drilling5CamPart() {
+		CamPart camPart = createCamPart();
+		
+		Drilling drilling5 = new TestDrillingParameters().drill("5").x(100).y(404).z(8).angleX(-90).deep(15).create();
 		camPart.addDrilling(drilling5);
 		Drilling drilling10 = new TestDrillingParameters().drill("10").z(19).angleX(180).angleZ(180).deep(11).create();
 		camPart.addDrilling(drilling10);
@@ -94,11 +103,38 @@ public class CamPartTestDataFactory {
 		return camPart;
 	}
 	
-	public CamPart createPlane4Drilling5CamPart() {
+	public CamPart createDrilling10BacksideAndPlane2Drilling5CamPart() {
 		CamPart camPart = createCamPart();
 		
-		Drilling drilling = new TestDrillingParameters().drill("5").x(0).y(50).z(8).angleX(-90).angleZ(90).deep(11).create();
-		camPart.addDrilling(drilling);
+		Drilling drilling5 = new TestDrillingParameters().drill("5").x(100).y(0).z(8).angleX(-90).angleZ(180).deep(15).create();
+		camPart.addDrilling(drilling5);
+		Drilling drilling10 = new TestDrillingParameters().drill("10").z(19).angleX(180).angleZ(180).deep(11).create();
+		camPart.addDrilling(drilling10);
+
+		camPart.optimizeSides();
+		return camPart;
+	}
+	
+	public CamPart createDrilling10BacksideAndPlane3Drilling5CamPart() {
+		CamPart camPart = createCamPart();
+		
+		Drilling drilling5 = new TestDrillingParameters().drill("5").x(714).y(50).z(8).angleX(-90).angleZ(-90).deep(15).create();
+		camPart.addDrilling(drilling5);
+		Drilling drilling10 = new TestDrillingParameters().drill("10").z(19).angleX(180).angleZ(180).deep(11).create();
+		camPart.addDrilling(drilling10);
+
+		camPart.optimizeSides();
+		return camPart;
+	}
+	
+	public CamPart createDrilling10BacksideAndPlane4Drilling5CamPart() {
+		CamPart camPart = createCamPart();
+		
+		Drilling drilling5 = new TestDrillingParameters().drill("5").x(0).y(50).z(8).angleX(-90).angleZ(90).deep(15).create();
+		camPart.addDrilling(drilling5);
+		Drilling drilling10 = new TestDrillingParameters().drill("10").z(19).angleX(180).angleZ(180).deep(11).create();
+		camPart.addDrilling(drilling10);
+
 		camPart.optimizeSides();
 		return camPart;
 	}
