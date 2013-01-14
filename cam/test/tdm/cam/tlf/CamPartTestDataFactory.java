@@ -57,7 +57,7 @@ public class CamPartTestDataFactory {
 	public CamPart createPlane1Drilling6CamPart() {
 		CamPart camPart = createCamPart();
 		
-		Drilling drilling = new TestDrillingParameters().drill("6").x(100).y(404).z(8).angleX(-90).deep(11).create();
+		Drilling drilling = new TestDrillingParameters().drill("6").x(100).y(404).z(8).angleX(-90).deep(25).create();
 		camPart.addDrilling(drilling);
 		camPart.optimizeSides();
 		return camPart;

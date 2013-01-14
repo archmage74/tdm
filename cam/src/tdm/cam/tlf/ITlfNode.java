@@ -18,8 +18,6 @@ public interface ITlfNode {
 	
 	public boolean isSideIndependent();
 
-	public boolean isHorizontal();
-	
-	public void setHorizontal(boolean horizontal);
+//	public boolean isHorizontal();
 	
 }

@@ -23,8 +23,6 @@ public class PartProfile implements ITlfNode, ITlfEngineHolder {
 	private int prfp; // kante v/n
 	private int prfb; // ecksituation der kante zur folgekante
 
-	private boolean horizontal;
-
 	private double planeX1;
 	private double planeY1;
 
@@ -110,16 +108,6 @@ public class PartProfile implements ITlfNode, ITlfEngineHolder {
 
 	public void setPrfb(int prfb) {
 		this.prfb = prfb;
-	}
-
-	@Override
-	public boolean isHorizontal() {
-		return horizontal;
-	}
-
-	@Override
-	public void setHorizontal(boolean horizontal) {
-		this.horizontal = horizontal;
 	}
 
 	public double getPlaneX1() {

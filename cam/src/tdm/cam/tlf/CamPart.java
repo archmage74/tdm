@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tdm.cam.vector.Vector3;
-
 /**
  * plane 1 top |---------------| | | plane 3 | | plane 4 left | | right | | |---------------| plane 2 bottom
  * 
@@ -15,13 +13,6 @@ public class CamPart implements ITlfEngineHolder {
 
 	public static String header = "TlfDocument.header.jmte";
 	public static String footer = "TlfDocument.footer.jmte";
-
-	private static final Vector3 VECTOR_FRONT_SIDE = new Vector3(0, 0, 1);
-	private static final Vector3 VECTOR_BACK_SIDE = new Vector3(0, 0, -1);
-	private static final Vector3 VECTOR_PLANE_TOP = new Vector3(0, -1, 0);
-	private static final Vector3 VECTOR_PLANE_BOTTOM = new Vector3(0, 1, 0);
-	private static final Vector3 VECTOR_PLANE_LEFT = new Vector3(1, 0, 0);
-	private static final Vector3 VECTOR_PLANE_RIGHT = new Vector3(-1, 0, 0);
 
 	private String id;
 
@@ -233,19 +224,18 @@ public class CamPart implements ITlfEngineHolder {
 	}
 
 	public void addDrilling(Drilling drilling) {
-		Vector3 drillDirection = new Vector3(0, 0, 1);
-		drillDirection.rotateXDegrees(drilling.getAngleX()).rotateYDegrees(drilling.getAngleY()).rotateZDegrees(drilling.getAngleZ());
-		if (drillDirection.equals(VECTOR_FRONT_SIDE)) {
+		Plane plane = drilling.getPlane();
+		if (plane == Plane.FRONT) {
 			frontSide.addNode(drilling);
-		} else if (drillDirection.equals(VECTOR_BACK_SIDE)) {
+		} else if (plane == Plane.BACK) {
 			backSide.addNode(drilling);
-		} else if (drillDirection.equals(VECTOR_PLANE_TOP)) {
+		} else if (plane == Plane.TOP) {
 			frontSide.addPlane1Drilling(drilling);
-		} else if (drillDirection.equals(VECTOR_PLANE_BOTTOM)) {
+		} else if (plane == Plane.BOTTOM) {
 			frontSide.addPlane2Drilling(drilling);
-		} else if (drillDirection.equals(VECTOR_PLANE_LEFT)) {
+		} else if (plane == Plane.LEFT) {
 			frontSide.addPlane3Drilling(drilling);
-		} else if (drillDirection.equals(VECTOR_PLANE_RIGHT)) {
+		} else if (plane == Plane.RIGHT) {
 			frontSide.addPlane4Drilling(drilling);
 		} else {
 			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
@@ -254,14 +244,6 @@ public class CamPart implements ITlfEngineHolder {
 
 	public void addProfile(PartProfile profile) {
 		profileMap.put(profile.getPrfNo(), profile);
-	}
-
-	private boolean angleMatch(Drilling d, double ax, double ay) {
-		return d.getAngleX() == ax && d.getAngleY() == ay;
-	}
-
-	private boolean angleMatch(Drilling d, double ax, double ay, double az) {
-		return d.getAngleX() == ax && d.getAngleY() == ay && d.getAngleZ() == az;
 	}
 
 	public String toString() {

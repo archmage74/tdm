@@ -51,7 +51,6 @@ public abstract class CamPartSide implements ITlfEngineHolder {
 		node.setIndex(plane1Drillings.size());
 		node.setPlaneCoordinatesTransformer(getTopTransformer());
 		plane1Drillings.add(node);
-		node.setHorizontal(true);
 	}
 
 	public boolean removePlane1Drilling(ITlfNode node) {
@@ -62,7 +61,6 @@ public abstract class CamPartSide implements ITlfEngineHolder {
 		node.setIndex(plane2Drillings.size());
 		node.setPlaneCoordinatesTransformer(getBottomTransformer());
 		plane2Drillings.add(node);
-		node.setHorizontal(true);
 	}
 
 	public boolean removePlane2Drilling(ITlfNode node) {
@@ -73,7 +71,6 @@ public abstract class CamPartSide implements ITlfEngineHolder {
 		node.setIndex(plane3Drillings.size());
 		node.setPlaneCoordinatesTransformer(getLeftTransformer());
 		plane3Drillings.add(node);
-		node.setHorizontal(true);
 	}
 
 	public boolean removePlane3Drilling(ITlfNode node) {
@@ -84,7 +81,6 @@ public abstract class CamPartSide implements ITlfEngineHolder {
 		node.setIndex(plane4Drillings.size());
 		node.setPlaneCoordinatesTransformer(getRightTransformer());
 		plane4Drillings.add(node);
-		node.setHorizontal(true);
 	}
 
 	public boolean removePlane4Drilling(ITlfNode drilling) {

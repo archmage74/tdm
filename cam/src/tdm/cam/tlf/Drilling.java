@@ -4,9 +4,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
+import tdm.cam.vector.Vector3;
 
 public class Drilling implements ITlfEngineHolder, ITlfNode {
 
+	public static final Vector3 VECTOR_FRONT_SIDE = new Vector3(0, 0, 1);
+	public static final Vector3 VECTOR_BACK_SIDE = new Vector3(0, 0, -1);
+	public static final Vector3 VECTOR_PLANE_TOP = new Vector3(0, -1, 0);
+	public static final Vector3 VECTOR_PLANE_BOTTOM = new Vector3(0, 1, 0);
+	public static final Vector3 VECTOR_PLANE_LEFT = new Vector3(1, 0, 0);
+	public static final Vector3 VECTOR_PLANE_RIGHT = new Vector3(-1, 0, 0);
+
+	public static final Map<Plane, Vector3> planeVectors = new HashMap<Plane, Vector3>();
+	static {
+		planeVectors.put(Plane.FRONT, VECTOR_FRONT_SIDE);
+		planeVectors.put(Plane.BACK, VECTOR_BACK_SIDE);
+		planeVectors.put(Plane.TOP, VECTOR_PLANE_TOP);
+		planeVectors.put(Plane.BOTTOM, VECTOR_PLANE_BOTTOM);
+		planeVectors.put(Plane.LEFT, VECTOR_PLANE_LEFT);
+		planeVectors.put(Plane.RIGHT, VECTOR_PLANE_RIGHT);
+	}
+	
 	public static final double THROUGH_ADD_ON = 4.0;
 
 	public static String entity = "Drilling.entity.jmte";
@@ -20,9 +38,6 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 	protected double angleY;
 	protected double angleZ;
 	protected double deep;
-
-	/** flag to mark horizontal drillings, e.g. leads to isThrough always false */
-	protected boolean horizontal = false;
 
 	/** resulting X coordinate on the masterwork plane */
 	protected double planeX;
@@ -80,6 +95,19 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		return tlf.toString();
 	}
 
+	public Plane getPlane() {
+		Vector3 drillDirection = new Vector3(0, 0, 1);
+		drillDirection.rotateXDegrees(getAngleX()).rotateYDegrees(getAngleY()).rotateZDegrees(getAngleZ());
+
+		for (Map.Entry<Plane, Vector3> planeVector : planeVectors.entrySet()) {
+			if (drillDirection.equals(planeVector.getValue())) {
+				return planeVector.getKey();
+			}
+		}
+		
+		return Plane.DIAGONAL;
+	}
+	
 	@Override
 	public int getIndex() {
 		return index;
@@ -157,14 +185,13 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		}
 	}
 
-	@Override
 	public boolean isHorizontal() {
-		return horizontal;
-	}
-
-	@Override
-	public void setHorizontal(boolean horizontal) {
-		this.horizontal = horizontal;
+		Plane plane = getPlane();
+		if (plane == Plane.FRONT || plane == Plane.BACK || plane == Plane.DIAGONAL) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public double getPlaneX() {
@@ -230,7 +257,7 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 
 	@Override
 	public boolean isSideIndependent() {
-		if (horizontal) {
+		if (isHorizontal()) {
 			return false;
 		}
 		if (deep >= (dimensions.getThick() - 0.01)) { // 0.01mm epsilon to compare doubles
