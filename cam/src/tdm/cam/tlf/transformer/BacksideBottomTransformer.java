@@ -10,7 +10,7 @@ public class BacksideBottomTransformer implements IPlaneCoordinatesTransformer {
 
 	@Override
 	public double getPlaneX(PartDimensions dim, double x, double y, double z) {
-		return x;
+		return dim.getLength() - x;
 	}
 
 	@Override

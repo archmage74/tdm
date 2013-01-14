@@ -1,5 +1,6 @@
 package tdm.cam.tlf;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class TlfTest {
 	
 	private TextFileWriter textFileWriter;
 
+	private static final String ACTUAL_PREFIX = "./tlf/test/";
 	private static final String EXPECTED_PREFIX = "./test/tdm/cam/tlf/results/";
 	
 	private static final String EXPECTED_DRILLING_10 = EXPECTED_PREFIX + "drilling10.tlf";
@@ -45,6 +47,10 @@ public class TlfTest {
 
 	@Before
 	public void setup() {
+		File actualDir = new File(ACTUAL_PREFIX);
+		if (!actualDir.exists()) {
+			actualDir.mkdir();
+		}
 		camPartFactory = new CamPartTestDataFactory();
 		textFileWriter = new TextFileWriter();
 	}
@@ -52,7 +58,7 @@ public class TlfTest {
 	private List<String> writeOutputFiles(Collection<TlfDocument> docs) {
 		List<String> fileNames = new ArrayList<String>();
 		for (TlfDocument doc : docs) {
-			String fileName = "./tlf/test/" + doc.getName();
+			String fileName = ACTUAL_PREFIX + doc.getName();
 			textFileWriter.writeEscapedTlf(doc.getTlf(), fileName);
 			fileNames.add(fileName);
 		}
