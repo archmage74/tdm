@@ -242,7 +242,7 @@ public class CamPart implements ITlfEngineHolder {
 			frontSide.addPlane1Drilling(drilling);
 		} else if (angleMatch(drilling, -90, 0, 180) || angleMatch(drilling, 90, 0, 0) || angleMatch(drilling, 90, -90, 0)) {
 			frontSide.addPlane2Drilling(drilling);
-		} else if (angleMatch(drilling, -90, 0, -90) || angleMatch(drilling, 90, 0, 90) || angleMatch(drilling, 0, 90, 0)) {
+		} else if (angleMatch(drilling, -90, 0, -90) || angleMatch(drilling, 90, 0, 90) || angleMatch(drilling, 0, 90, 0) || angleMatch(drilling, 180, -90, 0) || angleMatch(drilling, -180, -90, 0)) {
 			frontSide.addPlane3Drilling(drilling);
 		} else if (angleMatch(drilling, -90, 0, 90) || angleMatch(drilling, 0, -90, 0) || angleMatch(drilling, 180, 90, 0)) {
 			frontSide.addPlane4Drilling(drilling);
