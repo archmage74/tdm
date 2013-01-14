@@ -2,6 +2,10 @@ package tdm.cam.tlf.transformer;
 
 import tdm.cam.tlf.PartDimensions;
 
+/**
+ * bottom = Plane 2 
+ * @author wp
+ */
 public class BacksideBottomTransformer implements IPlaneCoordinatesTransformer {
 
 	@Override

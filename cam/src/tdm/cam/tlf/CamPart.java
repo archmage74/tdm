@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *              plane 2
+ *              plane 1
  *                top
  *         |---------------| 
  *         |               |
@@ -14,7 +14,7 @@ import java.util.Map;
  *  left   |               |  right
  *         |               |
  *         |---------------| 
- *              plane 1
+ *              plane 2
  *              bottom
  *
  */

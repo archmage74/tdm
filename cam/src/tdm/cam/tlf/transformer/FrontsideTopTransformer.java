@@ -2,6 +2,10 @@ package tdm.cam.tlf.transformer;
 
 import tdm.cam.tlf.PartDimensions;
 
+/**
+ * top = Plane 1 
+ * @author wp
+ */
 public class FrontsideTopTransformer implements IPlaneCoordinatesTransformer {
 
 	@Override
@@ -11,7 +15,7 @@ public class FrontsideTopTransformer implements IPlaneCoordinatesTransformer {
 
 	@Override
 	public double getPlaneY(PartDimensions dim, double x, double y, double z) {
-		return dim.getThick() - z;
+		return z;
 	}
 
 }
