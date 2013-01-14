@@ -332,6 +332,142 @@ Y
 R
 4
 \CIR
+POL
+INDEX
+15
+LINKS
+0
+L
+1
+DIAM_UT
+0
+X
+0 I
+Y
+309 I
+Z
+0 0
+V
+X
+0 I
+Y
+0 I
+Z
+0 0
+B
+0
+PARTDEF
+0
+S
+0
+\V
+C
+0
+P0DEF
+0
+\POL
+POL
+INDEX
+16
+LINKS
+0
+L
+1
+DIAM_UT
+0
+X
+0 I
+Y
+307 I
+Z
+0 0
+V
+X
+360 I
+Y
+307 I
+Z
+0 0
+B
+0
+PARTDEF
+0
+S
+0
+\V
+C
+0
+P0DEF
+0
+\POL
+POL
+INDEX
+17
+LINKS
+0
+L
+1
+DIAM_UT
+0
+X
+360 I
+Y
+309 I
+Z
+0 0
+V
+X
+360 I
+Y
+0 I
+Z
+0 0
+B
+0
+PARTDEF
+0
+S
+0
+\V
+C
+0
+P0DEF
+0
+\POL
+POL
+INDEX
+18
+LINKS
+0
+L
+1
+DIAM_UT
+0
+X
+0 I
+Y
+0 I
+Z
+0 0
+V
+X
+360 I
+Y
+0 I
+Z
+0 0
+B
+0
+PARTDEF
+0
+S
+0
+\V
+C
+0
+P0DEF
+0
+\POL
 PLANE 1
 PLANE 2
 PLANE 3
