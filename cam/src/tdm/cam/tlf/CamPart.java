@@ -5,23 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tdm.cam.vector.Vector3;
+
 /**
- *              plane 1
- *                top
- *         |---------------| 
- *         |               |
- * plane 3 |               | plane 4
- *  left   |               |  right
- *         |               |
- *         |---------------| 
- *              plane 2
- *              bottom
- *
+ * plane 1 top |---------------| | | plane 3 | | plane 4 left | | right | | |---------------| plane 2 bottom
+ * 
  */
 public class CamPart implements ITlfEngineHolder {
 
 	public static String header = "TlfDocument.header.jmte";
 	public static String footer = "TlfDocument.footer.jmte";
+
+	private static final Vector3 VECTOR_FRONT_SIDE = new Vector3(0, 0, 1);
+	private static final Vector3 VECTOR_BACK_SIDE = new Vector3(0, 0, -1);
+	private static final Vector3 VECTOR_PLANE_TOP = new Vector3(0, -1, 0);
+	private static final Vector3 VECTOR_PLANE_BOTTOM = new Vector3(0, 1, 0);
+	private static final Vector3 VECTOR_PLANE_LEFT = new Vector3(1, 0, 0);
+	private static final Vector3 VECTOR_PLANE_RIGHT = new Vector3(-1, 0, 0);
 
 	private String id;
 
@@ -59,18 +59,18 @@ public class CamPart implements ITlfEngineHolder {
 		}
 		return docs;
 	}
-	
+
 	public String exportFrontSideTlf() {
 		StringBuffer tlf = new StringBuffer();
 		Map<String, Object> docModel = new HashMap<String, Object>();
-		
+
 		// FIXME: profiles for both sides + where to put index generation
 		frontSide.setProfileMap(profileMap);
 		int index = frontSide.getDrillings().size();
 		for (PartProfile profile : profileMap.values()) {
 			profile.setIndex(index++);
 		}
-		
+
 		tlf.append(ENGINE.transform(header, docModel));
 		tlf.append(frontSide.exportTlf());
 		tlf.append(ENGINE.transform(footer, docModel));
@@ -233,24 +233,25 @@ public class CamPart implements ITlfEngineHolder {
 	}
 
 	public void addDrilling(Drilling drilling) {
-		if (angleMatch(drilling, 0, 0)) {
+		Vector3 drillDirection = new Vector3(0, 0, 1);
+		drillDirection.rotateXDegrees(drilling.getAngleX()).rotateYDegrees(drilling.getAngleY()).rotateZDegrees(drilling.getAngleZ());
+		if (drillDirection.equals(VECTOR_FRONT_SIDE)) {
 			frontSide.addNode(drilling);
-		} else if (angleMatch(drilling, 180, 0) || angleMatch(drilling, -180, 0)) {
+		} else if (drillDirection.equals(VECTOR_BACK_SIDE)) {
 			backSide.addNode(drilling);
-		} else if (angleMatch(drilling, -90, 0, 0) || angleMatch(drilling, 90, 0, 180)
-				|| angleMatch(drilling, -90, -90, 0) || angleMatch(drilling, -90, 90, 0)) {
+		} else if (drillDirection.equals(VECTOR_PLANE_TOP)) {
 			frontSide.addPlane1Drilling(drilling);
-		} else if (angleMatch(drilling, -90, 0, 180) || angleMatch(drilling, 90, 0, 0) || angleMatch(drilling, 90, -90, 0)) {
+		} else if (drillDirection.equals(VECTOR_PLANE_BOTTOM)) {
 			frontSide.addPlane2Drilling(drilling);
-		} else if (angleMatch(drilling, -90, 0, -90) || angleMatch(drilling, 90, 0, 90) || angleMatch(drilling, 0, 90, 0) || angleMatch(drilling, 180, -90, 0) || angleMatch(drilling, -180, -90, 0)) {
+		} else if (drillDirection.equals(VECTOR_PLANE_LEFT)) {
 			frontSide.addPlane3Drilling(drilling);
-		} else if (angleMatch(drilling, -90, 0, 90) || angleMatch(drilling, 0, -90, 0) || angleMatch(drilling, 180, 90, 0)) {
+		} else if (drillDirection.equals(VECTOR_PLANE_RIGHT)) {
 			frontSide.addPlane4Drilling(drilling);
 		} else {
 			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
 		}
 	}
-	
+
 	public void addProfile(PartProfile profile) {
 		profileMap.put(profile.getPrfNo(), profile);
 	}
