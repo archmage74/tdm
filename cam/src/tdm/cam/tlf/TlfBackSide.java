@@ -1,5 +1,6 @@
 package tdm.cam.tlf;
 
+import tdm.cam.math.Dimensions;
 import tdm.cam.tlf.transformer.BacksideBottomTransformer;
 import tdm.cam.tlf.transformer.BacksideLeftTransformer;
 import tdm.cam.tlf.transformer.BacksideRightTransformer;
@@ -15,7 +16,7 @@ public class TlfBackSide extends TlfPartSide {
 	IPlaneCoordinatesTransformer leftTransformer = new BacksideLeftTransformer();
 	IPlaneCoordinatesTransformer rightTransformer = new BacksideRightTransformer();
 	
-	public TlfBackSide(PartDimensions dimensions) {
+	public TlfBackSide(Dimensions dimensions) {
 		super(dimensions);
 	}
 

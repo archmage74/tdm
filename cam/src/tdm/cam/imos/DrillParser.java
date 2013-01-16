@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import tdm.cam.tlf.TlfDrillingTemplate;
+import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 
 public class DrillParser {
 

@@ -1,26 +1,30 @@
 package tdm.cam.export;
 
 import java.io.File;
-import java.util.List;
+import java.util.Collection;
 
+import tdm.cam.imos.ImosPart;
 import tdm.cam.imos.db.IImosService;
 import tdm.cam.tlf.TlfDocument;
 import tdm.cam.tlf.TlfPart;
+import tdm.cam.tlf.imos2tlf.Imos2TlfConverter;
 import tdm.cam.util.TextFileWriter;
 
 public class Exporter {
 
 	private TextFileWriter textFileWriter = new TextFileWriter();
+	private Imos2TlfConverter imos2Tlf = new Imos2TlfConverter();
 	private IImosService imosService;
 
 	private String exportPath = ".";
 
 	public void export(String orderId) {
-		List<TlfPart> camParts = imosService.readParts(orderId);
-
+		Collection<ImosPart> imosParts = imosService.readParts(orderId);
+		Collection<TlfPart> tlfParts = imos2Tlf.convert(imosParts);
+		
 		File exportDir = createEmptySubfolder(orderId);
-
-		for (TlfPart camPart : camParts) {
+		
+		for (TlfPart camPart : tlfParts) {
 			for (TlfDocument doc : camPart.createTlfDocuments()) {
 				textFileWriter.writeEscapedTlf(doc.getTlf(), exportDir.getPath() + '/' + doc.getName());
 			}

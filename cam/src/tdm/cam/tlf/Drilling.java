@@ -3,29 +3,13 @@ package tdm.cam.tlf;
 import java.util.HashMap;
 import java.util.Map;
 
+import tdm.cam.imos.ImosDrilling;
+import tdm.cam.math.Dimensions;
+import tdm.cam.math.Vector3;
+import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
-import tdm.cam.vector.Vector3;
 
 public class Drilling implements ITlfEngineHolder, ITlfNode {
-
-	public static final Vector3 VECTOR_FRONT_SIDE = new Vector3(0, 0, 1);
-	public static final Vector3 VECTOR_BACK_SIDE = new Vector3(0, 0, -1);
-	public static final Vector3 VECTOR_PLANE_TOP = new Vector3(0, -1, 0);
-	public static final Vector3 VECTOR_PLANE_BOTTOM = new Vector3(0, 1, 0);
-	public static final Vector3 VECTOR_PLANE_LEFT = new Vector3(1, 0, 0);
-	public static final Vector3 VECTOR_PLANE_RIGHT = new Vector3(-1, 0, 0);
-
-	public static final Map<TlfPlane, Vector3> planeVectors = new HashMap<TlfPlane, Vector3>();
-	static {
-		planeVectors.put(TlfPlane.FRONT, VECTOR_FRONT_SIDE);
-		planeVectors.put(TlfPlane.BACK, VECTOR_BACK_SIDE);
-		planeVectors.put(TlfPlane.TOP, VECTOR_PLANE_TOP);
-		planeVectors.put(TlfPlane.BOTTOM, VECTOR_PLANE_BOTTOM);
-		planeVectors.put(TlfPlane.LEFT, VECTOR_PLANE_LEFT);
-		planeVectors.put(TlfPlane.RIGHT, VECTOR_PLANE_RIGHT);
-	}
-	
-	public static final double THROUGH_ADD_ON = 4.0;
 
 	public static String entity = "Drilling.entity.jmte";
 	public static String work = "Drilling.work.jmte";
@@ -46,7 +30,7 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 
 	protected IPlaneCoordinatesTransformer planeCoordinatesTransformer;
 	
-	protected PartDimensions dimensions;
+	protected Dimensions dimensions;
 
 	protected double diameter;
 	protected int paramVelentrata;
@@ -54,12 +38,12 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 	protected int paramTipounta;
 
 	// FIXME check if it makes sense to add dimensions in camPart.addDrilling()
-	public Drilling(PartDimensions dimensions) {
+	public Drilling(Dimensions dimensions) {
 		super();
 		this.dimensions = dimensions;
 	}
 
-	public Drilling(TlfDrillingTemplate template, PartDimensions dimensions) {
+	public Drilling(TlfDrillingTemplate template, Dimensions dimensions) {
 		this(dimensions);
 		this.setDiameter(template.getDiameter());
 		this.setParamRallforo(template.getParamRallforo());
@@ -68,7 +52,7 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 	}
 	
 	@Override
-	public void calculatePlaneCoordinates(PartDimensions dimensions) {
+	public void calculatePlaneCoordinates(Dimensions dimensions) {
 		planeX = planeCoordinatesTransformer.getPlaneX(dimensions, x, y, z);
 		planeY = planeCoordinatesTransformer.getPlaneY(dimensions, x, y, z);
 	};
@@ -99,7 +83,7 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		Vector3 drillDirection = new Vector3(0, 0, 1);
 		drillDirection.rotateXDegrees(getAngleX()).rotateYDegrees(getAngleY()).rotateZDegrees(getAngleZ());
 
-		for (Map.Entry<TlfPlane, Vector3> planeVector : planeVectors.entrySet()) {
+		for (Map.Entry<TlfPlane, Vector3> planeVector : ImosDrilling.planeVectors.entrySet()) {
 			if (drillDirection.equals(planeVector.getValue())) {
 				return planeVector.getKey();
 			}
@@ -177,14 +161,6 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		}
 	}
 
-	public double getMachineDeep() {
-		if (isSideIndependent()) {
-			return this.deep + Drilling.THROUGH_ADD_ON;
-		} else {
-			return this.deep;
-		}
-	}
-
 	public boolean isHorizontal() {
 		TlfPlane plane = getPlane();
 		if (plane == TlfPlane.FRONT || plane == TlfPlane.BACK || plane == TlfPlane.DIAGONAL) {
@@ -251,7 +227,7 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		this.paramTipounta = paramTipounta;
 	}
 
-	public PartDimensions getDimensions() {
+	public Dimensions getDimensions() {
 		return dimensions;
 	}
 

@@ -3,6 +3,11 @@ package tdm.cam.tlf;
 import java.util.Map;
 
 import tdm.cam.imos.DrillParser;
+import tdm.cam.imos.ImosDrilling;
+import tdm.cam.imos.ImosPart;
+import tdm.cam.imos.ImosProfile;
+import tdm.cam.math.Dimensions;
+import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 
 public class CamPartTestDataFactory {
 
@@ -13,199 +18,196 @@ public class CamPartTestDataFactory {
 		drillTemplates = parser.readDrillConfiguration();
 	}
 
-	public TlfPart createDrilling10CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createDrilling10CamPart() {
+		ImosPart camPart = createCamPart();
 
-		Drilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createDrilling10BacksideCamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createDrilling10BacksideCamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling = new TestDrillingParameters().z(19).angleX(180).angleZ(180).create();
+		ImosDrilling drilling = new TestDrillingParameters().z(19).angleX(180).angleZ(180).create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createDrilling10ThroughBacksideCamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createDrilling8ThroughBacksideCamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling = new TestDrillingParameters().z(19).angleX(180).angleZ(180).deep(19).create();
+		ImosDrilling drilling = new TestDrillingParameters().z(19).angleX(180).angleZ(180).diameter(8).deep(19).create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createDrilling10And35CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createDrilling10And35CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling35A = new TestDrillingParameters().drill("35").x(74).y(330).angleZ(180).deep(14).create();
+		ImosDrilling drilling35A = new TestDrillingParameters().diameter(35).x(74).y(330).angleZ(180).deep(14).create();
 		camPart.addDrilling(drilling35A);
-		Drilling drilling10A = new TestDrillingParameters().drill("10").create();
+		ImosDrilling drilling10A = new TestDrillingParameters().diameter(10).create();
 		camPart.addDrilling(drilling10A);
-		Drilling drilling10B = new TestDrillingParameters().drill("10").x(124).create();
+		ImosDrilling drilling10B = new TestDrillingParameters().diameter(10).x(124).create();
 		camPart.addDrilling(drilling10B);
 
-		camPart.optimizeSides();
 		return camPart;
 	}
 
-	public TlfPart createPlane1Drilling6CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createPlane1Drilling6CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling = new TestDrillingParameters().drill("6").x(100).y(404).z(8).angleX(-90).deep(25).create();
+		ImosDrilling drilling = new TestDrillingParameters().diameter(6).x(100).y(404).z(8).angleX(-90).deep(25).create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createPlane2Drilling6CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createPlane2Drilling6CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling = new TestDrillingParameters().drill("6").x(100).y(0).z(8).angleX(-90).angleZ(180).deep(11).create();
+		ImosDrilling drilling = new TestDrillingParameters().diameter(6).x(100).y(0).z(8).angleX(-90).angleZ(180).deep(11).create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
 
-	public TlfPart createPlane3Drilling5CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createPlane3Drilling5CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling = new TestDrillingParameters().drill("5").x(0).y(50).z(8).angleX(-90).angleZ(-90).deep(11).create();
+		ImosDrilling drilling = new TestDrillingParameters().diameter(5).x(0).y(50).z(8).angleX(-90).angleZ(-90).deep(11).create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createPlane4Drilling5CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createPlane4Drilling5CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling = new TestDrillingParameters().drill("5").x(0).y(50).z(8).angleX(-90).angleZ(90).deep(11).create();
+		ImosDrilling drilling = new TestDrillingParameters().diameter(5).x(0).y(50).z(8).angleX(-90).angleZ(90).deep(11).create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createDrilling10BacksideAndPlane1Drilling5CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createDrilling10BacksideAndPlane1Drilling5CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling5 = new TestDrillingParameters().drill("5").x(100).y(404).z(8).angleX(-90).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(404).z(8).angleX(-90).deep(15).create();
 		camPart.addDrilling(drilling5);
-		Drilling drilling10 = new TestDrillingParameters().drill("10").z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
 		camPart.addDrilling(drilling10);
 
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createDrilling10BacksideAndPlane2Drilling5CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createDrilling10BacksideAndPlane2Drilling5CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling5 = new TestDrillingParameters().drill("5").x(100).y(0).z(8).angleX(-90).angleZ(180).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(0).z(8).angleX(-90).angleZ(180).deep(15).create();
 		camPart.addDrilling(drilling5);
-		Drilling drilling10 = new TestDrillingParameters().drill("10").z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
 		camPart.addDrilling(drilling10);
 
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createDrilling10BacksideAndPlane3Drilling5CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createDrilling10BacksideAndPlane3Drilling5CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling5 = new TestDrillingParameters().drill("5").x(714).y(50).z(8).angleX(-90).angleZ(-90).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(714).y(50).z(8).angleX(-90).angleZ(-90).deep(15).create();
 		camPart.addDrilling(drilling5);
-		Drilling drilling10 = new TestDrillingParameters().drill("10").z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
 		camPart.addDrilling(drilling10);
 
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createDrilling10BacksideAndPlane4Drilling5CamPart() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createDrilling10BacksideAndPlane4Drilling5CamPart() {
+		ImosPart camPart = createCamPart();
 		
-		Drilling drilling5 = new TestDrillingParameters().drill("5").x(0).y(50).z(8).angleX(-90).angleZ(90).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(0).y(50).z(8).angleX(-90).angleZ(90).deep(15).create();
 		camPart.addDrilling(drilling5);
-		Drilling drilling10 = new TestDrillingParameters().drill("10").z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
 		camPart.addDrilling(drilling10);
 
-		camPart.optimizeSides();
 		return camPart;
 	}
 	
-	public TlfPart createRowDrilling6Frontside() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createRowDrilling6Frontside() {
+		ImosPart camPart = createCamPart();
 		
-		RowDrilling drilling = new TestRowDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().x(80).y(60).endX(380).endY(200).diameter(6).numDrillings(7).create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
+
 		return camPart;
 	}
 
-	public TlfPart createRowDrilling6Backside() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createRowDrilling6Backside() {
+		ImosPart camPart = createCamPart();
 		
-		RowDrilling drilling = new TestRowDrillingParameters().angleX(180).create();
+		ImosDrilling drilling = new TestDrillingParameters().angleX(180).x(80).y(60).endX(380).endY(200).diameter(6).numDrillings(7).create();
 		camPart.addDrilling(drilling);
-		camPart.optimizeSides();
+		
 		return camPart;
 	}
 	
-	public TlfPart createProfileBottom() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createProfileBottom() {
+		ImosPart camPart = createCamPart();
 
-		Drilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().create();
 		camPart.addDrilling(drilling);
-		TlfProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_V.getValue()).create();
+		ImosProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_V.getValue()).create();
 		camPart.addProfile(profile);
 		
 		return camPart;
 	}
 
-	public TlfPart createProfileTop() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createProfileBottomBackSide() {
+		ImosPart camPart = createCamPart();
 
-		Drilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().angleX(180).create();
 		camPart.addDrilling(drilling);
-		TlfProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_H.getValue()).create();
+		ImosProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_V.getValue()).create();
 		camPart.addProfile(profile);
 		
 		return camPart;
 	}
 
-	public TlfPart createProfileLeft() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createProfileTop() {
+		ImosPart camPart = createCamPart();
 
-		Drilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().create();
 		camPart.addDrilling(drilling);
-		TlfProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_L.getValue()).prfLen(404).create();
+		ImosProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_H.getValue()).create();
 		camPart.addProfile(profile);
 		
 		return camPart;
 	}
 
-	public TlfPart createProfileRight() {
-		TlfPart camPart = createCamPart();
+	public ImosPart createProfileLeft() {
+		ImosPart camPart = createCamPart();
 
-		Drilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().create();
 		camPart.addDrilling(drilling);
-		TlfProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_R.getValue()).prfLen(404).create();
+		ImosProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_L.getValue()).prfLen(404).create();
 		camPart.addProfile(profile);
 		
 		return camPart;
 	}
 
-	private TlfPart createCamPart() {
-		TlfPart camPart = new TlfPart();
-		camPart.setLength(714.0);
-		camPart.setWidth(404.0);
-		camPart.setThick(19.0);
+	public ImosPart createProfileRight() {
+		ImosPart camPart = createCamPart();
+
+		ImosDrilling drilling = new TestDrillingParameters().create();
+		camPart.addDrilling(drilling);
+		ImosProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_R.getValue()).prfLen(404).create();
+		camPart.addProfile(profile);
+		
+		return camPart;
+	}
+
+	private ImosPart createCamPart() {
+		ImosPart camPart = new ImosPart();
+		camPart.setDimensions(new Dimensions(714.0, 404.0, 19.0));
 		camPart.setBarcode(Thread.currentThread().getStackTrace()[2].getMethodName());
 		return camPart;
 	}

@@ -1,6 +1,6 @@
 package tdm.cam.tlf.transformer;
 
-import tdm.cam.tlf.PartDimensions;
+import tdm.cam.math.Dimensions;
 
 /**
  * top = Plane 1 
@@ -9,12 +9,12 @@ import tdm.cam.tlf.PartDimensions;
 public class FrontsideTopTransformer implements IPlaneCoordinatesTransformer {
 
 	@Override
-	public double getPlaneX(PartDimensions dim, double x, double y, double z) {
+	public double getPlaneX(Dimensions dim, double x, double y, double z) {
 		return x;
 	}
 
 	@Override
-	public double getPlaneY(PartDimensions dim, double x, double y, double z) {
+	public double getPlaneY(Dimensions dim, double x, double y, double z) {
 		return z;
 	}
 

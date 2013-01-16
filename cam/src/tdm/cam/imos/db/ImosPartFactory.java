@@ -3,7 +3,8 @@ package tdm.cam.imos.db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import tdm.cam.tlf.TlfPart;
+import tdm.cam.imos.ImosPart;
+import tdm.cam.math.Dimensions;
 
 
 public class ImosPartFactory {
@@ -16,16 +17,14 @@ public class ImosPartFactory {
 		drillingFactory = new ImosDrillingFactory();
 	}
 	
-	public TlfPart createCamPart(ResultSet rs) throws SQLException {
-		TlfPart camPart = new TlfPart();
+	public ImosPart createCamPart(ResultSet rs) throws SQLException {
+		ImosPart camPart = new ImosPart();
 		camPart.setOrderId(rs.getString("orderid"));
 		camPart.setId(rs.getString("id"));
 		camPart.setName(rs.getString("name1"));
 		camPart.setBarcode(rs.getString("barcode"));
 		camPart.setMatId(rs.getString("matId"));
-		camPart.setLength(rs.getDouble("fLeng"));
-		camPart.setWidth(rs.getDouble("fWidth"));
-		camPart.setThick(rs.getDouble("fThk"));
+		camPart.setDimensions(new Dimensions(rs.getDouble("fLeng"), rs.getDouble("fWidth"), rs.getDouble("fThk")));
 
 		if (rs.getDouble("cnt") > 1.0) {
 			throw new RuntimeException("Encountered part with count > 1, dont know how to handle that");

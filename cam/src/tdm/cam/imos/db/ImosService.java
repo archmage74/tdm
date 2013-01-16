@@ -7,36 +7,34 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import tdm.cam.tlf.TlfPart;
-import tdm.cam.tlf.Drilling;
+import tdm.cam.imos.ImosDrilling;
+import tdm.cam.imos.ImosPart;
+import tdm.cam.imos.ImosProfile;
 import tdm.cam.tlf.DrillingAngleException;
-import tdm.cam.tlf.TlfProfile;
 
 public class ImosService implements IImosService {
 
 	private Connection dbConnection;
-	private ImosPartFactory camPartFactory;
-	private ImosDrillingFactory drillingFactory;
+	private ImosPartFactory camPartFactory = new ImosPartFactory();
+	private ImosDrillingFactory drillingFactory = new ImosDrillingFactory();
+	private ImosProfileFactory profileFactory = new ImosProfileFactory();
 
 	public ImosService() {
-		camPartFactory = new ImosPartFactory();
-		drillingFactory = new ImosDrillingFactory();
-		drillingFactory.init();
+
 	}
 
 	@Override
-	public List<TlfPart> readParts(String orderId) {
-		List<TlfPart> parts = readCamParts(orderId);
-		for (TlfPart part : parts) {
+	public List<ImosPart> readParts(String orderId) {
+		List<ImosPart> parts = readCamParts(orderId);
+		for (ImosPart part : parts) {
 			readDrillings(part);
 			readProfiles(part);
-			part.optimizeSides();
 		}
 		return parts;
 	}
 
-	private List<TlfPart> readCamParts(String orderId) {
-		List<TlfPart> parts = new ArrayList<TlfPart>();
+	private List<ImosPart> readCamParts(String orderId) {
+		List<ImosPart> parts = new ArrayList<ImosPart>();
 		ResultSet partResultSet = null;
 		PreparedStatement ps = null;
 		try {
@@ -45,7 +43,7 @@ public class ImosService implements IImosService {
 
 			partResultSet = ps.executeQuery();
 			while (partResultSet.next()) {
-				TlfPart part = camPartFactory.createCamPart(partResultSet);
+				ImosPart part = camPartFactory.createCamPart(partResultSet);
 				parts.add(part);
 			}
 		} catch (SQLException e) {
@@ -57,22 +55,20 @@ public class ImosService implements IImosService {
 	}
 
 	@SuppressWarnings("resource")
-	private void readDrillings(TlfPart camPart) {
+	private void readDrillings(ImosPart part) {
 		ResultSet drillResultSet = null;
 		PreparedStatement ps = null;
 		try {
-			ps = dbConnection.prepareStatement(drillingFactory.getReadDrillingsSql());
-			ps.setString(1, camPart.getOrderId());
-			ps.setString(2, camPart.getId());
+			ps = drillingFactory.prepareStatement(dbConnection, part);
 
 			drillResultSet = ps.executeQuery();
-			Drilling drilling = null;
+			ImosDrilling drilling = null;
 			while (drillResultSet.next()) {
-				drilling = drillingFactory.createDrilling(drillResultSet, camPart.getDimensions());
+				drilling = drillingFactory.createDrilling(drillResultSet, part.getDimensions());
 				try {
-					camPart.addDrilling(drilling);
+					part.addDrilling(drilling);
 				} catch (DrillingAngleException e) {
-					e.setPartBarcode(camPart.getBarcode());
+					e.setPartBarcode(part.getBarcode());
 					throw e;
 				}
 			}
@@ -83,25 +79,15 @@ public class ImosService implements IImosService {
 		}
 	}
 	
-	private void readProfiles(TlfPart part) {
+	private void readProfiles(ImosPart part) {
 		PreparedStatement ps = null;
 		ResultSet profileResultSet = null;
-		String readProfileSql = "SELECT prfno, prfid, prflen, prfthk, prfp, prfb FROM idbprf WHERE orderid=? AND id=?";
 		try {
-			ps = dbConnection.prepareStatement(readProfileSql);
-			ps.setString(1, part.getOrderId());
-			ps.setString(2, part.getId());
+			ps = profileFactory.prepareStatement(dbConnection, part);
 			profileResultSet = ps.executeQuery();
 
-			TlfProfile profile = null;
 			while (profileResultSet.next()) {
-				profile = new TlfProfile();
-				profile.setPrfNo(profileResultSet.getInt("prfno"));
-				profile.setPrfId(profileResultSet.getString("prfid"));
-				profile.setPrfLen(profileResultSet.getDouble("prflen"));
-				profile.setThick(profileResultSet.getDouble("prfthk"));
-				profile.setPrfp(profileResultSet.getInt("prfp"));
-				profile.setPrfb(profileResultSet.getInt("prfb"));
+				ImosProfile profile = profileFactory.createProfile(profileResultSet, part.getDimensions());
 				part.addProfile(profile);
 			}
 		} catch (SQLException e) {

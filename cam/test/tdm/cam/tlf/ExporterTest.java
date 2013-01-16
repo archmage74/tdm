@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tdm.cam.export.Exporter;
+import tdm.cam.imos.ImosPart;
 
 public class ExporterTest {
 
@@ -17,7 +18,7 @@ public class ExporterTest {
 	@Test
 	public void exportDrilling10and35Test() {
 		ImosServiceMock imosService = new ImosServiceMock();
-		TlfPart camPart = camPartFactory.createDrilling10And35CamPart();
+		ImosPart camPart = camPartFactory.createDrilling10And35CamPart();
 		imosService.setCamPart(camPart);
 
 		Exporter exporter = new Exporter();
@@ -26,4 +27,5 @@ public class ExporterTest {
 		
 		exporter.export("testtuer");
 	}
+
 }

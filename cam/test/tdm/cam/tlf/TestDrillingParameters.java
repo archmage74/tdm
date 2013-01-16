@@ -1,34 +1,27 @@
 package tdm.cam.tlf;
 
-import java.util.Map;
-
-import tdm.cam.imos.DrillParser;
+import tdm.cam.imos.ImosDrilling;
 
 public class TestDrillingParameters {
 
-	private String drill = "10";
 	private double x = 74;
 	private double y = 378;
 	private double z = 0;
+	private double endX = 380;
+	private double endY = 200;
 	private double angleX = 0;
 	private double angleY = 0;
 	private double angleZ = 0;
 	private double deep = 11;
-	private PartDimensions dimensions = new PartDimensions(714, 404, 19);
-	
-	public static Map<String, TlfDrillingTemplate> drillTemplates;
+	private double diameter = 10;
+	private int numDrillings = 1;
 
 	
 	public TestDrillingParameters() {
 	}
 
-	public TestDrillingParameters drill(String drill) {
-		this.drill = drill;
-		return this;
-	}
-	
-	public TestDrillingParameters dimensions(PartDimensions dimensions) {
-		this.dimensions = dimensions;
+	public TestDrillingParameters diameter(double diameter) {
+		this.diameter = diameter;
 		return this;
 	}
 	
@@ -44,6 +37,16 @@ public class TestDrillingParameters {
 	
 	public TestDrillingParameters z(double z) {
 		this.z = z;
+		return this;
+	}
+	
+	public TestDrillingParameters endX(double endX) {
+		this.endX = endX;
+		return this;
+	}
+	
+	public TestDrillingParameters endY(double endY) {
+		this.endY = endY;
 		return this;
 	}
 	
@@ -67,22 +70,26 @@ public class TestDrillingParameters {
 		return this;
 	}
 	
-	public Drilling create() {
-		if (drillTemplates == null) {
-			DrillParser parser = new DrillParser();
-			drillTemplates = parser.readDrillConfiguration();
-		}
-		
-		TlfDrillingTemplate template = drillTemplates.get(drill);
-		Drilling d = template.createDrilling(dimensions);
+	public TestDrillingParameters numDrillings(int numDrillings) {
+		this.numDrillings = numDrillings;
+		return this;
+	}
+	
+	public ImosDrilling create() {
+		ImosDrilling d = new ImosDrilling();
+		d.setNumDrillings(1);
 		d.setX(x);
 		d.setY(y);
 		d.setZ(z);
+		d.setEndX(endX);
+		d.setEndY(endY);
 		d.setAngleX(angleX);
 		d.setAngleY(angleY);
 		d.setAngleZ(angleZ);
 		d.setDeep(deep);
+		d.setDiameter(diameter);
+		d.setNumDrillings(numDrillings);
 		return d;
 	}
-	
+
 }

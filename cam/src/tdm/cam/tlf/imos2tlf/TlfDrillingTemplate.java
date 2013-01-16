@@ -1,4 +1,9 @@
-package tdm.cam.tlf;
+package tdm.cam.tlf.imos2tlf;
+
+import tdm.cam.math.Dimensions;
+import tdm.cam.tlf.Drilling;
+import tdm.cam.tlf.ITlfEngineHolder;
+import tdm.cam.tlf.RowDrilling;
 
 
 public class TlfDrillingTemplate implements ITlfEngineHolder {
@@ -14,12 +19,12 @@ public class TlfDrillingTemplate implements ITlfEngineHolder {
 		super();
 	}
 
-	public Drilling createDrilling(PartDimensions dimensions) {
+	public Drilling createDrilling(Dimensions dimensions) {
 		Drilling drilling = new Drilling(this, dimensions);
 		return drilling;
 	}
 	
-	public RowDrilling createRowDrilling(PartDimensions dimensions) {
+	public RowDrilling createRowDrilling(Dimensions dimensions) {
 		RowDrilling drilling = new RowDrilling(this, dimensions);
 		return drilling;
 	}

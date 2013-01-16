@@ -4,6 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import tdm.cam.math.Vector3;
+
 public class Vector3Test {
 
 	@Test

@@ -12,7 +12,7 @@ VELROTAZIONE
 VELENTRATA
 ${drilling.paramVelentrata}
 PROFLAVORAZIONE
-${drilling.machineDeep;decimal(0.##)}
+${drilling.deep;decimal(0.##)}
 ANGTILTING
 90
 ANGINDEX

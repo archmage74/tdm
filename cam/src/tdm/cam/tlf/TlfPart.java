@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tdm.cam.math.Dimensions;
+
 /**
  * plane 1 top |---------------| | | plane 3 | | plane 4 left | | right | | |---------------| plane 2 bottom
  * 
@@ -24,18 +26,17 @@ public class TlfPart implements ITlfEngineHolder {
 
 	private String barcode;
 
-	private PartDimensions dimensions = new PartDimensions();
+	private Dimensions dimensions = new Dimensions();
 
 	private TlfPartSide frontSide = new TlfFrontSide(dimensions);
 
 	private TlfPartSide backSide = new TlfBackSide(dimensions);
 
-	private HashMap<Integer, TlfProfile> profileMap = new HashMap<Integer, TlfProfile>(4);
 
 	public TlfPart() {
 
 	}
-
+	
 	public List<TlfDocument> createTlfDocuments() {
 		List<TlfDocument> docs = new ArrayList<TlfDocument>();
 		if (!getFrontSide().isEmpty()) {
@@ -55,16 +56,10 @@ public class TlfPart implements ITlfEngineHolder {
 		StringBuffer tlf = new StringBuffer();
 		Map<String, Object> docModel = new HashMap<String, Object>();
 
-		// FIXME: profiles for both sides + where to put index generation
-		frontSide.setProfileMap(profileMap);
-		int index = frontSide.getDrillings().size();
-		for (TlfProfile profile : profileMap.values()) {
-			profile.setIndex(index++);
-		}
-
 		tlf.append(ENGINE.transform(header, docModel));
 		tlf.append(frontSide.exportTlf());
 		tlf.append(ENGINE.transform(footer, docModel));
+		
 		return tlf.toString();
 	}
 
@@ -81,8 +76,10 @@ public class TlfPart implements ITlfEngineHolder {
 		// FIXME better rule: move all to one side (prefer inner side) if possible
 		List<ITlfNode> toMove = new ArrayList<ITlfNode>();
 		for (ITlfNode drilling : backSide.getDrillings()) {
-			if (drilling.isSideIndependent()) {
-				toMove.add(drilling);
+			if (drilling instanceof Drilling) {
+				if (drilling.isSideIndependent()) {
+					toMove.add(drilling);
+				}
 			}
 		}
 		for (ITlfNode drilling : toMove) {
@@ -156,7 +153,11 @@ public class TlfPart implements ITlfEngineHolder {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if (name != null) {
+			this.name = new String(name);
+		} else {
+			this.name = null;
+		}
 	}
 
 	public String getMatId() {
@@ -175,44 +176,22 @@ public class TlfPart implements ITlfEngineHolder {
 		this.id = id;
 	}
 
-	public double getLength() {
-		return dimensions.getLength();
-	}
-
-	public void setLength(double length) {
-		this.dimensions.setLength(length);
-	}
-
-	public double getWidth() {
-		return dimensions.getWidth();
-	}
-
-	public void setWidth(double width) {
-		this.dimensions.setWidth(width);
-	}
-
-	public double getThick() {
-		return dimensions.getThick();
-	}
-
-	public void setThick(double thick) {
-		this.dimensions.setThick(thick);
-	}
-
 	public String getBarcode() {
 		return barcode;
 	}
 
 	public void setBarcode(String barcode) {
-		this.barcode = barcode;
+		this.barcode = new String(barcode);
 	}
 
-	public PartDimensions getDimensions() {
+	public Dimensions getDimensions() {
 		return dimensions;
 	}
 
-	public void setDimensions(PartDimensions dimensions) {
-		this.dimensions = dimensions;
+	public void setDimensions(Dimensions dimensions) {
+		this.dimensions.setLength(dimensions.getLength());
+		this.dimensions.setWidth(dimensions.getWidth());
+		this.dimensions.setThick(dimensions.getThick());
 	}
 
 	public TlfPartSide getFrontSide() {
@@ -240,10 +219,6 @@ public class TlfPart implements ITlfEngineHolder {
 		} else {
 			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
 		}
-	}
-
-	public void addProfile(TlfProfile profile) {
-		profileMap.put(profile.getPrfNo(), profile);
 	}
 
 	public String toString() {

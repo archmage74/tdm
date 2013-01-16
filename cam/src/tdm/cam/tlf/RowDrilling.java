@@ -3,6 +3,9 @@ package tdm.cam.tlf;
 import java.util.HashMap;
 import java.util.Map;
 
+import tdm.cam.math.Dimensions;
+import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
+
 public class RowDrilling extends Drilling {
 
 	public static final double OFFSET = 32.0;
@@ -17,17 +20,17 @@ public class RowDrilling extends Drilling {
 	protected double planeEndX;
 	protected double planeEndY;
 
-	public RowDrilling(PartDimensions dimensions) {
+	public RowDrilling(Dimensions dimensions) {
 		super(dimensions);
 		this.dimensions = dimensions;
 	}
 	
-	public RowDrilling(TlfDrillingTemplate template, PartDimensions dimensions) {
+	public RowDrilling(TlfDrillingTemplate template, Dimensions dimensions) {
 		super(template, dimensions);		
 	}
 
 	@Override
-	public void calculatePlaneCoordinates(PartDimensions dimensions) {
+	public void calculatePlaneCoordinates(Dimensions dimensions) {
 		super.calculatePlaneCoordinates(dimensions);
 		planeEndX = planeCoordinatesTransformer.getPlaneX(dimensions, endX, endY, 0);
 		planeEndY = planeCoordinatesTransformer.getPlaneY(dimensions, endX, endY, 0);

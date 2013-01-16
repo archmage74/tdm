@@ -1,4 +1,4 @@
-package tdm.cam.vector;
+package tdm.cam.math;
 
 public class Vector3 {
 

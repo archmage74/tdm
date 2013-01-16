@@ -1,5 +1,7 @@
 package tdm.cam.tlf;
 
+import tdm.cam.imos.ImosProfile;
+
 public class TestProfileParameters {
 
 //	private PartDimensions dimensions = new PartDimensions(714, 404, 19);
@@ -25,8 +27,8 @@ public class TestProfileParameters {
 		return this;
 	}
 	
-	public TlfProfile create() {
-		TlfProfile p = new TlfProfile();
+	public ImosProfile create() {
+		ImosProfile p = new ImosProfile();
 		p.setPrfNo(prfNo);
 		p.setPrfLen(prfLen);
 		p.setThick(thick);

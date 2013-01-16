@@ -1,10 +1,11 @@
 package tdm.cam.tlf;
 
+import tdm.cam.math.Dimensions;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
 public interface ITlfNode {
 
-	public void calculatePlaneCoordinates(PartDimensions dimensions);
+	public void calculatePlaneCoordinates(Dimensions dimensions);
 	
 	public void setPlaneCoordinatesTransformer(IPlaneCoordinatesTransformer planeCoordinatesTransformer);
 	

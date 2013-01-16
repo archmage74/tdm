@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tdm.cam.math.Dimensions;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
 public abstract class TlfPartSide implements ITlfEngineHolder {
@@ -13,7 +14,7 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 	public static String entities = "CamPartSide.entities.jmte";
 	public static String works = "CamPartSide.works.jmte";
 
-	protected PartDimensions dimensions;
+	protected Dimensions dimensions;
 
 	protected List<ITlfNode> drillings = new ArrayList<ITlfNode>();
 	protected List<ITlfNode> plane1Drillings = new ArrayList<ITlfNode>();
@@ -21,7 +22,7 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 	protected List<ITlfNode> plane3Drillings = new ArrayList<ITlfNode>();
 	protected List<ITlfNode> plane4Drillings = new ArrayList<ITlfNode>();
 
-	public TlfPartSide(PartDimensions dimensions) {
+	public TlfPartSide(Dimensions dimensions) {
 		this.dimensions = dimensions;
 	}
 
@@ -35,7 +36,6 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 
 	protected abstract IPlaneCoordinatesTransformer getRightTransformer();
 
-	private HashMap<Integer, TlfProfile> profileMap = new HashMap<Integer, TlfProfile>(4);
 
 	public void addNode(ITlfNode node) {
 		node.setIndex(drillings.size());
@@ -108,13 +108,13 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 		Map<String, Object> entitiesModel = new HashMap<String, Object>();
 		String p0 = createPlaneEntities(drillings);
 		
-		StringBuffer lineBuffer = new StringBuffer();
-		for (ITlfNode node : profileMap.values()) {
-			node.setPlaneCoordinatesTransformer(getUpTransformer());
-			node.calculatePlaneCoordinates(dimensions);
-			lineBuffer.append(node.exportEntity());
-		}
-		p0 += lineBuffer.toString();
+//		StringBuffer lineBuffer = new StringBuffer();
+//		for (ITlfNode node : profileMap.values()) {
+//			node.setPlaneCoordinatesTransformer(getUpTransformer());
+//			node.calculatePlaneCoordinates(dimensions);
+//			lineBuffer.append(node.exportEntity());
+//		}
+//		p0 += lineBuffer.toString();
 
 		entitiesModel.put("entitiesPlane0", p0);
 		entitiesModel.put("entitiesPlane1", createPlaneEntities(plane1Drillings));
@@ -154,7 +154,14 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 	}
 
 	public boolean isEmpty() {
-		return drillings.isEmpty() && plane1Drillings.isEmpty() && plane2Drillings.isEmpty() && plane3Drillings.isEmpty()
+		boolean noDrillings = true;
+		for (ITlfNode d : drillings) {
+			if (d instanceof Drilling) {
+				noDrillings = false;
+				break;
+			}
+		}
+		return noDrillings && plane1Drillings.isEmpty() && plane2Drillings.isEmpty() && plane3Drillings.isEmpty()
 				&& plane4Drillings.isEmpty();
 	}
 
@@ -201,12 +208,8 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 		return plane4Drillings;
 	}
 
-	public PartDimensions getDimensions() {
+	public Dimensions getDimensions() {
 		return dimensions;
-	}
-
-	public void setProfileMap(HashMap<Integer, TlfProfile> profileMap) {
-		this.profileMap = profileMap;
 	}
 
 	public String toString() {

@@ -1,5 +1,6 @@
 package tdm.cam.imos;
 
+
 public class ImosProfile {
 
 	private int prfNo;
@@ -10,8 +11,6 @@ public class ImosProfile {
 
 	private int prfp; // kante v/n
 	private int prfb; // ecksituation der kante zur folgekante
-
-	
 	
 	public int getPrfNo() {
 		return prfNo;
