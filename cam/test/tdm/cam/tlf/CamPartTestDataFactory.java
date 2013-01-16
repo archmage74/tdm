@@ -205,6 +205,17 @@ public class CamPartTestDataFactory {
 		return camPart;
 	}
 
+	public ImosPart createProfileRightBackSide() {
+		ImosPart camPart = createCamPart();
+
+		ImosDrilling drilling = new TestDrillingParameters().angleX(180).create();
+		camPart.addDrilling(drilling);
+		ImosProfile profile = new TestProfileParameters().prfNo(TlfProfileType.POS_R.getValue()).prfLen(404).create();
+		camPart.addProfile(profile);
+		
+		return camPart;
+	}
+
 	private ImosPart createCamPart() {
 		ImosPart camPart = new ImosPart();
 		camPart.setDimensions(new Dimensions(714.0, 404.0, 19.0));
