@@ -25,8 +25,8 @@ public class TestProfileParameters {
 		return this;
 	}
 	
-	public PartProfile create() {
-		PartProfile p = new PartProfile();
+	public TlfProfile create() {
+		TlfProfile p = new TlfProfile();
 		p.setPrfNo(prfNo);
 		p.setPrfLen(prfLen);
 		p.setThick(thick);

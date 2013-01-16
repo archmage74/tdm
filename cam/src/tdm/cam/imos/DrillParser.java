@@ -1,4 +1,4 @@
-package tdm.cam.db;
+package tdm.cam.imos;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import tdm.cam.tlf.DrillingTemplate;
+import tdm.cam.tlf.TlfDrillingTemplate;
 
 public class DrillParser {
 
@@ -19,7 +19,7 @@ public class DrillParser {
 	private static final String PROP_TIPOUNTA = "TIPOUNTA";
 	private static final String PROP_RALLFORO = "RALLFORO";
 
-	public Map<String, DrillingTemplate> readDrillConfiguration() {
+	public Map<String, TlfDrillingTemplate> readDrillConfiguration() {
 		Properties drillProperties = new Properties();
 		try {
 			drillProperties.load(new FileInputStream(DRILL_CONFIG_PATH));
@@ -29,28 +29,28 @@ public class DrillParser {
 		return parseProperties(drillProperties);
 	}
 
-	private Map<String, DrillingTemplate> parseProperties(Properties drillProperties) {
-		Map<String, DrillingTemplate> templates = new HashMap<String, DrillingTemplate>();
+	private Map<String, TlfDrillingTemplate> parseProperties(Properties drillProperties) {
+		Map<String, TlfDrillingTemplate> templates = new HashMap<String, TlfDrillingTemplate>();
 
 		String drillProp = drillProperties.getProperty(PROP_DRILLS);
 		StringTokenizer tokenizer = new StringTokenizer(drillProp, ",");
 
 		while (tokenizer.hasMoreElements()) {
 			String token = tokenizer.nextToken();
-			DrillingTemplate template = createTemplate(token, drillProperties);
+			TlfDrillingTemplate template = createTemplate(token, drillProperties);
 			templates.put(token, template);
 		}
 
 		return templates;
 	}
 
-	private DrillingTemplate createTemplate(String diameterKey, Properties drillProperties) {
+	private TlfDrillingTemplate createTemplate(String diameterKey, Properties drillProperties) {
 		Double diameter = parseDiameter(diameterKey);
 
 		int rallforo = parseParameter(diameterKey, PROP_RALLFORO, drillProperties);
 		int tipounta = parseParameter(diameterKey, PROP_TIPOUNTA, drillProperties);
 		int velentrata = parseParameter(diameterKey, PROP_VELENTRATA, drillProperties);
-		DrillingTemplate template = new DrillingTemplate();
+		TlfDrillingTemplate template = new TlfDrillingTemplate();
 		template.setDiameter(diameter);
 		template.setParamRallforo(rallforo);
 		template.setParamTipounta(tipounta);
@@ -73,7 +73,7 @@ public class DrillParser {
 	private double parseDiameter(String diameterKey) {
 		Double diameter = null;
 		String diameterString = new String(diameterKey);
-		if (diameterKey.charAt(0) == DrillingTemplate.PREFIX_THROUGH) {
+		if (diameterKey.charAt(0) == TlfDrillingTemplate.PREFIX_THROUGH) {
 			diameterString = diameterString.substring(1);
 		}
 		try {

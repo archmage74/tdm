@@ -22,7 +22,7 @@ public class RowDrilling extends Drilling {
 		this.dimensions = dimensions;
 	}
 	
-	public RowDrilling(DrillingTemplate template, PartDimensions dimensions) {
+	public RowDrilling(TlfDrillingTemplate template, PartDimensions dimensions) {
 		super(template, dimensions);		
 	}
 

@@ -7,7 +7,7 @@ import tdm.cam.tlf.transformer.BacksideTopTransformer;
 import tdm.cam.tlf.transformer.BacksideUpTransformer;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
-public class BackPartSide extends CamPartSide {
+public class TlfBackSide extends TlfPartSide {
 
 	IPlaneCoordinatesTransformer upTransformer = new BacksideUpTransformer();
 	IPlaneCoordinatesTransformer topTransformer = new BacksideTopTransformer();
@@ -15,7 +15,7 @@ public class BackPartSide extends CamPartSide {
 	IPlaneCoordinatesTransformer leftTransformer = new BacksideLeftTransformer();
 	IPlaneCoordinatesTransformer rightTransformer = new BacksideRightTransformer();
 	
-	public BackPartSide(PartDimensions dimensions) {
+	public TlfBackSide(PartDimensions dimensions) {
 		super(dimensions);
 	}
 

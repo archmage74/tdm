@@ -17,7 +17,7 @@ public class ExporterTest {
 	@Test
 	public void exportDrilling10and35Test() {
 		ImosServiceMock imosService = new ImosServiceMock();
-		CamPart camPart = camPartFactory.createDrilling10And35CamPart();
+		TlfPart camPart = camPartFactory.createDrilling10And35CamPart();
 		imosService.setCamPart(camPart);
 
 		Exporter exporter = new Exporter();

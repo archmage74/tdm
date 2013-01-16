@@ -1,23 +1,23 @@
-package tdm.cam.db;
+package tdm.cam.imos.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import tdm.cam.tlf.CamPart;
+import tdm.cam.tlf.TlfPart;
 
 
-public class CamPartFactory {
+public class ImosPartFactory {
 
 	public static final String readPartsSql = "SELECT orderid, id, cnt, name1, barcode, matId, fLeng, fWidth, fThk FROM idbgpl WHERE orderId=?";
 	
-	DrillingFactory drillingFactory;
+	ImosDrillingFactory drillingFactory;
 	
-	public CamPartFactory() {
-		drillingFactory = new DrillingFactory();
+	public ImosPartFactory() {
+		drillingFactory = new ImosDrillingFactory();
 	}
 	
-	public CamPart createCamPart(ResultSet rs) throws SQLException {
-		CamPart camPart = new CamPart();
+	public TlfPart createCamPart(ResultSet rs) throws SQLException {
+		TlfPart camPart = new TlfPart();
 		camPart.setOrderId(rs.getString("orderid"));
 		camPart.setId(rs.getString("id"));
 		camPart.setName(rs.getString("name1"));

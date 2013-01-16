@@ -70,7 +70,7 @@ public class TlfTest {
 	
 	@Test
 	public void drilling10Test() {
-		CamPart camPart = camPartFactory.createDrilling10CamPart();
+		TlfPart camPart = camPartFactory.createDrilling10CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -81,7 +81,7 @@ public class TlfTest {
 
 	@Test
 	public void drilling10BacksideTest() {
-		CamPart camPart = camPartFactory.createDrilling10BacksideCamPart();
+		TlfPart camPart = camPartFactory.createDrilling10BacksideCamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -93,7 +93,7 @@ public class TlfTest {
 
 	@Test
 	public void drilling10ThroughBacksideTest() {
-		CamPart camPart = camPartFactory.createDrilling10ThroughBacksideCamPart();
+		TlfPart camPart = camPartFactory.createDrilling10ThroughBacksideCamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -105,7 +105,7 @@ public class TlfTest {
 
 	@Test
 	public void drilling10and35Test() {
-		CamPart camPart = camPartFactory.createDrilling10And35CamPart();
+		TlfPart camPart = camPartFactory.createDrilling10And35CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -116,7 +116,7 @@ public class TlfTest {
 
 	@Test
 	public void plane1Drilling6Test() {
-		CamPart camPart = camPartFactory.createPlane1Drilling6CamPart();
+		TlfPart camPart = camPartFactory.createPlane1Drilling6CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -127,7 +127,7 @@ public class TlfTest {
 	
 	@Test
 	public void plane2Drilling6Test() {
-		CamPart camPart = camPartFactory.createPlane2Drilling6CamPart();
+		TlfPart camPart = camPartFactory.createPlane2Drilling6CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -138,7 +138,7 @@ public class TlfTest {
 	
 	@Test
 	public void plane3Drilling5Test() {
-		CamPart camPart = camPartFactory.createPlane3Drilling5CamPart();
+		TlfPart camPart = camPartFactory.createPlane3Drilling5CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -149,7 +149,7 @@ public class TlfTest {
 	
 	@Test
 	public void plane4Drilling5Test() {
-		CamPart camPart = camPartFactory.createPlane4Drilling5CamPart();
+		TlfPart camPart = camPartFactory.createPlane4Drilling5CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -160,7 +160,7 @@ public class TlfTest {
 	
 	@Test
 	public void drilling10BacksideAndPlane1Drilling5Test() {
-		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane1Drilling5CamPart();
+		TlfPart camPart = camPartFactory.createDrilling10BacksideAndPlane1Drilling5CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -171,7 +171,7 @@ public class TlfTest {
 	
 	@Test
 	public void drilling10BacksideAndPlane2Drilling5Test() {
-		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane2Drilling5CamPart();
+		TlfPart camPart = camPartFactory.createDrilling10BacksideAndPlane2Drilling5CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -182,7 +182,7 @@ public class TlfTest {
 	
 	@Test
 	public void drilling10BacksideAndPlane3Drilling5Test() {
-		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane3Drilling5CamPart();
+		TlfPart camPart = camPartFactory.createDrilling10BacksideAndPlane3Drilling5CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -193,7 +193,7 @@ public class TlfTest {
 	
 	@Test
 	public void drilling10BacksideAndPlane4Drilling5Test() {
-		CamPart camPart = camPartFactory.createDrilling10BacksideAndPlane4Drilling5CamPart();
+		TlfPart camPart = camPartFactory.createDrilling10BacksideAndPlane4Drilling5CamPart();
 
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -204,7 +204,7 @@ public class TlfTest {
 	
 	@Test 
 	public void rowDrillingFrontsideTest() {
-		CamPart camPart = camPartFactory.createRowDrilling6Frontside();
+		TlfPart camPart = camPartFactory.createRowDrilling6Frontside();
 		
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -215,7 +215,7 @@ public class TlfTest {
 
 	@Test 
 	public void rowDrillingBacksideTest() {
-		CamPart camPart = camPartFactory.createRowDrilling6Backside();
+		TlfPart camPart = camPartFactory.createRowDrilling6Backside();
 		
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -226,7 +226,7 @@ public class TlfTest {
 	
 	@Test 
 	public void profileBottomTest() {
-		CamPart camPart = camPartFactory.createProfileBottom();
+		TlfPart camPart = camPartFactory.createProfileBottom();
 		
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -237,7 +237,7 @@ public class TlfTest {
 
 	@Test 
 	public void profileTopTest() {
-		CamPart camPart = camPartFactory.createProfileTop();
+		TlfPart camPart = camPartFactory.createProfileTop();
 		
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -248,7 +248,7 @@ public class TlfTest {
 
 	@Test 
 	public void profileLeftTest() {
-		CamPart camPart = camPartFactory.createProfileLeft();
+		TlfPart camPart = camPartFactory.createProfileLeft();
 		
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
@@ -259,7 +259,7 @@ public class TlfTest {
 
 	@Test 
 	public void profileRightTest() {
-		CamPart camPart = camPartFactory.createProfileRight();
+		TlfPart camPart = camPartFactory.createProfileRight();
 		
 		List<TlfDocument> docs = camPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());

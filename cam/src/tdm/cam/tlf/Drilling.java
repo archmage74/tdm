@@ -15,14 +15,14 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 	public static final Vector3 VECTOR_PLANE_LEFT = new Vector3(1, 0, 0);
 	public static final Vector3 VECTOR_PLANE_RIGHT = new Vector3(-1, 0, 0);
 
-	public static final Map<Plane, Vector3> planeVectors = new HashMap<Plane, Vector3>();
+	public static final Map<TlfPlane, Vector3> planeVectors = new HashMap<TlfPlane, Vector3>();
 	static {
-		planeVectors.put(Plane.FRONT, VECTOR_FRONT_SIDE);
-		planeVectors.put(Plane.BACK, VECTOR_BACK_SIDE);
-		planeVectors.put(Plane.TOP, VECTOR_PLANE_TOP);
-		planeVectors.put(Plane.BOTTOM, VECTOR_PLANE_BOTTOM);
-		planeVectors.put(Plane.LEFT, VECTOR_PLANE_LEFT);
-		planeVectors.put(Plane.RIGHT, VECTOR_PLANE_RIGHT);
+		planeVectors.put(TlfPlane.FRONT, VECTOR_FRONT_SIDE);
+		planeVectors.put(TlfPlane.BACK, VECTOR_BACK_SIDE);
+		planeVectors.put(TlfPlane.TOP, VECTOR_PLANE_TOP);
+		planeVectors.put(TlfPlane.BOTTOM, VECTOR_PLANE_BOTTOM);
+		planeVectors.put(TlfPlane.LEFT, VECTOR_PLANE_LEFT);
+		planeVectors.put(TlfPlane.RIGHT, VECTOR_PLANE_RIGHT);
 	}
 	
 	public static final double THROUGH_ADD_ON = 4.0;
@@ -59,7 +59,7 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		this.dimensions = dimensions;
 	}
 
-	public Drilling(DrillingTemplate template, PartDimensions dimensions) {
+	public Drilling(TlfDrillingTemplate template, PartDimensions dimensions) {
 		this(dimensions);
 		this.setDiameter(template.getDiameter());
 		this.setParamRallforo(template.getParamRallforo());
@@ -95,17 +95,17 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 		return tlf.toString();
 	}
 
-	public Plane getPlane() {
+	public TlfPlane getPlane() {
 		Vector3 drillDirection = new Vector3(0, 0, 1);
 		drillDirection.rotateXDegrees(getAngleX()).rotateYDegrees(getAngleY()).rotateZDegrees(getAngleZ());
 
-		for (Map.Entry<Plane, Vector3> planeVector : planeVectors.entrySet()) {
+		for (Map.Entry<TlfPlane, Vector3> planeVector : planeVectors.entrySet()) {
 			if (drillDirection.equals(planeVector.getValue())) {
 				return planeVector.getKey();
 			}
 		}
 		
-		return Plane.DIAGONAL;
+		return TlfPlane.DIAGONAL;
 	}
 	
 	@Override
@@ -186,8 +186,8 @@ public class Drilling implements ITlfEngineHolder, ITlfNode {
 	}
 
 	public boolean isHorizontal() {
-		Plane plane = getPlane();
-		if (plane == Plane.FRONT || plane == Plane.BACK || plane == Plane.DIAGONAL) {
+		TlfPlane plane = getPlane();
+		if (plane == TlfPlane.FRONT || plane == TlfPlane.BACK || plane == TlfPlane.DIAGONAL) {
 			return false;
 		} else {
 			return true;

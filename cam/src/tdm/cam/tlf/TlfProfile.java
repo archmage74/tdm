@@ -5,7 +5,7 @@ import java.util.Map;
 
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
-public class PartProfile implements ITlfNode, ITlfEngineHolder {
+public class TlfProfile implements ITlfNode, ITlfEngineHolder {
 
 	public static String entity = "Line.entity.jmte";
 
@@ -146,22 +146,22 @@ public class PartProfile implements ITlfNode, ITlfEngineHolder {
 
 	@Override
 	public void calculatePlaneCoordinates(PartDimensions dimensions) {
-		if (prfNo == ProfileType.POS_V.getValue()) {
+		if (prfNo == TlfProfileType.POS_V.getValue()) {
 			planeX1 = planeCoordinatesTransformer.getPlaneX(dimensions, 0, thick, 0);
 			planeY1 = planeCoordinatesTransformer.getPlaneY(dimensions, 0, thick, 0);
 			planeX2 = planeCoordinatesTransformer.getPlaneX(dimensions, dimensions.getLength(), thick, 0);
 			planeY2 = planeCoordinatesTransformer.getPlaneY(dimensions, dimensions.getLength(), thick, 0);
-		} else if (prfNo == ProfileType.POS_H.getValue()) {
+		} else if (prfNo == TlfProfileType.POS_H.getValue()) {
 			planeX1 = planeCoordinatesTransformer.getPlaneX(dimensions, 0, dimensions.getWidth() - thick, 0);
 			planeY1 = planeCoordinatesTransformer.getPlaneY(dimensions, 0, dimensions.getWidth() - thick, 0);
 			planeX2 = planeCoordinatesTransformer.getPlaneX(dimensions, dimensions.getLength(), dimensions.getWidth() - thick, 0);
 			planeY2 = planeCoordinatesTransformer.getPlaneY(dimensions, dimensions.getLength(), dimensions.getWidth() - thick, 0);
-		} else if (prfNo == ProfileType.POS_L.getValue()) {
+		} else if (prfNo == TlfProfileType.POS_L.getValue()) {
 			planeX1 = planeCoordinatesTransformer.getPlaneX(dimensions, thick, 0, 0);
 			planeY1 = planeCoordinatesTransformer.getPlaneY(dimensions, thick, 0, 0);
 			planeX2 = planeCoordinatesTransformer.getPlaneX(dimensions, thick, dimensions.getWidth(), 0);
 			planeY2 = planeCoordinatesTransformer.getPlaneY(dimensions, thick, dimensions.getWidth(), 0);
-		} else if (prfNo == ProfileType.POS_R.getValue()) {
+		} else if (prfNo == TlfProfileType.POS_R.getValue()) {
 			planeX1 = planeCoordinatesTransformer.getPlaneX(dimensions, dimensions.getLength() - thick, 0, 0);
 			planeY1 = planeCoordinatesTransformer.getPlaneY(dimensions, dimensions.getLength() - thick, 0, 0);
 			planeX2 = planeCoordinatesTransformer.getPlaneX(dimensions, dimensions.getLength() - thick, dimensions.getWidth(), 0);

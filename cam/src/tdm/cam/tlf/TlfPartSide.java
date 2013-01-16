@@ -7,7 +7,7 @@ import java.util.Map;
 
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
-public abstract class CamPartSide implements ITlfEngineHolder {
+public abstract class TlfPartSide implements ITlfEngineHolder {
 
 	public static String pargen = "CamPartSide.pargen.jmte";
 	public static String entities = "CamPartSide.entities.jmte";
@@ -21,7 +21,7 @@ public abstract class CamPartSide implements ITlfEngineHolder {
 	protected List<ITlfNode> plane3Drillings = new ArrayList<ITlfNode>();
 	protected List<ITlfNode> plane4Drillings = new ArrayList<ITlfNode>();
 
-	public CamPartSide(PartDimensions dimensions) {
+	public TlfPartSide(PartDimensions dimensions) {
 		this.dimensions = dimensions;
 	}
 
@@ -35,7 +35,7 @@ public abstract class CamPartSide implements ITlfEngineHolder {
 
 	protected abstract IPlaneCoordinatesTransformer getRightTransformer();
 
-	private HashMap<Integer, PartProfile> profileMap = new HashMap<Integer, PartProfile>(4);
+	private HashMap<Integer, TlfProfile> profileMap = new HashMap<Integer, TlfProfile>(4);
 
 	public void addNode(ITlfNode node) {
 		node.setIndex(drillings.size());
@@ -205,7 +205,7 @@ public abstract class CamPartSide implements ITlfEngineHolder {
 		return dimensions;
 	}
 
-	public void setProfileMap(HashMap<Integer, PartProfile> profileMap) {
+	public void setProfileMap(HashMap<Integer, TlfProfile> profileMap) {
 		this.profileMap = profileMap;
 	}
 

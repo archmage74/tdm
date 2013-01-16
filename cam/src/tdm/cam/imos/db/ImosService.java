@@ -1,4 +1,4 @@
-package tdm.cam.db.imos;
+package tdm.cam.imos.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,29 +7,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import tdm.cam.db.CamPartFactory;
-import tdm.cam.db.DrillingFactory;
-import tdm.cam.tlf.CamPart;
+import tdm.cam.tlf.TlfPart;
 import tdm.cam.tlf.Drilling;
 import tdm.cam.tlf.DrillingAngleException;
-import tdm.cam.tlf.PartProfile;
+import tdm.cam.tlf.TlfProfile;
 
 public class ImosService implements IImosService {
 
 	private Connection dbConnection;
-	private CamPartFactory camPartFactory;
-	private DrillingFactory drillingFactory;
+	private ImosPartFactory camPartFactory;
+	private ImosDrillingFactory drillingFactory;
 
 	public ImosService() {
-		camPartFactory = new CamPartFactory();
-		drillingFactory = new DrillingFactory();
+		camPartFactory = new ImosPartFactory();
+		drillingFactory = new ImosDrillingFactory();
 		drillingFactory.init();
 	}
 
 	@Override
-	public List<CamPart> readParts(String orderId) {
-		List<CamPart> parts = readCamParts(orderId);
-		for (CamPart part : parts) {
+	public List<TlfPart> readParts(String orderId) {
+		List<TlfPart> parts = readCamParts(orderId);
+		for (TlfPart part : parts) {
 			readDrillings(part);
 			readProfiles(part);
 			part.optimizeSides();
@@ -37,8 +35,8 @@ public class ImosService implements IImosService {
 		return parts;
 	}
 
-	private List<CamPart> readCamParts(String orderId) {
-		List<CamPart> parts = new ArrayList<CamPart>();
+	private List<TlfPart> readCamParts(String orderId) {
+		List<TlfPart> parts = new ArrayList<TlfPart>();
 		ResultSet partResultSet = null;
 		PreparedStatement ps = null;
 		try {
@@ -47,7 +45,7 @@ public class ImosService implements IImosService {
 
 			partResultSet = ps.executeQuery();
 			while (partResultSet.next()) {
-				CamPart part = camPartFactory.createCamPart(partResultSet);
+				TlfPart part = camPartFactory.createCamPart(partResultSet);
 				parts.add(part);
 			}
 		} catch (SQLException e) {
@@ -59,7 +57,7 @@ public class ImosService implements IImosService {
 	}
 
 	@SuppressWarnings("resource")
-	private void readDrillings(CamPart camPart) {
+	private void readDrillings(TlfPart camPart) {
 		ResultSet drillResultSet = null;
 		PreparedStatement ps = null;
 		try {
@@ -85,7 +83,7 @@ public class ImosService implements IImosService {
 		}
 	}
 	
-	private void readProfiles(CamPart part) {
+	private void readProfiles(TlfPart part) {
 		PreparedStatement ps = null;
 		ResultSet profileResultSet = null;
 		String readProfileSql = "SELECT prfno, prfid, prflen, prfthk, prfp, prfb FROM idbprf WHERE orderid=? AND id=?";
@@ -95,9 +93,9 @@ public class ImosService implements IImosService {
 			ps.setString(2, part.getId());
 			profileResultSet = ps.executeQuery();
 
-			PartProfile profile = null;
+			TlfProfile profile = null;
 			while (profileResultSet.next()) {
-				profile = new PartProfile();
+				profile = new TlfProfile();
 				profile.setPrfNo(profileResultSet.getInt("prfno"));
 				profile.setPrfId(profileResultSet.getString("prfid"));
 				profile.setPrfLen(profileResultSet.getDouble("prflen"));

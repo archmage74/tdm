@@ -2,7 +2,7 @@ package tdm.cam.tlf;
 
 import java.util.Map;
 
-import tdm.cam.db.DrillParser;
+import tdm.cam.imos.DrillParser;
 
 public class TestRowDrillingParameters {
 
@@ -18,7 +18,7 @@ public class TestRowDrillingParameters {
 	private double deep = 11;
 	private PartDimensions dimensions = new PartDimensions(714, 404, 19);
 	
-	public static Map<String, DrillingTemplate> drillTemplates;
+	public static Map<String, TlfDrillingTemplate> drillTemplates;
 
 	
 	public TestRowDrillingParameters() {
@@ -85,7 +85,7 @@ public class TestRowDrillingParameters {
 			drillTemplates = parser.readDrillConfiguration();
 		}
 		
-		DrillingTemplate template = drillTemplates.get(drill);
+		TlfDrillingTemplate template = drillTemplates.get(drill);
 		RowDrilling d = template.createRowDrilling(dimensions);
 		d.setX(x);
 		d.setY(y);

@@ -1,4 +1,4 @@
-package tdm.cam.db.imos;
+package tdm.cam.imos.db;
 
 import tdm.cam.db.DBProperties;
 

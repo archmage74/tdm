@@ -1,6 +1,6 @@
 package tdm.cam.tlf;
 
-public enum ProfileType {
+public enum TlfProfileType {
 
 	POS_V (1),
 	POS_R (2),
@@ -9,7 +9,7 @@ public enum ProfileType {
 
 	int value;
 	
-	ProfileType(Integer number) {
+	TlfProfileType(Integer number) {
 		this.value = number;
 	}
 

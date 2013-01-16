@@ -1,7 +1,7 @@
 package tdm.cam.tlf;
 
 
-public class DrillingTemplate implements ITlfEngineHolder {
+public class TlfDrillingTemplate implements ITlfEngineHolder {
 
 	public static final char PREFIX_THROUGH = 'V';
 	
@@ -10,7 +10,7 @@ public class DrillingTemplate implements ITlfEngineHolder {
 	protected int paramRallforo;
 	protected int paramTipounta;
 	
-	public DrillingTemplate() {
+	public TlfDrillingTemplate() {
 		super();
 	}
 

@@ -1,4 +1,4 @@
-package tdm.cam.db;
+package tdm.cam.imos.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,18 +6,19 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Map;
 
+import tdm.cam.imos.DrillParser;
 import tdm.cam.tlf.Drilling;
-import tdm.cam.tlf.DrillingTemplate;
+import tdm.cam.tlf.TlfDrillingTemplate;
 import tdm.cam.tlf.PartDimensions;
 import tdm.cam.tlf.RowDrilling;
 
-public class DrillingFactory {
+public class ImosDrillingFactory {
 
 	public static final String readDrillingsSql = "SELECT ip_x, ip_y, ip_z, or_x, or_y, or_z, dia, de, ep_x, ep_y, ep_z, cnt FROM idbwg WHERE orderId=? AND id=?";
 
-	Map<String, DrillingTemplate> drillings;
+	Map<String, TlfDrillingTemplate> drillings;
 	
-	public DrillingFactory() {
+	public ImosDrillingFactory() {
 
 	}
 
@@ -88,7 +89,7 @@ public class DrillingFactory {
 	}
 
 	private RowDrilling createRowDrilling(PartDimensions dimensions, String drillKey) {
-		DrillingTemplate template = drillings.get(drillKey);
+		TlfDrillingTemplate template = drillings.get(drillKey);
 		return template.createRowDrilling(dimensions);
 	}
 
@@ -103,7 +104,7 @@ public class DrillingFactory {
 	}
 
 	private Drilling createSingleDrilling(PartDimensions dimensions, String drillKey) {
-		DrillingTemplate template = getDrillingTemplate(drillKey);
+		TlfDrillingTemplate template = getDrillingTemplate(drillKey);
 		return template.createDrilling(dimensions);
 	}
 
@@ -117,8 +118,8 @@ public class DrillingFactory {
 		return drillKey;
 	}
 
-	private DrillingTemplate getDrillingTemplate(String drillKey) {
-		DrillingTemplate template = drillings.get(drillKey);
+	private TlfDrillingTemplate getDrillingTemplate(String drillKey) {
+		TlfDrillingTemplate template = drillings.get(drillKey);
 		if (template == null) {
 			throw new RuntimeException("no drill configuration with diameter=" + drillKey);
 		}

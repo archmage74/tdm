@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import tdm.cam.db.ConnectionProvider;
-import tdm.cam.db.imos.IImosService;
-import tdm.cam.db.imos.ImosProperties;
-import tdm.cam.db.imos.ImosService;
 import tdm.cam.export.Exporter;
+import tdm.cam.imos.db.IImosService;
+import tdm.cam.imos.db.ImosProperties;
+import tdm.cam.imos.db.ImosService;
 
 public class CamMain {
 	

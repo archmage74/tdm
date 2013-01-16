@@ -9,7 +9,7 @@ import java.util.Map;
  * plane 1 top |---------------| | | plane 3 | | plane 4 left | | right | | |---------------| plane 2 bottom
  * 
  */
-public class CamPart implements ITlfEngineHolder {
+public class TlfPart implements ITlfEngineHolder {
 
 	public static String header = "TlfDocument.header.jmte";
 	public static String footer = "TlfDocument.footer.jmte";
@@ -26,13 +26,13 @@ public class CamPart implements ITlfEngineHolder {
 
 	private PartDimensions dimensions = new PartDimensions();
 
-	private CamPartSide frontSide = new FrontPartSide(dimensions);
+	private TlfPartSide frontSide = new TlfFrontSide(dimensions);
 
-	private CamPartSide backSide = new BackPartSide(dimensions);
+	private TlfPartSide backSide = new TlfBackSide(dimensions);
 
-	private HashMap<Integer, PartProfile> profileMap = new HashMap<Integer, PartProfile>(4);
+	private HashMap<Integer, TlfProfile> profileMap = new HashMap<Integer, TlfProfile>(4);
 
-	public CamPart() {
+	public TlfPart() {
 
 	}
 
@@ -58,7 +58,7 @@ public class CamPart implements ITlfEngineHolder {
 		// FIXME: profiles for both sides + where to put index generation
 		frontSide.setProfileMap(profileMap);
 		int index = frontSide.getDrillings().size();
-		for (PartProfile profile : profileMap.values()) {
+		for (TlfProfile profile : profileMap.values()) {
 			profile.setIndex(index++);
 		}
 
@@ -215,34 +215,34 @@ public class CamPart implements ITlfEngineHolder {
 		this.dimensions = dimensions;
 	}
 
-	public CamPartSide getFrontSide() {
+	public TlfPartSide getFrontSide() {
 		return frontSide;
 	}
 
-	public CamPartSide getBackSide() {
+	public TlfPartSide getBackSide() {
 		return backSide;
 	}
 
 	public void addDrilling(Drilling drilling) {
-		Plane plane = drilling.getPlane();
-		if (plane == Plane.FRONT) {
+		TlfPlane plane = drilling.getPlane();
+		if (plane == TlfPlane.FRONT) {
 			frontSide.addNode(drilling);
-		} else if (plane == Plane.BACK) {
+		} else if (plane == TlfPlane.BACK) {
 			backSide.addNode(drilling);
-		} else if (plane == Plane.TOP) {
+		} else if (plane == TlfPlane.TOP) {
 			frontSide.addPlane1Drilling(drilling);
-		} else if (plane == Plane.BOTTOM) {
+		} else if (plane == TlfPlane.BOTTOM) {
 			frontSide.addPlane2Drilling(drilling);
-		} else if (plane == Plane.LEFT) {
+		} else if (plane == TlfPlane.LEFT) {
 			frontSide.addPlane3Drilling(drilling);
-		} else if (plane == Plane.RIGHT) {
+		} else if (plane == TlfPlane.RIGHT) {
 			frontSide.addPlane4Drilling(drilling);
 		} else {
 			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
 		}
 	}
 
-	public void addProfile(PartProfile profile) {
+	public void addProfile(TlfProfile profile) {
 		profileMap.put(profile.getPrfNo(), profile);
 	}
 

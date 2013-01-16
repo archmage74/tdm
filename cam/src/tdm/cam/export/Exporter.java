@@ -3,9 +3,9 @@ package tdm.cam.export;
 import java.io.File;
 import java.util.List;
 
-import tdm.cam.db.imos.IImosService;
-import tdm.cam.tlf.CamPart;
+import tdm.cam.imos.db.IImosService;
 import tdm.cam.tlf.TlfDocument;
+import tdm.cam.tlf.TlfPart;
 import tdm.cam.util.TextFileWriter;
 
 public class Exporter {
@@ -16,11 +16,11 @@ public class Exporter {
 	private String exportPath = ".";
 
 	public void export(String orderId) {
-		List<CamPart> camParts = imosService.readParts(orderId);
+		List<TlfPart> camParts = imosService.readParts(orderId);
 
 		File exportDir = createEmptySubfolder(orderId);
 
-		for (CamPart camPart : camParts) {
+		for (TlfPart camPart : camParts) {
 			for (TlfDocument doc : camPart.createTlfDocuments()) {
 				textFileWriter.writeEscapedTlf(doc.getTlf(), exportDir.getPath() + '/' + doc.getName());
 			}
