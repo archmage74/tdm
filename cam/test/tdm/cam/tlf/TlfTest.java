@@ -51,7 +51,8 @@ public class TlfTest {
 	private static final String EXPECTED_PROFILE_FRONTSIDE_TOP = EXPECTED_PREFIX + "profileTop_frontside.tlf";
 	private static final String EXPECTED_PROFILE_FRONTSIDE_LEFT = EXPECTED_PREFIX + "profileLeft_frontside.tlf";
 	private static final String EXPECTED_PROFILE_FRONTSIDE_RIGHT = EXPECTED_PREFIX + "profileRight_frontside.tlf";
-	private static final String EXPECTED_PROFILE_BACKSIDE_RIGHT = EXPECTED_PREFIX + "profileRight_backside.tlf";;
+	private static final String EXPECTED_PROFILE_BACKSIDE_RIGHT = EXPECTED_PREFIX + "profileRight_backside.tlf";
+	private static final String EXPECTED_DRILLINGS_BACKSIDE_AND_HORIZONTAL_AND_PROFILE = EXPECTED_PREFIX + "drillingsBacksideAndHorizontalProfile__backside.tlf";
 
 
 	@Before
@@ -306,7 +307,7 @@ public class TlfTest {
 	}
 
 	@Test
-	public void profileRightTestBackSide() {
+	public void profileRightTestBackSideTest() {
 		ImosPart camPart = camPartFactory.createProfileRightBackSide();
 		TlfPart tlfPart = imos2Tlf.convert(camPart);
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
@@ -316,6 +317,19 @@ public class TlfTest {
 
 		TlfAssert.assertFileEquals(EXPECTED_PROFILE_BACKSIDE_RIGHT, fileName);
 	}
+	
+	@Test
+	public void drillingsBackSideAndHorizontalAndProfileTest() {
+		ImosPart camPart = camPartFactory.createDrillingsBackSideAndHorizontalAndProfileCamPart();
+		TlfPart tlfPart = imos2Tlf.convert(camPart);
+		List<TlfDocument> docs = tlfPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_backside"));
+
+		TlfAssert.assertFileEquals(EXPECTED_DRILLINGS_BACKSIDE_AND_HORIZONTAL_AND_PROFILE, fileName);
+	}
+	
 
 	@Test
 	public void jmteEngineTest() {

@@ -166,7 +166,14 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 	}
 
 	public boolean hasOnlyHorizontalDrillings() {
-		if (!drillings.isEmpty()) {
+		boolean noDrillings = true;
+		for (ITlfNode d : drillings) {
+			if (d instanceof Drilling) {
+				noDrillings = false;
+				break;
+			}
+		}
+		if (!noDrillings) {
 			return false;
 		}
 		if (plane1Drillings.isEmpty() && plane2Drillings.isEmpty() && plane3Drillings.isEmpty() && plane4Drillings.isEmpty()) {
