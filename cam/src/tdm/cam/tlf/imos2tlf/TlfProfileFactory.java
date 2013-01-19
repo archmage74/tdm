@@ -1,8 +1,8 @@
 package tdm.cam.tlf.imos2tlf;
 
-import tdm.cam.imos.ImosProfile;
+import tdm.cam.model.imos.ImosProfile;
+import tdm.cam.model.imos.ProfileType;
 import tdm.cam.tlf.TlfProfile;
-import tdm.cam.tlf.TlfProfileType;
 
 public class TlfProfileFactory {
 
@@ -12,16 +12,16 @@ public class TlfProfileFactory {
 
 		switch(imosProfile.getPrfNo()) {
 		case 1:
-			profile.setProfileType(TlfProfileType.POS_V);
+			profile.setProfileType(ProfileType.POS_V);
 			break;
 		case 2:
-			profile.setProfileType(TlfProfileType.POS_R);
+			profile.setProfileType(ProfileType.POS_R);
 			break;
 		case 3:
-			profile.setProfileType(TlfProfileType.POS_H);
+			profile.setProfileType(ProfileType.POS_H);
 			break;
 		case 4:
-			profile.setProfileType(TlfProfileType.POS_L);
+			profile.setProfileType(ProfileType.POS_L);
 			break;
 		default:
 			throw new RuntimeException("Not support for more than 4 sides per part");

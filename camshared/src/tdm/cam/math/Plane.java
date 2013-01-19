@@ -1,6 +1,6 @@
-package tdm.cam.tlf;
+package tdm.cam.math;
 
-public enum TlfPlane {
+public enum Plane {
 
 	FRONT,
 	BACK,

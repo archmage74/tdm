@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tdm.cam.TlfAssert;
-import tdm.cam.imos.ImosPart;
+import tdm.cam.model.imos.ImosPart;
 import tdm.cam.tlf.imos2tlf.Imos2TlfConverter;
 import tdm.cam.util.TextFileWriter;
 

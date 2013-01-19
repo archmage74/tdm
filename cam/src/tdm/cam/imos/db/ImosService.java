@@ -7,9 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import tdm.cam.imos.ImosDrilling;
-import tdm.cam.imos.ImosPart;
-import tdm.cam.imos.ImosProfile;
+import tdm.cam.db.ConnectionProvider;
+import tdm.cam.model.imos.ImosDrilling;
+import tdm.cam.model.imos.ImosPart;
+import tdm.cam.model.imos.ImosProfile;
+import tdm.cam.model.imos.ImosProject;
 import tdm.cam.tlf.DrillingAngleException;
 
 public class ImosService implements IImosService {
@@ -24,13 +26,30 @@ public class ImosService implements IImosService {
 	}
 
 	@Override
-	public List<ImosPart> readParts(String orderId) {
+	public void init() {
+		ImosProperties imosProps = new ImosProperties();
+		Connection connection;
+		try {
+			connection = ConnectionProvider.getConnection(imosProps);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		this.setDbConnection(connection);
+	}
+	
+	@Override
+	public ImosProject readProject(String orderId) {
+		ImosProject project = new ImosProject();
+		project.setOrderId(orderId);
+
 		List<ImosPart> parts = readCamParts(orderId);
 		for (ImosPart part : parts) {
 			readDrillings(part);
 			readProfiles(part);
 		}
-		return parts;
+		project.setParts(parts);
+		
+		return project;
 	}
 
 	private List<ImosPart> readCamParts(String orderId) {

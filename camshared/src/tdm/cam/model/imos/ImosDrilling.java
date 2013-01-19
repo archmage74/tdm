@@ -1,31 +1,15 @@
-package tdm.cam.imos;
+package tdm.cam.model.imos;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.xml.bind.annotation.XmlType;
 
-import tdm.cam.math.Vector3;
-import tdm.cam.tlf.TlfPlane;
+import tdm.cam.math.IDirection;
+import tdm.cam.math.Plane;
+import tdm.cam.math.PlaneHelper;
 
 
-public class ImosDrilling {
+@XmlType
+public class ImosDrilling implements IDirection {
 
-	public static final Vector3 VECTOR_FRONT_SIDE = new Vector3(0, 0, 1);
-	public static final Vector3 VECTOR_BACK_SIDE = new Vector3(0, 0, -1);
-	public static final Vector3 VECTOR_PLANE_TOP = new Vector3(0, -1, 0);
-	public static final Vector3 VECTOR_PLANE_BOTTOM = new Vector3(0, 1, 0);
-	public static final Vector3 VECTOR_PLANE_LEFT = new Vector3(1, 0, 0);
-	public static final Vector3 VECTOR_PLANE_RIGHT = new Vector3(-1, 0, 0);
-
-	public static final Map<TlfPlane, Vector3> planeVectors = new HashMap<TlfPlane, Vector3>();
-	static {
-		planeVectors.put(TlfPlane.FRONT, VECTOR_FRONT_SIDE);
-		planeVectors.put(TlfPlane.BACK, VECTOR_BACK_SIDE);
-		planeVectors.put(TlfPlane.TOP, VECTOR_PLANE_TOP);
-		planeVectors.put(TlfPlane.BOTTOM, VECTOR_PLANE_BOTTOM);
-		planeVectors.put(TlfPlane.LEFT, VECTOR_PLANE_LEFT);
-		planeVectors.put(TlfPlane.RIGHT, VECTOR_PLANE_RIGHT);
-	}
-	
 	protected double x;
 
 	protected double y;
@@ -143,22 +127,9 @@ public class ImosDrilling {
 				+ ", angleZ=" + angleZ + ", diameter=" + diameter + ", deep=" + deep + ", numDrillings=" + numDrillings + "]";
 	}
 
-	public TlfPlane getPlane() {
-		Vector3 drillDirection = new Vector3(0, 0, 1);
-		drillDirection.rotateXDegrees(getAngleX()).rotateYDegrees(getAngleY()).rotateZDegrees(getAngleZ());
-
-		for (Map.Entry<TlfPlane, Vector3> planeVector : planeVectors.entrySet()) {
-			if (drillDirection.equals(planeVector.getValue())) {
-				return planeVector.getKey();
-			}
-		}
-		
-		return TlfPlane.DIAGONAL;
-	}
-	
 	public boolean isHorizontal() {
-		TlfPlane plane = getPlane();
-		if (plane == TlfPlane.FRONT || plane == TlfPlane.BACK || plane == TlfPlane.DIAGONAL) {
+		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(this);
+		if (plane == Plane.FRONT || plane == Plane.BACK || plane == Plane.DIAGONAL) {
 			return false;
 		} else {
 			return true;

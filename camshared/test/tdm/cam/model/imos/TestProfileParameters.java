@@ -1,6 +1,7 @@
-package tdm.cam.tlf;
+package tdm.cam.model.imos;
 
-import tdm.cam.imos.ImosProfile;
+import tdm.cam.model.imos.ImosProfile;
+
 
 public class TestProfileParameters {
 

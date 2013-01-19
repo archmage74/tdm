@@ -1,11 +1,11 @@
 package tdm.cam.imos.db;
 
-import java.util.List;
-
-import tdm.cam.imos.ImosPart;
+import tdm.cam.model.imos.ImosProject;
 
 public interface IImosService {
 
-	public abstract List<ImosPart> readParts(String orderId);
+	public void init();
+	
+	public ImosProject readProject(String orderId);
 
 }

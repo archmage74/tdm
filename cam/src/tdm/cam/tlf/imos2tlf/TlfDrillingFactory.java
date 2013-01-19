@@ -5,10 +5,10 @@ import java.text.DecimalFormatSymbols;
 import java.util.Map;
 
 import tdm.cam.imos.DrillParser;
-import tdm.cam.imos.ImosDrilling;
 import tdm.cam.math.Dimensions;
-import tdm.cam.tlf.Drilling;
-import tdm.cam.tlf.RowDrilling;
+import tdm.cam.model.imos.ImosDrilling;
+import tdm.cam.tlf.TlfDrilling;
+import tdm.cam.tlf.TlfRowDrilling;
 import tdm.cam.tlf.TlfPart;
 import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 
@@ -27,7 +27,7 @@ public class TlfDrillingFactory {
 		drillings = parser.readDrillConfiguration();
 	}
 	
-	public Drilling createDrilling(TlfPart tlfPart, ImosDrilling imosDrilling) {
+	public TlfDrilling createDrilling(TlfPart tlfPart, ImosDrilling imosDrilling) {
 		if (imosDrilling.getNumDrillings() == 1) {
 			return createSingleDrilling(tlfPart.getDimensions(), imosDrilling);
 		} else {
@@ -35,9 +35,9 @@ public class TlfDrillingFactory {
 		}
 	}
 
-	private Drilling createSingleDrilling(Dimensions dimensions, ImosDrilling imosDrilling) {
+	private TlfDrilling createSingleDrilling(Dimensions dimensions, ImosDrilling imosDrilling) {
 		double diameter = imosDrilling.getDiameter();
-		Drilling drilling = null;
+		TlfDrilling drilling = null;
 		
 		// 0.01mm epsilon to compare doubles
 		if (!imosDrilling.isHorizontal() && imosDrilling.getDeep() > (dimensions.getThick() - 0.01)) {
@@ -51,9 +51,9 @@ public class TlfDrillingFactory {
 		return drilling;
 	}
 
-	private Drilling createRowDrilling(Dimensions dimensions, ImosDrilling imosDrilling) {
+	private TlfDrilling createRowDrilling(Dimensions dimensions, ImosDrilling imosDrilling) {
 		double diameter = imosDrilling.getDiameter();
-		RowDrilling drilling = null;
+		TlfRowDrilling drilling = null;
 		
 		if (!imosDrilling.isHorizontal() && imosDrilling.getDeep() > (dimensions.getThick() - 0.01)) {
 			drilling = createRowThroughDrillingForDiameter(diameter, dimensions);
@@ -70,7 +70,7 @@ public class TlfDrillingFactory {
 		return drilling;
 	}
 
-	private void fillStandardDrillingValues(Drilling drilling, ImosDrilling imosDrilling) {
+	private void fillStandardDrillingValues(TlfDrilling drilling, ImosDrilling imosDrilling) {
 		drilling.setX(imosDrilling.getX());
 		drilling.setY(imosDrilling.getY());
 		drilling.setZ(imosDrilling.getZ());
@@ -79,45 +79,45 @@ public class TlfDrillingFactory {
 		drilling.setAngleZ(imosDrilling.getAngleZ());
 	}
 
-	private RowDrilling createRowDrillingForDiameter(double diameter, double deep, Dimensions dimensions) {
+	private TlfRowDrilling createRowDrillingForDiameter(double diameter, double deep, Dimensions dimensions) {
 		String drillKey = createDrillKey(diameter);
-		RowDrilling drilling = createRowDrilling(dimensions, drillKey);
+		TlfRowDrilling drilling = createRowDrilling(dimensions, drillKey);
 		drilling.setDeep(deep);
 		return drilling;
 	}
 
-	private RowDrilling createRowThroughDrillingForDiameter(double diameter, Dimensions dimensions) {
+	private TlfRowDrilling createRowThroughDrillingForDiameter(double diameter, Dimensions dimensions) {
 		String drillKey = "V" + createDrillKey(diameter);
-		RowDrilling drilling = createRowDrilling(dimensions, drillKey);
+		TlfRowDrilling drilling = createRowDrilling(dimensions, drillKey);
 		setThroughDeepForDrilling(dimensions, drilling);
 		return drilling;
 	}
 
-	private RowDrilling createRowDrilling(Dimensions dimensions, String drillKey) {
+	private TlfRowDrilling createRowDrilling(Dimensions dimensions, String drillKey) {
 		TlfDrillingTemplate template = drillings.get(drillKey);
 		return template.createRowDrilling(dimensions);
 	}
 
-	private Drilling createDrillingForDiameter(double diameter, double deep, Dimensions dimensions) {
+	private TlfDrilling createDrillingForDiameter(double diameter, double deep, Dimensions dimensions) {
 		String drillKey = createDrillKey(diameter);
-		Drilling drilling = createSingleDrilling(dimensions, drillKey);
+		TlfDrilling drilling = createSingleDrilling(dimensions, drillKey);
 		drilling.setDeep(deep);
 		return drilling;
 	}
 
-	private Drilling createThroughDrillingForDiameter(double diameter, Dimensions dimensions) {
+	private TlfDrilling createThroughDrillingForDiameter(double diameter, Dimensions dimensions) {
 		String drillKey = "V" + createDrillKey(diameter);
-		Drilling drilling = createSingleDrilling(dimensions, drillKey);
+		TlfDrilling drilling = createSingleDrilling(dimensions, drillKey);
 		setThroughDeepForDrilling(dimensions, drilling);
 		return drilling;
 	}
 
-	private Drilling createSingleDrilling(Dimensions dimensions, String drillKey) {
+	private TlfDrilling createSingleDrilling(Dimensions dimensions, String drillKey) {
 		TlfDrillingTemplate template = getDrillingTemplate(drillKey);
 		return template.createDrilling(dimensions);
 	}
 
-	private void setThroughDeepForDrilling(Dimensions dimensions, Drilling drilling) {
+	private void setThroughDeepForDrilling(Dimensions dimensions, TlfDrilling drilling) {
 		drilling.setDeep(dimensions.getThick() + THROUGH_ADD_ON);
 	}
 

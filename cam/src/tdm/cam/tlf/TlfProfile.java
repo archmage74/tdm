@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tdm.cam.math.Dimensions;
+import tdm.cam.model.imos.ProfileType;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
 public class TlfProfile implements ITlfNode, ITlfEngineHolder {
@@ -13,7 +14,7 @@ public class TlfProfile implements ITlfNode, ITlfEngineHolder {
 	// index within the campart plane for tlf reference between entity and work
 	private int index;
 
-	private TlfProfileType profileType;
+	private ProfileType profileType;
 
 	private double thick;
 	
@@ -56,11 +57,11 @@ public class TlfProfile implements ITlfNode, ITlfEngineHolder {
 		this.index = index;
 	}
 
-	public TlfProfileType getProfileType() {
+	public ProfileType getProfileType() {
 		return profileType;
 	}
 
-	public void setProfileType(TlfProfileType profileType) {
+	public void setProfileType(ProfileType profileType) {
 		this.profileType = profileType;
 	}
 

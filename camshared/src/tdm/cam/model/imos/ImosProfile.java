@@ -1,6 +1,8 @@
-package tdm.cam.imos;
+package tdm.cam.model.imos;
 
+import javax.xml.bind.annotation.XmlType;
 
+@XmlType
 public class ImosProfile {
 
 	private int prfNo;

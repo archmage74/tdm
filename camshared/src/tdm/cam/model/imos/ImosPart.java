@@ -1,10 +1,13 @@
-package tdm.cam.imos;
+package tdm.cam.model.imos;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlType;
+
 import tdm.cam.math.Dimensions;
 
+@XmlType
 public class ImosPart {
 
 	private String id;
@@ -79,12 +82,20 @@ public class ImosPart {
 		drillings.add(drilling);
 	}
 
+	public void setDrillings(List<ImosDrilling> drillings) {
+		this.drillings = drillings;
+	}
+
 	public List<ImosProfile> getProfiles() {
 		return profiles;
 	}
 	
 	public void addProfile(ImosProfile profile) {
 		profiles.add(profile);
+	}
+
+	public void setProfiles(List<ImosProfile> profiles) {
+		this.profiles = profiles;
 	}
 	
 }

@@ -27,7 +27,5 @@ public class ImosProperties implements DBProperties {
 	public String getUserName() {
 		return "IMOSADMIN";
 	}
-	
-	
 
 }

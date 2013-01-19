@@ -1,6 +1,7 @@
 .metadata
 cam/bin
 cam/tlf/test/*
+cam/config/imosService.properties
 cam/.settings
 cam/.classpath
 cam/.project

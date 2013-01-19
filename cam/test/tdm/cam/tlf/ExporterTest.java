@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tdm.cam.export.Exporter;
-import tdm.cam.imos.ImosPart;
+import tdm.cam.model.imos.ImosPart;
 
 public class ExporterTest {
 

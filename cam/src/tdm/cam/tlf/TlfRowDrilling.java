@@ -6,7 +6,7 @@ import java.util.Map;
 import tdm.cam.math.Dimensions;
 import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 
-public class RowDrilling extends Drilling {
+public class TlfRowDrilling extends TlfDrilling {
 
 	public static final double OFFSET = 32.0;
 	
@@ -20,12 +20,12 @@ public class RowDrilling extends Drilling {
 	protected double planeEndX;
 	protected double planeEndY;
 
-	public RowDrilling(Dimensions dimensions) {
+	public TlfRowDrilling(Dimensions dimensions) {
 		super(dimensions);
 		this.dimensions = dimensions;
 	}
 	
-	public RowDrilling(TlfDrillingTemplate template, Dimensions dimensions) {
+	public TlfRowDrilling(TlfDrillingTemplate template, Dimensions dimensions) {
 		super(template, dimensions);		
 	}
 

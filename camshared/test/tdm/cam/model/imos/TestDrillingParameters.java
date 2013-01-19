@@ -1,6 +1,7 @@
-package tdm.cam.tlf;
+package tdm.cam.model.imos;
 
-import tdm.cam.imos.ImosDrilling;
+import tdm.cam.model.imos.ImosDrilling;
+
 
 public class TestDrillingParameters {
 

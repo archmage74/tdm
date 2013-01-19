@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import tdm.cam.imos.ImosDrilling;
-import tdm.cam.imos.ImosPart;
-import tdm.cam.imos.ImosProfile;
-import tdm.cam.tlf.Drilling;
+import tdm.cam.model.imos.ImosDrilling;
+import tdm.cam.model.imos.ImosPart;
+import tdm.cam.model.imos.ImosProfile;
+import tdm.cam.tlf.TlfDrilling;
 import tdm.cam.tlf.TlfPart;
 import tdm.cam.tlf.TlfProfile;
 
@@ -28,7 +28,7 @@ public class Imos2TlfConverter {
 		TlfPart tlfPart = partFactory.createTlfPart(imosPart);
 		
 		for (ImosDrilling imosDrilling : imosPart.getDrillings()) {
-			Drilling tldDrilling = drillingFactory.createDrilling(tlfPart, imosDrilling);
+			TlfDrilling tldDrilling = drillingFactory.createDrilling(tlfPart, imosDrilling);
 			tlfPart.addDrilling(tldDrilling);
 		}
 

@@ -1,7 +1,7 @@
 package tdm.cam.imos;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -11,7 +11,7 @@ import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 
 public class DrillParser {
 
-	public static final String DRILL_CONFIG_PATH = "./config/drills.properties";
+	public static final String DRILL_PARSER_PROPERTIES = "/drills.properties";
 
 	private static final String PROP_DRILLS = "drills";
 	private static final String PROP_PREFIX_DRILL = "drill";
@@ -22,9 +22,10 @@ public class DrillParser {
 	public Map<String, TlfDrillingTemplate> readDrillConfiguration() {
 		Properties drillProperties = new Properties();
 		try {
-			drillProperties.load(new FileInputStream(DRILL_CONFIG_PATH));
+			InputStream propertiesStream = this.getClass().getResourceAsStream(DRILL_PARSER_PROPERTIES);
+			drillProperties.load(propertiesStream);
 		} catch (IOException e) {
-			throw new RuntimeException("could not load " + DRILL_CONFIG_PATH, e);
+			throw new RuntimeException("could not load " + DRILL_PARSER_PROPERTIES, e);
 		}
 		return parseProperties(drillProperties);
 	}

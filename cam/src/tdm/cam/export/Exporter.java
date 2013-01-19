@@ -3,8 +3,8 @@ package tdm.cam.export;
 import java.io.File;
 import java.util.Collection;
 
-import tdm.cam.imos.ImosPart;
 import tdm.cam.imos.db.IImosService;
+import tdm.cam.model.imos.ImosProject;
 import tdm.cam.tlf.TlfDocument;
 import tdm.cam.tlf.TlfPart;
 import tdm.cam.tlf.imos2tlf.Imos2TlfConverter;
@@ -19,8 +19,8 @@ public class Exporter {
 	private String exportPath = ".";
 
 	public void export(String orderId) {
-		Collection<ImosPart> imosParts = imosService.readParts(orderId);
-		Collection<TlfPart> tlfParts = imos2Tlf.convert(imosParts);
+		ImosProject imosProject = imosService.readProject(orderId);
+		Collection<TlfPart> tlfParts = imos2Tlf.convert(imosProject.getParts());
 		
 		File exportDir = createEmptySubfolder(orderId);
 		

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import tdm.cam.math.Dimensions;
+import tdm.cam.math.Plane;
+import tdm.cam.math.PlaneHelper;
 
 /**
  * plane 1 top |---------------| | | plane 3 | | plane 4 left | | right | | |---------------| plane 2 bottom
@@ -76,7 +78,7 @@ public class TlfPart implements ITlfEngineHolder {
 		// FIXME better rule: move all to one side (prefer inner side) if possible
 		List<ITlfNode> toMove = new ArrayList<ITlfNode>();
 		for (ITlfNode drilling : backSide.getDrillings()) {
-			if (drilling instanceof Drilling) {
+			if (drilling instanceof TlfDrilling) {
 				if (drilling.isSideIndependent()) {
 					toMove.add(drilling);
 				}
@@ -202,19 +204,19 @@ public class TlfPart implements ITlfEngineHolder {
 		return backSide;
 	}
 
-	public void addDrilling(Drilling drilling) {
-		TlfPlane plane = drilling.getPlane();
-		if (plane == TlfPlane.FRONT) {
+	public void addDrilling(TlfDrilling drilling) {
+		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(drilling);
+		if (plane == Plane.FRONT) {
 			frontSide.addNode(drilling);
-		} else if (plane == TlfPlane.BACK) {
+		} else if (plane == Plane.BACK) {
 			backSide.addNode(drilling);
-		} else if (plane == TlfPlane.TOP) {
+		} else if (plane == Plane.TOP) {
 			frontSide.addPlane1Drilling(drilling);
-		} else if (plane == TlfPlane.BOTTOM) {
+		} else if (plane == Plane.BOTTOM) {
 			frontSide.addPlane2Drilling(drilling);
-		} else if (plane == TlfPlane.LEFT) {
+		} else if (plane == Plane.LEFT) {
 			frontSide.addPlane3Drilling(drilling);
-		} else if (plane == TlfPlane.RIGHT) {
+		} else if (plane == Plane.RIGHT) {
 			frontSide.addPlane4Drilling(drilling);
 		} else {
 			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());

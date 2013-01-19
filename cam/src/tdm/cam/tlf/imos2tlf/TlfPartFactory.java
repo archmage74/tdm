@@ -1,6 +1,6 @@
 package tdm.cam.tlf.imos2tlf;
 
-import tdm.cam.imos.ImosPart;
+import tdm.cam.model.imos.ImosPart;
 import tdm.cam.tlf.TlfPart;
 
 public class TlfPartFactory {

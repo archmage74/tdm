@@ -1,13 +1,8 @@
 package tdm.cam;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import tdm.cam.db.ConnectionProvider;
 import tdm.cam.export.Exporter;
 import tdm.cam.imos.db.IImosService;
-import tdm.cam.imos.db.ImosProperties;
-import tdm.cam.imos.db.ImosService;
+import tdm.cam.imos.db.ImosServiceFactory;
 
 public class CamMain {
 	
@@ -28,15 +23,8 @@ public class CamMain {
 	}
 	
 	private IImosService createImosService() {
-		ImosService imosService = new ImosService();
-		ImosProperties imosProps = new ImosProperties();
-		Connection connection;
-		try {
-			connection = ConnectionProvider.getConnection(imosProps);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-		imosService.setDbConnection(connection);
+		ImosServiceFactory imosServiceFactory = ImosServiceFactory.getInstance();
+		IImosService imosService = imosServiceFactory.getImosService();
 		return imosService;
 	}
 	

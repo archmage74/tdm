@@ -156,7 +156,7 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 	public boolean isEmpty() {
 		boolean noDrillings = true;
 		for (ITlfNode d : drillings) {
-			if (d instanceof Drilling) {
+			if (d instanceof TlfDrilling) {
 				noDrillings = false;
 				break;
 			}
@@ -168,7 +168,7 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 	public boolean hasOnlyHorizontalDrillings() {
 		boolean noDrillings = true;
 		for (ITlfNode d : drillings) {
-			if (d instanceof Drilling) {
+			if (d instanceof TlfDrilling) {
 				noDrillings = false;
 				break;
 			}

@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import tdm.cam.imos.ImosPart;
-import tdm.cam.imos.ImosProfile;
 import tdm.cam.math.Dimensions;
+import tdm.cam.model.imos.ImosPart;
+import tdm.cam.model.imos.ImosProfile;
 
 public class ImosProfileFactory {
 

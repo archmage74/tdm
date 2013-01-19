@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import tdm.cam.imos.ImosDrilling;
-import tdm.cam.imos.ImosPart;
 import tdm.cam.math.Dimensions;
+import tdm.cam.model.imos.ImosDrilling;
+import tdm.cam.model.imos.ImosPart;
 
 public class ImosDrillingFactory {
 
