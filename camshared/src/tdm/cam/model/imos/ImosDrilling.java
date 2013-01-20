@@ -1,5 +1,7 @@
 package tdm.cam.model.imos;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 import tdm.cam.math.IDirection;
@@ -7,7 +9,8 @@ import tdm.cam.math.Plane;
 import tdm.cam.math.PlaneHelper;
 
 
-@XmlType
+@XmlType(name="drilling")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ImosDrilling implements IDirection {
 
 	protected double x;

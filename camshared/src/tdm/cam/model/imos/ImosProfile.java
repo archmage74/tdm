@@ -1,8 +1,11 @@
 package tdm.cam.model.imos;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType
+@XmlType(name="profile")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ImosProfile {
 
 	private int prfNo;

@@ -3,11 +3,16 @@ package tdm.cam.model.imos;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
 import tdm.cam.math.Dimensions;
 
-@XmlType
+@XmlType()
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ImosPart {
 
 	private String id;
@@ -22,8 +27,12 @@ public class ImosPart {
 
 	private Dimensions dimensions = new Dimensions();
 
+	@XmlElementWrapper(name="drillings")
+	@XmlElement(name="drilling")
 	private List<ImosDrilling> drillings = new ArrayList<ImosDrilling>();
 	
+	@XmlElementWrapper(name="profiles")
+	@XmlElement(name="profile")
 	private List<ImosProfile> profiles = new ArrayList<ImosProfile>();
 
 	public String getId() {
