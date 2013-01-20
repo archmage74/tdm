@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="camrest">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="cam.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cam/cam">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="camshared.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/camshared/camshared">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="camrest"/>
+        <property name="java-output-path" value="/camrest/build/classes"/>
+    </wb-module>
+</project-modules>
