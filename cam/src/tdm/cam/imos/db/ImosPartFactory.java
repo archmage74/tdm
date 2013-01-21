@@ -3,8 +3,8 @@ package tdm.cam.imos.db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import tdm.cam.math.Dimensions;
 import tdm.cam.model.imos.ImosPart;
+import tdm.cam.model.math.Dimensions;
 
 
 public class ImosPartFactory {

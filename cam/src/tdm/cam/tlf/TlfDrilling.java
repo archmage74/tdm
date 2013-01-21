@@ -3,10 +3,10 @@ package tdm.cam.tlf;
 import java.util.HashMap;
 import java.util.Map;
 
-import tdm.cam.math.Dimensions;
-import tdm.cam.math.IDirection;
-import tdm.cam.math.Plane;
-import tdm.cam.math.PlaneHelper;
+import tdm.cam.model.math.Dimensions;
+import tdm.cam.model.math.IDirection;
+import tdm.cam.model.math.Plane;
+import tdm.cam.model.math.PlaneHelper;
 import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 

@@ -4,9 +4,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 @XmlType(name="profile")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ImosProfile {
+public class ImosProfile implements IsSerializable {
 
 	private int prfNo;
 	private String prfId;

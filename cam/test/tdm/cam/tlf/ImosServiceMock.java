@@ -1,5 +1,8 @@
 package tdm.cam.tlf;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tdm.cam.imos.db.IImosService;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProject;
@@ -7,14 +10,14 @@ import tdm.cam.model.imos.ImosProject;
 
 public class ImosServiceMock implements IImosService {
 
-	private ImosPart camPart;
+	private List<ImosPart> parts = new ArrayList<ImosPart>();
 	
 	@Override
 	public ImosProject readProject(String orderId) {
 		ImosProject project = new ImosProject();
 		project.setOrderId(orderId);
 		project.setName("mock-project");
-		project.addPart(camPart);
+		project.setParts(parts);
 		
 		return project;
 	}
@@ -22,11 +25,14 @@ public class ImosServiceMock implements IImosService {
 	@Override
 	public void init() {
 		CamPartTestDataFactory f = new CamPartTestDataFactory();
-		camPart = f.createDrillingsBackSideAndHorizontalAndProfileCamPart();
+		parts.add(f.createDrillingsBackSideAndHorizontalAndProfileCamPart());
+		parts.add(f.createDrilling10And35CamPart());
+		parts.add(f.createBigPart());
 	}
 	
 	public void setCamPart(ImosPart camPart) {
-		this.camPart = camPart;
+		parts.clear();
+		parts.add(camPart);
 	}
 
 }

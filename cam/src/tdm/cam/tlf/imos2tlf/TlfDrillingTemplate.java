@@ -1,6 +1,6 @@
 package tdm.cam.tlf.imos2tlf;
 
-import tdm.cam.math.Dimensions;
+import tdm.cam.model.math.Dimensions;
 import tdm.cam.tlf.TlfDrilling;
 import tdm.cam.tlf.ITlfEngineHolder;
 import tdm.cam.tlf.TlfRowDrilling;

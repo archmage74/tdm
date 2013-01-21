@@ -5,8 +5,9 @@ import java.text.DecimalFormatSymbols;
 import java.util.Map;
 
 import tdm.cam.imos.DrillParser;
-import tdm.cam.math.Dimensions;
 import tdm.cam.model.imos.ImosDrilling;
+import tdm.cam.model.math.Dimensions;
+import tdm.cam.model.math.PlaneHelper;
 import tdm.cam.tlf.TlfDrilling;
 import tdm.cam.tlf.TlfRowDrilling;
 import tdm.cam.tlf.TlfPart;
@@ -16,10 +17,12 @@ public class TlfDrillingFactory {
 
 	public static final double THROUGH_ADD_ON = 4.0;
 
-	Map<String, TlfDrillingTemplate> drillings;
+	protected PlaneHelper planeHelper;
+	
+	protected Map<String, TlfDrillingTemplate> drillings;
 	
 	public TlfDrillingFactory() {
-
+		planeHelper = PlaneHelper.getInstance();
 	}
 
 	public void init() {
@@ -40,7 +43,7 @@ public class TlfDrillingFactory {
 		TlfDrilling drilling = null;
 		
 		// 0.01mm epsilon to compare doubles
-		if (!imosDrilling.isHorizontal() && imosDrilling.getDeep() > (dimensions.getThick() - 0.01)) {
+		if (!planeHelper.isHorizontal(imosDrilling) && imosDrilling.getDeep() > (dimensions.getThick() - 0.01)) {
 			drilling = createThroughDrillingForDiameter(diameter, dimensions);
 		} else {
 			double deep = imosDrilling.getDeep();
@@ -55,7 +58,7 @@ public class TlfDrillingFactory {
 		double diameter = imosDrilling.getDiameter();
 		TlfRowDrilling drilling = null;
 		
-		if (!imosDrilling.isHorizontal() && imosDrilling.getDeep() > (dimensions.getThick() - 0.01)) {
+		if (!planeHelper.isHorizontal(imosDrilling) && imosDrilling.getDeep() > (dimensions.getThick() - 0.01)) {
 			drilling = createRowThroughDrillingForDiameter(diameter, dimensions);
 		} else {
 			double deep = imosDrilling.getDeep();

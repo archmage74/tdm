@@ -9,11 +9,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
 
-import tdm.cam.math.Dimensions;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+import tdm.cam.model.math.Dimensions;
 
 @XmlType()
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ImosPart {
+public class ImosPart implements IsSerializable {
 
 	private String id;
 

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tdm.cam.math.Dimensions;
+import tdm.cam.model.math.Dimensions;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
 public abstract class TlfPartSide implements ITlfEngineHolder {

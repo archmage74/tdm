@@ -6,7 +6,7 @@ import javax.xml.bind.Marshaller;
 
 import org.junit.Test;
 
-import tdm.cam.math.Dimensions;
+import tdm.cam.model.math.Dimensions;
 
 public class XmlTest {
 

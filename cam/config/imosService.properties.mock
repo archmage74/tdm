@@ -1,1 +1,1 @@
-imosServiceClass=cam.tdm.tlf.ImosServiceMock
+imosServiceClass=tdm.cam.tlf.ImosServiceMock

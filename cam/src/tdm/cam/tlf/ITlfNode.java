@@ -1,6 +1,6 @@
 package tdm.cam.tlf;
 
-import tdm.cam.math.Dimensions;
+import tdm.cam.model.math.Dimensions;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
 public interface ITlfNode {

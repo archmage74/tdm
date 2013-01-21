@@ -1,6 +1,6 @@
 package tdm.cam.tlf.transformer;
 
-import tdm.cam.math.Dimensions;
+import tdm.cam.model.math.Dimensions;
 
 /**
  * top = Plane 1 

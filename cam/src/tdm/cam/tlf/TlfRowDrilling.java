@@ -3,7 +3,7 @@ package tdm.cam.tlf;
 import java.util.HashMap;
 import java.util.Map;
 
-import tdm.cam.math.Dimensions;
+import tdm.cam.model.math.Dimensions;
 import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 
 public class TlfRowDrilling extends TlfDrilling {

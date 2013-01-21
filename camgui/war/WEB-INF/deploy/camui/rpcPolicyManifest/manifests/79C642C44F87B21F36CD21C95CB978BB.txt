@@ -1,0 +1,2 @@
+serviceClass: tdm.cam.ui.client.ImosService
+path: 726377258916C5E75CC4184BE0C40ACF.gwt.rpc

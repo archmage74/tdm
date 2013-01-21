@@ -3,13 +3,13 @@ package tdm.cam.tlf;
 import java.util.Map;
 
 import tdm.cam.imos.DrillParser;
-import tdm.cam.math.Dimensions;
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProfile;
 import tdm.cam.model.imos.TestDrillingParameters;
 import tdm.cam.model.imos.TestProfileParameters;
 import tdm.cam.model.imos.ProfileType;
+import tdm.cam.model.math.Dimensions;
 import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 
 public class CamPartTestDataFactory {
@@ -228,6 +228,23 @@ public class CamPartTestDataFactory {
 		camPart.addDrilling(drilling10);
 		ImosProfile profile = new TestProfileParameters().prfNo(ProfileType.POS_R.getValue()).prfLen(404).create();
 		camPart.addProfile(profile);
+
+		return camPart;
+	}
+	
+	public ImosPart createBigPart() {
+		ImosPart camPart = new ImosPart();
+		camPart.setDimensions(new Dimensions(3350.0, 1300.0, 25.0));
+		camPart.setBarcode(Thread.currentThread().getStackTrace()[1].getMethodName());
+		
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(404).z(8).angleX(-90).deep(15).create();
+		camPart.addDrilling(drilling5);
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
+		camPart.addDrilling(drilling10);
+		ImosProfile profile = new TestProfileParameters().prfNo(ProfileType.POS_R.getValue()).prfLen(404).create();
+		camPart.addProfile(profile);
+		ImosDrilling drilling = new TestDrillingParameters().x(80).y(60).endX(380).endY(200).diameter(6).numDrillings(7).create();
+		camPart.addDrilling(drilling);
 
 		return camPart;
 	}

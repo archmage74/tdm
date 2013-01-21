@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tdm.cam.math.Dimensions;
-import tdm.cam.math.Plane;
-import tdm.cam.math.PlaneHelper;
+import tdm.cam.model.math.Dimensions;
+import tdm.cam.model.math.Plane;
+import tdm.cam.model.math.PlaneHelper;
 
 /**
  * plane 1 top |---------------| | | plane 3 | | plane 4 left | | right | | |---------------| plane 2 bottom

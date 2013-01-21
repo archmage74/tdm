@@ -4,14 +4,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
-import tdm.cam.math.IDirection;
-import tdm.cam.math.Plane;
-import tdm.cam.math.PlaneHelper;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+import tdm.cam.model.math.IDirection;
 
 
 @XmlType(name="drilling")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ImosDrilling implements IDirection {
+public class ImosDrilling implements IDirection, IsSerializable {
 
 	protected double x;
 
@@ -128,15 +128,6 @@ public class ImosDrilling implements IDirection {
 	public String toString() {
 		return "ImosDrilling [x=" + x + ", y=" + y + ", z=" + z + ", endX=" + endX + ", endY=" + endY + ", angleX=" + angleX + ", angleY=" + angleY
 				+ ", angleZ=" + angleZ + ", diameter=" + diameter + ", deep=" + deep + ", numDrillings=" + numDrillings + "]";
-	}
-
-	public boolean isHorizontal() {
-		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(this);
-		if (plane == Plane.FRONT || plane == Plane.BACK || plane == Plane.DIAGONAL) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 }

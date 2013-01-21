@@ -1,6 +1,8 @@
 package tdm.cam.model.imos;
 
-public enum ProfileType {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public enum ProfileType implements IsSerializable {
 
 	POS_V (1),
 	POS_R (2),
