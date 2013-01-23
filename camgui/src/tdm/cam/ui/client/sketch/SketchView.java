@@ -7,6 +7,10 @@ import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.math.PlaneHelper;
 import tdm.cam.ui.client.IDisplayPart;
+import tdm.cam.ui.client.sketch.draw.Circle;
+import tdm.cam.ui.client.sketch.draw.DrawList;
+import tdm.cam.ui.client.sketch.draw.Rectangle;
+import tdm.cam.ui.client.sketch.transform.ICoordinateTransformerFactory;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -32,9 +36,7 @@ public class SketchView implements IDisplayPart {
 
 	protected List<IDrillingFilter> drillingFilters = new ArrayList<IDrillingFilter>();
 	
-	protected List<ICoordinateTransformer> transformers = new ArrayList<ICoordinateTransformer>();
-	
-	protected IProjector projector;
+	protected ICoordinateTransformerFactory transformerFactory;
 	
 	public SketchView(Canvas canvas) {
 		this.canvas = canvas;
@@ -43,44 +45,32 @@ public class SketchView implements IDisplayPart {
 		canvas.setCoordinateSpaceHeight(MAX_Y);
 		this.context = canvas.getContext2d();
 	}
-	
+
+	int i = 0;
 	@Override
 	public void displayPart(ImosPart part) {
 		context.clearRect(0, 0, MAX_X, MAX_Y);
-
-		drawPartOutline(part);
-		drawPartDrillings(part);
+		DrawList drawList = new DrawList();
+		drawList.addTransformers(transformerFactory.createTransformers(part.getDimensions()));
+		drawPartOutline(drawList, part);
+		drawPartDrillings(drawList, part);
+		drawList.draw(context);
 	}
 	
 	public void addDrillingFilter(IDrillingFilter filter) {
 		drillingFilters.add(filter);
 	}
 
-	public void addCoordinateTransformers(ICoordinateTransformer transformer) {
-		transformers.add(transformer);
+	private void drawPartOutline(DrawList drawList, ImosPart part) {
+		double l = part.getDimensions().getLength();
+		double h = part.getDimensions().getWidth();
+		drawList.addElement(new Rectangle(0, 0, l, h));
 	}
 
-	public void setProjector(IProjector projector) {
-		this.projector = projector;
-	}
-
-	private void drawPartOutline(ImosPart part) {
-		double sx = part.getDimensions().getLength();
-		double sy = part.getDimensions().getWidth();
-		CssColor color = CssColor.make(0, 0, 0);
-		context.setLineWidth(4);
-		context.setStrokeStyle(color);
-		int x = projector.px(tx(0, part), part.getDimensions());
-		int y = projector.py(ty(0, part), part.getDimensions());
-		int lx = projector.plx(tx(sx, part));
-		int ly = projector.ply(ty(sy, part));
-		context.strokeRect(x, y, lx, ly);
-	}
-
-	private void drawPartDrillings(ImosPart part) {
+	private void drawPartDrillings(DrawList drawList, ImosPart part) {
 		for (ImosDrilling drilling : part.getDrillings()) {
 			if (isDisplayed(drilling)) {
-				drawDrilling(drilling, part);
+				drawDrilling(drawList, drilling, part);
 			}
 		}
 	}
@@ -94,21 +84,7 @@ public class SketchView implements IDisplayPart {
 		return true;
 	}
 	
-	private int tx(double x, ImosPart part) {
-		for (ICoordinateTransformer transformer : transformers) {
-			x = transformer.tx(x, part.getDimensions());
-		}
-		return (int) x;
-	}
-
-	private int ty(double y, ImosPart part) {
-		for (ICoordinateTransformer transformer : transformers) {
-			y = transformer.ty(y, part.getDimensions());
-		}
-		return (int) y;
-	}
-
-	private void drawDrilling(ImosDrilling drilling, ImosPart part) {
+	private void drawDrilling(DrawList drawList, ImosDrilling drilling, ImosPart part) {
 		CssColor color;
 		double radius;
 		if (drilling.getDiameter() >= 20.0) {
@@ -118,19 +94,23 @@ public class SketchView implements IDisplayPart {
 			color = COL_DRILLING_SMALL;
 			radius = drilling.getDiameter();
 		}
+		
 		double stepX = (drilling.getEndX() - drilling.getX()) / drilling.getNumDrillings();
 		double stepY = (drilling.getEndY() - drilling.getY()) / drilling.getNumDrillings();
+
 		for (int drillIndex = 0; drillIndex < drilling.getNumDrillings(); drillIndex++) {
 			double x = drilling.getX() + drillIndex * stepX;
 			double y = drilling.getY() + drillIndex * stepY;
-			context.setFillStyle(color);
-			context.beginPath();
-			int cx = projector.px(tx(x, part), part.getDimensions());
-			int cy = projector.py(ty(y, part), part.getDimensions());
-			context.arc(cx, cy, radius, 0, Math.PI * 2);
-			context.closePath();
-			context.fill();
+			drawList.addElement(new Circle(x, y, radius, color));
 		}
+	}
+
+	public ICoordinateTransformerFactory getTransformerFactory() {
+		return transformerFactory;
+	}
+
+	public void setTransformerFactory(ICoordinateTransformerFactory transformerFactory) {
+		this.transformerFactory = transformerFactory;
 	}
 
 }

@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import tdm.cam.ui.client.sketch.BackDrillingFilter;
-import tdm.cam.ui.client.sketch.CanvasProjector;
 import tdm.cam.ui.client.sketch.FrontDrillingFilter;
 import tdm.cam.ui.client.sketch.HorizontalDrillingFilter;
-import tdm.cam.ui.client.sketch.LengthShiftedCanvasProjector;
 import tdm.cam.ui.client.sketch.SketchView;
-import tdm.cam.ui.client.sketch.XBackTransformer;
-import tdm.cam.ui.client.sketch.XFrontTransformer;
-import tdm.cam.ui.client.sketch.YTransformer;
+import tdm.cam.ui.client.sketch.transform.BackCoordinateTransformerFactory;
+import tdm.cam.ui.client.sketch.transform.FrontCoordinateTransformerFactory;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.core.client.EntryPoint;
@@ -98,9 +95,7 @@ public class CamUI implements EntryPoint {
 		SketchView sketch = new SketchView(sketchCanvas);
 		sketch.addDrillingFilter(new BackDrillingFilter());
 		sketch.addDrillingFilter(new HorizontalDrillingFilter());
-		sketch.addCoordinateTransformers(new XFrontTransformer());
-		sketch.addCoordinateTransformers(new YTransformer());
-		sketch.setProjector(new CanvasProjector());
+		sketch.setTransformerFactory(new FrontCoordinateTransformerFactory());
 		partDisplays.add(sketch);
 		return sketchCanvas;
 	}
@@ -113,9 +108,7 @@ public class CamUI implements EntryPoint {
 		SketchView sketch = new SketchView(sketchCanvas);
 		sketch.addDrillingFilter(new FrontDrillingFilter());
 		sketch.addDrillingFilter(new HorizontalDrillingFilter());
-		sketch.addCoordinateTransformers(new XBackTransformer());
-		sketch.addCoordinateTransformers(new YTransformer());
-		sketch.setProjector(new LengthShiftedCanvasProjector());
+		sketch.setTransformerFactory(new BackCoordinateTransformerFactory());
 		partDisplays.add(sketch);
 		return sketchCanvas;
 	}
