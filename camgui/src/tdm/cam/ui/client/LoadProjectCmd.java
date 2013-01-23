@@ -1,5 +1,7 @@
 package tdm.cam.ui.client;
 
+import java.util.Collection;
+
 import tdm.cam.model.imos.ImosProject;
 
 import com.google.gwt.core.client.GWT;
@@ -12,12 +14,12 @@ public class LoadProjectCmd implements AsyncCallback<ImosProject>, ClickHandler 
 
 	protected final ImosServiceAsync imosService = GWT.create(ImosService.class);
 
-	protected CamUI camUI;
+	protected Collection<IDisplayProject> projectDisplays;
 	protected TextBox orderIdTextBox;
 	
-	public LoadProjectCmd(CamUI camUI, TextBox orderIdTextBox) {
-		this.camUI = camUI;
+	public LoadProjectCmd(TextBox orderIdTextBox, Collection<IDisplayProject> projectDisplays) {
 		this.orderIdTextBox = orderIdTextBox;
+		this.projectDisplays = projectDisplays;
 	}
 
 	@Override
@@ -27,7 +29,9 @@ public class LoadProjectCmd implements AsyncCallback<ImosProject>, ClickHandler 
 
 	@Override
 	public void onSuccess(ImosProject project) {
-		camUI.displayProject(project);
+		for (IDisplayProject display : projectDisplays) {
+			display.displayProject(project);
+		}
 	}
 
 	@Override

@@ -3,8 +3,15 @@ package tdm.cam.ui.client;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import tdm.cam.model.imos.ImosPart;
-import tdm.cam.model.imos.ImosProject;
+import tdm.cam.ui.client.sketch.BackDrillingFilter;
+import tdm.cam.ui.client.sketch.CanvasProjector;
+import tdm.cam.ui.client.sketch.FrontDrillingFilter;
+import tdm.cam.ui.client.sketch.HorizontalDrillingFilter;
+import tdm.cam.ui.client.sketch.LengthShiftedCanvasProjector;
+import tdm.cam.ui.client.sketch.SketchView;
+import tdm.cam.ui.client.sketch.XBackTransformer;
+import tdm.cam.ui.client.sketch.XFrontTransformer;
+import tdm.cam.ui.client.sketch.YTransformer;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.core.client.EntryPoint;
@@ -25,15 +32,21 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class CamUI implements EntryPoint {
 
+	private static final int PROJECT_WIDTH = 250;
+	private static final int STATS_WIDTH = 250;
+	private static final int SKETCH_WIDTH = 972;
+	private static final int SKETCH_HEIGHT = 378;
 	private RootPanel rootPanel;
 	private WindowSize windowSize;
 	
-	private Panel mainPanel;
+	private Panel panel;
 	
 	private ListBox partListBox;
 
 	private Collection<IDisplayPart> partDisplays = new ArrayList<IDisplayPart>();
-	private DrawPartSketchCmd drawPartSketchCmd;
+	private Collection<IDisplayProject> projectDisplays = new ArrayList<IDisplayProject>();
+	private DrawPartCmd drawPartCmd;
+	private LoadProjectCmd loadProjectCmd;
 	
 	public void onModuleLoad() {
 		// TODO get window size
@@ -43,33 +56,20 @@ public class CamUI implements EntryPoint {
 		rootPanel.add(createMainPanel());
 	}
 	
-	public void displayProject(ImosProject project) {
-		partListBox.clear();
-		for (ImosPart part : project.getParts()) {
-			partListBox.addItem(part.getBarcode());
-		}
-		drawPartSketchCmd.setParts(project.getParts());
-	}
-	
 	private Panel createMainPanel() {
-		mainPanel = new HorizontalPanel();
-		mainPanel.add(createProjectPanel());
-		mainPanel.add(createPartDetailsPanel());
+		panel = new HorizontalPanel();
+		panel.add(createProjectPanel());
+		panel.add(createPartStatsPanel());
+		panel.add(createSketchPanel());
 
 		createDrawPartSketchCmd();
 		
-		return mainPanel;
-	}
-	
-	private Panel createPartDetailsPanel() {
-		VerticalPanel panel = new VerticalPanel();
-		panel.add(createSketchPanel());
-		panel.add(createPartStatsPanel());
 		return panel;
 	}
 	
 	private Panel createPartStatsPanel() {
 		SimplePanel panel = new SimplePanel();
+		panel.setWidth(STATS_WIDTH + "px");
 		PartStatsView partStatsView = new PartStatsView(panel);
 		partDisplays.add(partStatsView);
 		
@@ -77,27 +77,63 @@ public class CamUI implements EntryPoint {
 	}
 	
 	private void createDrawPartSketchCmd() {
-		drawPartSketchCmd = new DrawPartSketchCmd(partListBox, partDisplays);
-		partListBox.addChangeHandler(drawPartSketchCmd);
+		drawPartCmd = new DrawPartCmd(partListBox, partDisplays);
+		projectDisplays.add(drawPartCmd);
+		partListBox.addChangeHandler(drawPartCmd);
 	}
 
 	private Panel createSketchPanel() {
 		VerticalPanel panel = new VerticalPanel();
+		panel.setWidth(SKETCH_WIDTH + "px");
+		panel.add(createFrontSketchPanel());
+		panel.add(createBackSketchPanel());
+		return panel;
+	}
+	
+	private Widget createFrontSketchPanel() {
 		Canvas sketchCanvas = Canvas.createIfSupported();
 		sketchCanvas.setStyleName(CssStyles.SKETCH_CANVAS);
-		sketchCanvas.setWidth("1080px");
-		sketchCanvas.setHeight("420px");
+		sketchCanvas.setWidth(SKETCH_WIDTH + "px");
+		sketchCanvas.setHeight(SKETCH_HEIGHT + "px");
 		SketchView sketch = new SketchView(sketchCanvas);
+		sketch.addDrillingFilter(new BackDrillingFilter());
+		sketch.addDrillingFilter(new HorizontalDrillingFilter());
+		sketch.addCoordinateTransformers(new XFrontTransformer());
+		sketch.addCoordinateTransformers(new YTransformer());
+		sketch.setProjector(new CanvasProjector());
 		partDisplays.add(sketch);
-		panel.add(sketchCanvas);
-		return panel;
+		return sketchCanvas;
+	}
+
+	private Widget createBackSketchPanel() {
+		Canvas sketchCanvas = Canvas.createIfSupported();
+		sketchCanvas.setStyleName(CssStyles.SKETCH_CANVAS);
+		sketchCanvas.setWidth(SKETCH_WIDTH + "px");
+		sketchCanvas.setHeight(SKETCH_HEIGHT + "px");
+		SketchView sketch = new SketchView(sketchCanvas);
+		sketch.addDrillingFilter(new FrontDrillingFilter());
+		sketch.addDrillingFilter(new HorizontalDrillingFilter());
+		sketch.addCoordinateTransformers(new XBackTransformer());
+		sketch.addCoordinateTransformers(new YTransformer());
+		sketch.setProjector(new LengthShiftedCanvasProjector());
+		partDisplays.add(sketch);
+		return sketchCanvas;
 	}
 
 	private Panel createProjectPanel() {
 		VerticalPanel panel = new VerticalPanel();
+		panel.setWidth(PROJECT_WIDTH + "px");
 		panel.add(createProjectSelection());
 		panel.add(createPartListBox());
+		panel.add(createExportTlf());
 		return panel;
+	}
+	
+	private Widget createExportTlf() {
+		Button exportTlfButton = new Button(".");
+		ExportTlfCmd exportTlfCmd = new ExportTlfCmd(exportTlfButton);
+		projectDisplays.add(exportTlfCmd);
+		return exportTlfButton;
 	}
 	
 	private Widget createProjectSelection() {
@@ -114,8 +150,8 @@ public class CamUI implements EntryPoint {
 		Button loadProjectButton = new Button("Projekt laden");
 		panel.add(loadProjectButton);
 		
-		LoadProjectCmd loadProjectCommand = new LoadProjectCmd(this, orderIdTextBox);
-		loadProjectButton.addClickHandler(loadProjectCommand);
+		loadProjectCmd = new LoadProjectCmd(orderIdTextBox, projectDisplays);
+		loadProjectButton.addClickHandler(loadProjectCmd);
 
 		return panel;
 	}

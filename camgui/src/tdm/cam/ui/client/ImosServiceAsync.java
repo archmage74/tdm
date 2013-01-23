@@ -8,4 +8,6 @@ public interface ImosServiceAsync {
 
 	void readProject(String orderId, AsyncCallback<ImosProject> callback);
 
+	void exportTlf(String orderId, AsyncCallback<Void> callback);
+
 }

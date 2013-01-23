@@ -13,8 +13,6 @@ public class TlfEngine {
 
 	private TextFileReader textFileReader = new TextFileReader();
 	
-	private static final String TEMPLATE_PATH = "./templates/";
-	
 	private Map<String, String> templates = new HashMap<String, String>();
 	
 	private Engine engine;
@@ -33,7 +31,7 @@ public class TlfEngine {
 	private String getTemplateByName(String templateName) {
 		String template = templates.get(templateName);
 		if (template == null) {
-			template = textFileReader.readTemplate(TEMPLATE_PATH + templateName);
+			template = textFileReader.readTemplate(templateName);
 			templates.put(templateName, template);
 		}
 		return template;

@@ -12,7 +12,8 @@ i2p/.project
 camgui/war/camui
 camgui/war/WEB-INF/deploy
 camgui/gwt-unitCache
-camgui/.gwt/gwt-log
+camgui/.gwt/.gwt-log
+camgui/war/WEB-INF/classes
 camgui/bin
 camrest/bin
 camshared/bin

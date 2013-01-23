@@ -10,12 +10,22 @@
 		<servlet-class>tdm.cam.rest.imos.ReadImosProject</servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name>tlf</servlet-name>
+		<servlet-class>tdm.cam.rest.imos.ExportImosProjectAsTlf</servlet-class>
+	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>imos</servlet-name>
 		<url-pattern>/imos/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- Default page to serve -->
+	<servlet-mapping>
+		<servlet-name>tlf</servlet-name>
+		<url-pattern>/tlf/*</url-pattern>
+	</servlet-mapping>
+
+		<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>restServices.html</welcome-file>
 	</welcome-file-list>

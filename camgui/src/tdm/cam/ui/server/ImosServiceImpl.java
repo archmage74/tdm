@@ -1,5 +1,6 @@
 package tdm.cam.ui.server;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
@@ -17,6 +18,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class ImosServiceImpl extends RemoteServiceServlet implements ImosService {
 
 	public static final String IMOS_SERVICE = "imos";
+
+	private static final String EXPORT_TLF_SERVICE = "tlf";
 	
 	private RestClient imosClient = new RestClient("http://localhost:8080/camrest");
 	
@@ -36,7 +39,6 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 	
 	@Override
 	public ImosProject readProject(String orderId) {
-		
 		RestParameters params = new RestParameters().addParam(orderId);
 		InputStream ris = imosClient.doRequest(IMOS_SERVICE, params.getParams());
 		
@@ -51,4 +53,15 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 		return project;
 	}
 
+	@Override
+	public void exportTlf(String orderId) {
+		RestParameters params = new RestParameters().addParam(orderId);
+		InputStream ris = imosClient.doRequest(EXPORT_TLF_SERVICE, params.getParams());
+		try {
+			ris.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 }

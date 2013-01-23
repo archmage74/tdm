@@ -17,20 +17,23 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class PartStatsView implements IDisplayPart {
 
 	private static final String TITLE_NAME = "Name:";
-	private static final String TITLE_BARCODE = "Barcode:";
 	private static final String TITLE_DRILL_FRONT = "Bohrungen front:";
 	private static final String TITLE_DRILL_BACK = "Bohrungen back:";
 	private static final String TITLE_DRILL_TOP = "Bohrungen oben:";
 	private static final String TITLE_DRILL_BOTTOM = "Bohrungen unten:";
 	private static final String TITLE_DRILL_LEFT = "Bohrungen links:";
 	private static final String TITLE_DRILL_RIGHT = "Bohrungen rechts:";
-	private static final String TITLE_DIMENSIONS = "L/B/H:";
+	private static final String TITLE_LENGTH = "Länge:";
+	private static final String TITLE_WIDTH = "Breite:";
+	private static final String TITLE_HEIGHT = "Höhe:";
 
 	private static final String EMPTY = "<leer>";
 	
 	private Label barcodeValueLabel;
 	private Label nameValueLabel;
-	private Label dimensionsValueLabel;
+	private Label lengthValueLabel;
+	private Label widthValueLabel;
+	private Label heightValueLabel;
 	private Map<Plane, Label> drillValueLabels = new HashMap<Plane, Label>();
 
 	private PlaneHelper planeHelper = PlaneHelper.getInstance();
@@ -38,17 +41,26 @@ public class PartStatsView implements IDisplayPart {
 	public PartStatsView(Panel parentPanel) {
 		VerticalPanel panel = new VerticalPanel();
 
+		panel.add(createBarcodeLevel());
+		
 		panel.add(createInfoGrid());
 		parentPanel.add(panel);
 	}
 
+	private Label createBarcodeLevel() {
+		barcodeValueLabel = new Label(EMPTY);
+		barcodeValueLabel.setStyleName(CssStyles.PART_INFO_VALUE);
+		return barcodeValueLabel;
+	}
+
 	private Grid createInfoGrid() {
-		Grid infoGrid = new Grid(9, 2);
+		Grid infoGrid = new Grid(11, 2);
 		
 		int row = 0;
-		barcodeValueLabel = addInfo(infoGrid, row++, TITLE_BARCODE);
 		nameValueLabel = addInfo(infoGrid, row++, TITLE_NAME);
-		dimensionsValueLabel = addInfo(infoGrid, row++, TITLE_DIMENSIONS);
+		lengthValueLabel = addInfo(infoGrid, row++, TITLE_LENGTH);
+		widthValueLabel = addInfo(infoGrid, row++, TITLE_WIDTH);
+		heightValueLabel = addInfo(infoGrid, row++, TITLE_HEIGHT);
 		drillValueLabels.put(Plane.FRONT, addInfo(infoGrid, row++, TITLE_DRILL_FRONT));
 		drillValueLabels.put(Plane.BACK, addInfo(infoGrid, row++, TITLE_DRILL_BACK));
 		drillValueLabels.put(Plane.TOP, addInfo(infoGrid, row++, TITLE_DRILL_TOP));
@@ -68,8 +80,9 @@ public class PartStatsView implements IDisplayPart {
 		nameValueLabel.setText(name);
 		
 		Dimensions d = part.getDimensions();
-		String dimensions = d.getLength() + " / " + d.getWidth() + " / " + d.getThick();
-		dimensionsValueLabel.setText(dimensions);
+		lengthValueLabel.setText("" + d.getLength());
+		widthValueLabel.setText("" + d.getWidth());
+		heightValueLabel.setText("" + d.getThick());
 		
 		Map<Plane, Integer> drillNumbers = calculateDrillNumbers(part);
 		for (Plane plane : drillValueLabels.keySet()) {
