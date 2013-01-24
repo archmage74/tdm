@@ -11,6 +11,15 @@ public enum ProfileType implements IsSerializable {
 
 	int value;
 	
+	public static ProfileType create(int prfNo) {
+		for (ProfileType type : ProfileType.values()) {
+			if (prfNo == type.getValue()) {
+				return type;
+			}
+		}
+		return null;
+	}
+	
 	ProfileType(Integer number) {
 		this.value = number;
 	}

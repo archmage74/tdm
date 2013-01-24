@@ -5,11 +5,14 @@ import java.util.List;
 
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
+import tdm.cam.model.imos.ImosProfile;
+import tdm.cam.model.imos.ProfileType;
 import tdm.cam.model.math.PlaneHelper;
 import tdm.cam.ui.client.IDisplayPart;
 import tdm.cam.ui.client.sketch.draw.Circle;
 import tdm.cam.ui.client.sketch.draw.DrawList;
-import tdm.cam.ui.client.sketch.draw.Rectangle;
+import tdm.cam.ui.client.sketch.draw.FillRectangle;
+import tdm.cam.ui.client.sketch.draw.StrokeRectangle;
 import tdm.cam.ui.client.sketch.transform.ICoordinateTransformerFactory;
 
 import com.google.gwt.canvas.client.Canvas;
@@ -27,6 +30,7 @@ public class SketchView implements IDisplayPart {
 	public static final CssColor COL_DRILLING_SMALL = CssColor.make(255, 0, 0);
 	public static final CssColor COL_DRILLING_BIG = CssColor.make(0, 0, 255);
 	public static final CssColor COL_DRILLING_HORIZONTAL = CssColor.make(255, 0, 0);
+	private static final CssColor COL_PROFILE = CssColor.make(200, 200, 100); 
 
 	protected PlaneHelper planeHelper = PlaneHelper.getInstance();
 
@@ -54,6 +58,7 @@ public class SketchView implements IDisplayPart {
 		drawList.addTransformers(transformerFactory.createTransformers(part.getDimensions()));
 		drawPartOutline(drawList, part);
 		drawPartDrillings(drawList, part);
+		drawPartProfiles(drawList, part);
 		drawList.draw(context);
 	}
 	
@@ -64,7 +69,54 @@ public class SketchView implements IDisplayPart {
 	private void drawPartOutline(DrawList drawList, ImosPart part) {
 		double l = part.getDimensions().getLength();
 		double h = part.getDimensions().getWidth();
-		drawList.addElement(new Rectangle(0, 0, l, h));
+		drawList.addElement(new StrokeRectangle(0, 0, l, h));
+	}
+
+	private void drawPartProfiles(DrawList drawList, ImosPart part) {
+		for (ImosProfile profile : part.getProfiles()) {
+			drawProfile(drawList, profile, part);
+		}
+	}
+	
+	private void drawProfile(DrawList drawList, ImosProfile profile, ImosPart part) {
+		ProfileType type = ProfileType.create(profile.getPrfNo());
+		double x; 
+		double y;
+		double l;
+		double h;
+		double thick = profile.getThick();
+		if (thick < 10) {
+			thick = 10;
+		}
+		switch (type) {
+		case POS_V:
+			x = 0;
+			y = 0;
+			l = part.getDimensions().getLength();
+			h = thick;
+			break;
+		case POS_H:
+			x = 0;
+			y = part.getDimensions().getWidth();
+			l = part.getDimensions().getLength();
+			h = - thick;
+			break;
+		case POS_L:
+			x = 0;
+			y = 0;
+			l = thick;
+			h = part.getDimensions().getWidth();
+			break;
+		case POS_R:
+			x = part.getDimensions().getLength();
+			y = 0;
+			l = - thick;
+			h = part.getDimensions().getWidth();
+			break;
+		default:
+			throw new RuntimeException("unknown profile type");
+		}
+		drawList.addElement(new FillRectangle(x, y, l, h, COL_PROFILE));
 	}
 
 	private void drawPartDrillings(DrawList drawList, ImosPart part) {
