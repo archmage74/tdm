@@ -1,7 +1,9 @@
 package tdm.cam.ui.client.sketch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
@@ -30,7 +32,7 @@ public class SketchView implements IDisplayPart {
 	public static final CssColor COL_DRILLING_SMALL = CssColor.make(255, 0, 0);
 	public static final CssColor COL_DRILLING_BIG = CssColor.make(0, 0, 255);
 	public static final CssColor COL_DRILLING_HORIZONTAL = CssColor.make(255, 0, 0);
-	private static final CssColor COL_PROFILE = CssColor.make(200, 200, 100); 
+	public static final CssColor COL_PROFILE = CssColor.make(200, 200, 100); 
 
 	protected PlaneHelper planeHelper = PlaneHelper.getInstance();
 
@@ -41,6 +43,8 @@ public class SketchView implements IDisplayPart {
 	protected List<IDrillingFilter> drillingFilters = new ArrayList<IDrillingFilter>();
 	
 	protected ICoordinateTransformerFactory transformerFactory;
+	
+	protected Map<String, DrawList> drawListCache = new HashMap<String, DrawList>();
 	
 	public SketchView(Canvas canvas) {
 		this.canvas = canvas;
@@ -54,16 +58,21 @@ public class SketchView implements IDisplayPart {
 	@Override
 	public void displayPart(ImosPart part) {
 		context.clearRect(0, 0, MAX_X, MAX_Y);
-		DrawList drawList = new DrawList();
-		drawList.addTransformers(transformerFactory.createTransformers(part.getDimensions()));
-		drawPartOutline(drawList, part);
-		drawPartDrillings(drawList, part);
-		drawPartProfiles(drawList, part);
+		DrawList drawList = constructDrawList(part);
 		drawList.draw(context);
 	}
 	
 	public void addDrillingFilter(IDrillingFilter filter) {
 		drillingFilters.add(filter);
+	}
+
+	private DrawList constructDrawList(ImosPart part) {
+		DrawList drawList = new DrawList();
+		drawList.addTransformers(transformerFactory.createTransformers(part.getDimensions()));
+		drawPartOutline(drawList, part);
+		drawPartDrillings(drawList, part);
+		drawPartProfiles(drawList, part);
+		return drawList;
 	}
 
 	private void drawPartOutline(DrawList drawList, ImosPart part) {
