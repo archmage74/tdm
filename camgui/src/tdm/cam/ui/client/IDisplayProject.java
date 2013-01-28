@@ -1,9 +1,11 @@
 package tdm.cam.ui.client;
 
-import tdm.cam.model.imos.ImosProject;
+import tdm.cam.ui.client.prj.Project;
 
 public interface IDisplayProject {
 
-	public void displayProject(ImosProject project);
+	void displayProject(Project project);
+
+	void refresh();
 	
 }

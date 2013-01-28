@@ -1,6 +1,7 @@
 package tdm.cam.ui.client.sketch.transform;
 
 import tdm.cam.model.math.Dimensions;
+import tdm.cam.model.math.Vector3;
 
 public class XBackTransformer implements ICoordinateTransformer {
 
@@ -11,13 +12,8 @@ public class XBackTransformer implements ICoordinateTransformer {
 	}
 	
 	@Override
-	public double tx(double x) {
-		return - x;
-	}
-
-	@Override
-	public double ty(double y) {
-		return y;
+	public Vector3 t(Vector3 v) {
+		return new Vector3(-v.getX(), v.getY(), v.getZ());
 	}
 
 }

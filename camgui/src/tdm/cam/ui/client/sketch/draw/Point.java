@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 
+import tdm.cam.model.math.Vector3;
 import tdm.cam.ui.client.sketch.project.IProjector;
 import tdm.cam.ui.client.sketch.transform.ICoordinateTransformer;
 
@@ -21,10 +22,9 @@ public class Point implements IDrawElement {
 	
 	@Override 
 	public void transform(ICoordinateTransformer transformer) {
-		double nx = transformer.tx(x);
-		double ny = transformer.ty(y);
-		this.x = nx;
-		this.y = ny;
+		Vector3 t = transformer.t(new Vector3(x, y, 0));
+		this.x = t.getX();
+		this.y = t.getY();
 	}
 
 	@Override 

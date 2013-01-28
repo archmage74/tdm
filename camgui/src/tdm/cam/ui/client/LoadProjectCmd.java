@@ -3,6 +3,7 @@ package tdm.cam.ui.client;
 import java.util.Collection;
 
 import tdm.cam.model.imos.ImosProject;
+import tdm.cam.ui.client.prj.Project;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,10 +15,12 @@ public class LoadProjectCmd implements AsyncCallback<ImosProject>, ClickHandler 
 
 	protected final ImosServiceAsync imosService = GWT.create(ImosService.class);
 
+	protected Project project;
 	protected Collection<IDisplayProject> projectDisplays;
 	protected TextBox orderIdTextBox;
 	
-	public LoadProjectCmd(TextBox orderIdTextBox, Collection<IDisplayProject> projectDisplays) {
+	public LoadProjectCmd(Project project, TextBox orderIdTextBox, Collection<IDisplayProject> projectDisplays) {
+		this.project = project;
 		this.orderIdTextBox = orderIdTextBox;
 		this.projectDisplays = projectDisplays;
 	}
@@ -28,7 +31,8 @@ public class LoadProjectCmd implements AsyncCallback<ImosProject>, ClickHandler 
 	}
 
 	@Override
-	public void onSuccess(ImosProject project) {
+	public void onSuccess(ImosProject imosProject) {
+		project.setImosProject(imosProject); 
 		for (IDisplayProject display : projectDisplays) {
 			display.displayProject(project);
 		}

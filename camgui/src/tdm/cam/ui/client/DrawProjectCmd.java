@@ -1,22 +1,18 @@
 package tdm.cam.ui.client;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import tdm.cam.model.imos.ImosProject;
+import tdm.cam.ui.client.prj.Project;
 
 public class DrawProjectCmd {
 
-	protected List<ImosProject> parts = new ArrayList<ImosProject>();
-	
 	protected Collection<IDisplayProject> projectDisplays;
 	
 	public DrawProjectCmd(Collection<IDisplayProject> projectDisplays) {
 		this.projectDisplays = projectDisplays;
 	}
 
-	public void drawProject(ImosProject project) {
+	public void drawProject(Project project) {
 		for (IDisplayProject display: projectDisplays) {
 			display.displayProject(project);
 		}

@@ -1,9 +1,7 @@
 package tdm.cam.ui.client.sketch;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
@@ -11,11 +9,13 @@ import tdm.cam.model.imos.ImosProfile;
 import tdm.cam.model.imos.ProfileType;
 import tdm.cam.model.math.PlaneHelper;
 import tdm.cam.ui.client.IDisplayPart;
+import tdm.cam.ui.client.prj.Part;
 import tdm.cam.ui.client.sketch.draw.Circle;
 import tdm.cam.ui.client.sketch.draw.DrawList;
 import tdm.cam.ui.client.sketch.draw.FillRectangle;
 import tdm.cam.ui.client.sketch.draw.StrokeRectangle;
 import tdm.cam.ui.client.sketch.transform.ICoordinateTransformerFactory;
+import tdm.cam.ui.client.sketch.transform.RotationTransformer;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -44,8 +44,6 @@ public class SketchView implements IDisplayPart {
 	
 	protected ICoordinateTransformerFactory transformerFactory;
 	
-	protected Map<String, DrawList> drawListCache = new HashMap<String, DrawList>();
-	
 	public SketchView(Canvas canvas) {
 		this.canvas = canvas;
 
@@ -54,9 +52,8 @@ public class SketchView implements IDisplayPart {
 		this.context = canvas.getContext2d();
 	}
 
-	int i = 0;
 	@Override
-	public void displayPart(ImosPart part) {
+	public void displayPart(Part part) {
 		context.clearRect(0, 0, MAX_X, MAX_Y);
 		DrawList drawList = constructDrawList(part);
 		drawList.draw(context);
@@ -66,12 +63,14 @@ public class SketchView implements IDisplayPart {
 		drillingFilters.add(filter);
 	}
 
-	private DrawList constructDrawList(ImosPart part) {
+	private DrawList constructDrawList(Part part) {
+		ImosPart imosPart = part.getImosPart();
 		DrawList drawList = new DrawList();
-		drawList.addTransformers(transformerFactory.createTransformers(part.getDimensions()));
-		drawPartOutline(drawList, part);
-		drawPartDrillings(drawList, part);
-		drawPartProfiles(drawList, part);
+		drawList.addTransformers(transformerFactory.createTransformers(imosPart.getDimensions()));
+		drawList.addTransformer(new RotationTransformer(part.getRotation()));
+		drawPartOutline(drawList, imosPart);
+		drawPartDrillings(drawList, imosPart);
+		drawPartProfiles(drawList, imosPart);
 		return drawList;
 	}
 

@@ -1,11 +1,9 @@
 package tdm.cam.ui.client.sketch.transform;
 
+import tdm.cam.model.math.Vector3;
+
 public interface ICoordinateTransformer {
 	
-	/** transforms x coordinate */
-	public double tx(double x);
-	
-	/** transforms y coordinate */
-	public double ty(double y);
+	public Vector3 t(Vector3 x);
 	
 }

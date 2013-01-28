@@ -1,9 +1,9 @@
 package tdm.cam.ui.client;
 
-import tdm.cam.model.imos.ImosPart;
+import tdm.cam.ui.client.prj.Part;
 
 public interface IDisplayPart {
 
-	public void displayPart(ImosPart part);
+	void displayPart(Part part);
 	
 }

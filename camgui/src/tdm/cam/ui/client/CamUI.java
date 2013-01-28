@@ -3,6 +3,7 @@ package tdm.cam.ui.client;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import tdm.cam.ui.client.prj.Project;
 import tdm.cam.ui.client.sketch.BackDrillingFilter;
 import tdm.cam.ui.client.sketch.FrontDrillingFilter;
 import tdm.cam.ui.client.sketch.HorizontalDrillingFilter;
@@ -40,10 +41,12 @@ public class CamUI implements EntryPoint {
 	
 	private ListBox partListBox;
 
+	private Project project = new Project();
 	private Collection<IDisplayPart> partDisplays = new ArrayList<IDisplayPart>();
 	private Collection<IDisplayProject> projectDisplays = new ArrayList<IDisplayProject>();
 	private DrawPartCmd drawPartCmd;
 	private LoadProjectCmd loadProjectCmd;
+	private RotatePartCmd rotatePartCmd;
 	
 	public void onModuleLoad() {
 		// TODO get window size
@@ -60,6 +63,7 @@ public class CamUI implements EntryPoint {
 		panel.add(createSketchPanel());
 
 		createDrawPartSketchCmd();
+		createRotatePartCmd();
 		
 		return panel;
 	}
@@ -73,6 +77,16 @@ public class CamUI implements EntryPoint {
 		return panel;
 	}
 	
+	// TODO add IOC
+	private void createRotatePartCmd() {
+		if (drawPartCmd == null) {
+			throw new RuntimeException("drawPartCmd must be initialized");
+		}
+		rotatePartCmd = new RotatePartCmd(project, drawPartCmd);
+		partListBox.addKeyDownHandler(rotatePartCmd);
+	}
+	
+	// TODO add IOC
 	private void createDrawPartSketchCmd() {
 		drawPartCmd = new DrawPartCmd(partListBox, partDisplays);
 		projectDisplays.add(drawPartCmd);
@@ -143,7 +157,7 @@ public class CamUI implements EntryPoint {
 		Button loadProjectButton = new Button("Projekt laden");
 		panel.add(loadProjectButton);
 		
-		loadProjectCmd = new LoadProjectCmd(orderIdTextBox, projectDisplays);
+		loadProjectCmd = new LoadProjectCmd(this.project, orderIdTextBox, projectDisplays);
 		loadProjectButton.addClickHandler(loadProjectCmd);
 
 		return panel;
