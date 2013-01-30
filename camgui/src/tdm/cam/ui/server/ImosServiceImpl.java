@@ -2,11 +2,17 @@ package tdm.cam.ui.server;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import tdm.cam.model.cmd.Rotation;
+import tdm.cam.model.cmd.RotationList;
 import tdm.cam.model.imos.ImosProject;
 import tdm.cam.ui.RestClient;
 import tdm.cam.ui.RestParameters;
@@ -23,14 +29,14 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 	
 	private RestClient imosClient = new RestClient("http://localhost:8080/camrest");
 	
-//	private Marshaller marshaller;
+	private Marshaller marshaller;
 	private Unmarshaller unmarshaller;
 	
 	public ImosServiceImpl() {
 		JAXBContext jaxbContext;
 		try {
-			jaxbContext = JAXBContext.newInstance(ImosProject.class);
-//			marshaller = jaxbContext.createMarshaller();
+			jaxbContext = JAXBContext.newInstance(ImosProject.class, RotationList.class);
+			marshaller = jaxbContext.createMarshaller();
 			unmarshaller = jaxbContext.createUnmarshaller();
 		} catch (JAXBException e) {
 			throw new RuntimeException("Could not create jaxb environment", e);
@@ -40,7 +46,7 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 	@Override
 	public ImosProject readProject(String orderId) {
 		RestParameters params = new RestParameters().addParam(orderId);
-		InputStream ris = imosClient.doRequest(IMOS_SERVICE, params.getParams());
+		InputStream ris = imosClient.doGetRequest(IMOS_SERVICE, params.getParams());
 		
 		ImosProject project;
 		try {
@@ -56,12 +62,30 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 	@Override
 	public void exportTlf(String orderId) {
 		RestParameters params = new RestParameters().addParam(orderId);
-		InputStream ris = imosClient.doRequest(EXPORT_TLF_SERVICE, params.getParams());
+		Map<String, String> postParams = new HashMap<String, String>();
+		postParams.put("rotations", createRotationMapParam());
+		InputStream ris = imosClient.doPostRequest(EXPORT_TLF_SERVICE, params.getParams(), postParams);
 		try {
 			ris.close();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private String createRotationMapParam() {
+		RotationList rotationList = new RotationList();
+		Rotation rotation = new Rotation();
+		rotation.setBarcode("createDrilling10And35CamPart");
+		rotation.setAngle(90);
+		rotationList.getRotations().add(rotation);
+		StringWriter sw = new StringWriter();
+		try {
+			marshaller.marshal(rotationList, sw);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		return sw.toString();
 	}
 	
 }

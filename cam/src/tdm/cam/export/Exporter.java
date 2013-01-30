@@ -2,6 +2,8 @@ package tdm.cam.export;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import tdm.cam.imos.db.IImosService;
 import tdm.cam.model.imos.ImosProject;
@@ -18,9 +20,9 @@ public class Exporter {
 
 	private String exportPath = ".";
 
-	public void export(String orderId) {
+	public void export(String orderId, Map<String, Integer> rotationMap) {
 		ImosProject imosProject = imosService.readProject(orderId);
-		Collection<TlfPart> tlfParts = imos2Tlf.convert(imosProject.getParts());
+		Collection<TlfPart> tlfParts = imos2Tlf.convert(imosProject, rotationMap);
 		
 		File exportDir = createEmptySubfolder(orderId);
 		
@@ -31,6 +33,10 @@ public class Exporter {
 		}
 	}
 
+	public void export(String orderId) {
+		export(orderId, new HashMap<String, Integer>());
+	}
+	
 	private File createEmptySubfolder(String orderId) {
 		File exportDir = new File(exportPath + orderId);
 		if (exportDir.exists()) {

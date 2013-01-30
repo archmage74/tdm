@@ -124,6 +124,22 @@ public class ImosDrilling implements IDirection, IsSerializable {
 		this.numDrillings = numDrillings;
 	}
 
+	public ImosDrilling clone() {
+		ImosDrilling clone = new ImosDrilling();
+		clone.x = x;
+		clone.y = y;
+		clone.z = z;
+		clone.endX = endX;
+		clone.endY = endY;
+		clone.angleX = angleX;
+		clone.angleY = angleY;
+		clone.angleZ = angleZ;
+		clone.deep = deep;
+		clone.diameter = diameter;
+		clone.numDrillings = numDrillings;
+		return clone;
+	}
+	
 	@Override
 	public String toString() {
 		return "ImosDrilling [x=" + x + ", y=" + y + ", z=" + z + ", endX=" + endX + ", endY=" + endY + ", angleX=" + angleX + ", angleY=" + angleY

@@ -5,9 +5,9 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class Dimensions implements Cloneable, IsSerializable {
 
 	private double length;
-	
+
 	private double width;
-	
+
 	private double thick;
 
 	public Dimensions() {
@@ -71,11 +71,17 @@ public class Dimensions implements Cloneable, IsSerializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Dimensions other = (Dimensions) obj;
-		if (Double.doubleToLongBits(length) != Double.doubleToLongBits(other.length))
+		if (other.length == 0 && length != 0)
 			return false;
-		if (Double.doubleToLongBits(thick) != Double.doubleToLongBits(other.thick))
+		if (other.width == 0 && width != 0)
 			return false;
-		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width))
+		if (other.thick == 0 && thick != 0)
+			return false;
+		if (Math.abs(length / other.length - 1) > 0.0000001)
+			return false;
+		if (Math.abs(width / other.width - 1) > 0.0000001)
+			return false;
+		if (Math.abs(thick / other.thick - 1) > 0.0000001)
 			return false;
 		return true;
 	}

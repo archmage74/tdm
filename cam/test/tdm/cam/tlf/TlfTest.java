@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import tdm.cam.TlfAssert;
 import tdm.cam.model.imos.ImosPart;
+import tdm.cam.model.imos.ImosProject;
 import tdm.cam.tlf.imos2tlf.Imos2TlfConverter;
 import tdm.cam.util.TextFileWriter;
 
@@ -54,6 +55,7 @@ public class TlfTest {
 	private static final String EXPECTED_PROFILE_BACKSIDE_RIGHT = EXPECTED_PREFIX + "profileRight_backside.tlf";
 	private static final String EXPECTED_DRILLINGS_BACKSIDE_AND_HORIZONTAL_AND_PROFILE = EXPECTED_PREFIX + "drillingsBacksideAndHorizontalProfile__backside.tlf";
 
+	private static final String EXPECTED_DRILLING_10_ROT_90 = EXPECTED_PREFIX + "drilling10Rot90.tlf";
 
 	@Before
 	public void setup() {
@@ -86,6 +88,24 @@ public class TlfTest {
 		String fileName = writeOutputFiles(docs).get(0);
 
 		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10, fileName);
+	}
+
+	@Test
+	public void drilling10Rot90Test() {
+		ImosPart camPart = camPartFactory.createDrilling10CamPart();
+		camPart.setBarcode(camPart.getBarcode() + "Rot90");
+		Map<String, Integer> rotMap = new HashMap<String, Integer>();
+		rotMap.put(camPart.getBarcode(), 90);
+		
+		ImosProject prj = new ImosProject();
+		prj.addPart(camPart);
+		
+		TlfPart tlfPart = imos2Tlf.convert(prj, rotMap).iterator().next();
+		List<TlfDocument> docs = tlfPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+
+		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10_ROT_90, fileName);
 	}
 
 	@Test

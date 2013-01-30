@@ -67,4 +67,15 @@ public class ImosProfile implements IsSerializable {
 		this.prfb = prfb;
 	}
 
+	public ImosProfile clone() {
+		ImosProfile clone = new ImosProfile();
+		clone.prfb = prfb;
+		clone.prfId = prfId;
+		clone.prfLen = prfLen;
+		clone.prfNo = prfNo;
+		clone.prfp = prfp;
+		clone.thick = thick;
+		return clone;
+	}
+	
 }

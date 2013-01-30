@@ -3,8 +3,8 @@ package tdm.cam.tlf;
 import java.util.HashMap;
 import java.util.Map;
 
-import tdm.cam.export.NamedDecimalRenderer;
-import tdm.cam.export.NamedIntRenderer;
+import tdm.cam.export.renderer.NamedDecimalRenderer;
+import tdm.cam.export.renderer.NamedIntRenderer;
 import tdm.cam.util.TextFileReader;
 
 import com.floreysoft.jmte.Engine;
