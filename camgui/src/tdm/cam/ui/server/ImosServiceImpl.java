@@ -11,7 +11,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import tdm.cam.model.cmd.Rotation;
 import tdm.cam.model.cmd.RotationList;
 import tdm.cam.model.imos.ImosProject;
 import tdm.cam.ui.RestClient;
@@ -60,10 +59,10 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 	}
 
 	@Override
-	public void exportTlf(String orderId) {
+	public void exportTlf(String orderId, RotationList rotationList) {
 		RestParameters params = new RestParameters().addParam(orderId);
 		Map<String, String> postParams = new HashMap<String, String>();
-		postParams.put("rotations", createRotationMapParam());
+		postParams.put("rotations", createRotationMapParam(rotationList));
 		InputStream ris = imosClient.doPostRequest(EXPORT_TLF_SERVICE, params.getParams(), postParams);
 		try {
 			ris.close();
@@ -72,12 +71,7 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 		}
 	}
 
-	private String createRotationMapParam() {
-		RotationList rotationList = new RotationList();
-		Rotation rotation = new Rotation();
-		rotation.setBarcode("createDrilling10And35CamPart");
-		rotation.setAngle(90);
-		rotationList.getRotations().add(rotation);
+	private String createRotationMapParam(RotationList rotationList) {
 		StringWriter sw = new StringWriter();
 		try {
 			marshaller.marshal(rotationList, sw);

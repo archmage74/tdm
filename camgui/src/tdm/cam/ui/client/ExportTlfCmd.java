@@ -1,5 +1,8 @@
 package tdm.cam.ui.client;
 
+import tdm.cam.model.cmd.Rotation;
+import tdm.cam.model.cmd.RotationList;
+import tdm.cam.ui.client.prj.Part;
 import tdm.cam.ui.client.prj.Project;
 
 import com.google.gwt.core.client.GWT;
@@ -39,7 +42,16 @@ public class ExportTlfCmd implements ClickHandler, AsyncCallback<Void>, IDisplay
 		if (project == null || project.getImosProject() == null || project.getImosProject().getOrderId() == null) {
 			// FIXME show error
 		} else {
-			imosService.exportTlf(project.getImosProject().getOrderId(), this);
+			RotationList rotationList = new RotationList();
+			for (Part part : project.getParts()) {
+				if (part.getRotationInDegrees() != 0) {
+					Rotation rotation = new Rotation();
+					rotation.setAngle((int) part.getRotationInDegrees());
+					rotation.setBarcode(part.getImosPart().getBarcode());
+					rotationList.addRotation(rotation);
+				}
+			}
+			imosService.exportTlf(project.getImosProject().getOrderId(), rotationList, this);
 		}
 	}
 

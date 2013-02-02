@@ -4,12 +4,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 @XmlType()
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Rotation {
+public class Rotation implements IsSerializable {
 
 	private String barcode;
-	
+
 	private int angle;
 
 	public int getAngle() {
@@ -27,5 +29,5 @@ public class Rotation {
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
 	}
-	
+
 }

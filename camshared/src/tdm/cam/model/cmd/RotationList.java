@@ -9,9 +9,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RotationList {
+public class RotationList implements IsSerializable {
 
 	@XmlElementWrapper(name="rotations")
 	@XmlElement(name="rotation")

@@ -28,7 +28,7 @@ public class Exporter {
 		
 		for (TlfPart camPart : tlfParts) {
 			for (TlfDocument doc : camPart.createTlfDocuments()) {
-				textFileWriter.writeEscapedTlf(doc.getTlf(), exportDir.getPath() + '/' + doc.getName());
+				textFileWriter.writeEscapedTlf(doc.getTlf(), exportDir.getPath() + "/" + doc.getName());
 			}
 		}
 	}
