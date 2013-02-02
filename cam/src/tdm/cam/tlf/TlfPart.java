@@ -219,7 +219,8 @@ public class TlfPart implements ITlfEngineHolder {
 		} else if (plane == Plane.RIGHT) {
 			frontSide.addPlane4Drilling(drilling);
 		} else {
-			throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
+			// throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
+			System.out.println("Schraegbohrung gefunden, wird ignoriert");
 		}
 	}
 
