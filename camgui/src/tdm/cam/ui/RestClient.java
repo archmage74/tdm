@@ -35,11 +35,13 @@ public class RestClient {
 			connection.connect();
 			return connection.getInputStream();
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new RuntimeException("could not connect to '"+address+"'", e);
 		}
 	}
 
 	public InputStream doPostRequest(String service, List<String> restParams, Map<String, String> postParams) {
+		System.out.println("RestClient.doPostRequest() started");
 		HttpClient httpClient = new DefaultHttpClient();
 		String address = createUrlAddress(service, restParams);
 		HttpPost httpPost = new HttpPost(address);

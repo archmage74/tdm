@@ -38,12 +38,14 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 			marshaller = jaxbContext.createMarshaller();
 			unmarshaller = jaxbContext.createUnmarshaller();
 		} catch (JAXBException e) {
+			e.printStackTrace();
 			throw new RuntimeException("Could not create jaxb environment", e);
 		}
 	}
 	
 	@Override
 	public ImosProject readProject(String orderId) {
+		System.out.println("ImosServiceImpl.readProject() started");
 		RestParameters params = new RestParameters().addParam(orderId);
 		InputStream ris = imosClient.doGetRequest(IMOS_SERVICE, params.getParams());
 		
@@ -52,6 +54,7 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 			project = (ImosProject) unmarshaller.unmarshal(ris);
 		} catch (JAXBException e) {
 			// FIXME report error
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 		
@@ -60,13 +63,16 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 
 	@Override
 	public void exportTlf(String orderId, RotationList rotationList) {
+		System.out.println("ImosServiceImpl.exportTlf() started");
 		RestParameters params = new RestParameters().addParam(orderId);
 		Map<String, String> postParams = new HashMap<String, String>();
 		postParams.put("rotations", createRotationMapParam(rotationList));
+		System.out.println("ImosServiceImpl.exportTlf() doing post request");
 		InputStream ris = imosClient.doPostRequest(EXPORT_TLF_SERVICE, params.getParams(), postParams);
 		try {
 			ris.close();
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}

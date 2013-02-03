@@ -57,12 +57,12 @@ public class ExportTlfCmd implements ClickHandler, AsyncCallback<Void>, IDisplay
 
 	@Override
 	public void onFailure(Throwable caught) {
-		// FIXME show error
+		new MessageDialog("Error: " + caught.getMessage()).show();
 	}
 	
 	@Override
 	public void onSuccess(Void result) {
-		// FIXME show export overview
+		new MessageDialog("Export abgeschlossen").show();
 	}
 	
 	private void updateButton() {

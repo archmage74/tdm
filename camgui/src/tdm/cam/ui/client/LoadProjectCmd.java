@@ -27,7 +27,7 @@ public class LoadProjectCmd implements AsyncCallback<ImosProject>, ClickHandler 
 
 	@Override
 	public void onFailure(Throwable caught) {
-		// FIXME show error
+		new MessageDialog("Error: " + caught.getMessage()).show();
 	}
 
 	@Override
