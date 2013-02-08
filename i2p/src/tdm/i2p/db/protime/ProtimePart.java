@@ -87,27 +87,39 @@ public class ProtimePart {
 			IMOSPartProfile profile;
 			profile = imosPart.getProfile(IMOSPartProfile.POS_V);
 			if (profile != null && !profile.getPrfId().equals(IMOSPartProfile.NO_PROFILE)) {
-				KANTE_V = profile.getPrfId();  
-				KANTE_V_L = df.format(profile.getPrfLen());
-				MU = profileType(profile.getPrfb());
+				int profileType = profileType(profile.getPrfb());
+				if (profileType != -1) {
+					KANTE_V = profile.getPrfId();  
+					KANTE_V_L = df.format(profile.getPrfLen());
+					MU = profileType;
+				}
 			}
 			profile = imosPart.getProfile(IMOSPartProfile.POS_R);
 			if (profile != null && !profile.getPrfId().equals(IMOSPartProfile.NO_PROFILE)) {
-				KANTE_R = profile.getPrfId();  
-				KANTE_R_L = df.format(profile.getPrfLen());
-				MR = profileType(profile.getPrfb());
+				int profileType = profileType(profile.getPrfb());
+				if (profileType != -1) {
+					KANTE_R = profile.getPrfId();  
+					KANTE_R_L = df.format(profile.getPrfLen());
+					MR = profileType;
+				}
 			}
 			profile = imosPart.getProfile(IMOSPartProfile.POS_H);
 			if (profile != null && !profile.getPrfId().equals(IMOSPartProfile.NO_PROFILE)) {
-				KANTE_H = profile.getPrfId();  
-				KANTE_H_L = df.format(profile.getPrfLen());
-				MO = profileType(profile.getPrfb()); 
+				int profileType = profileType(profile.getPrfb());
+				if (profileType != -1) {
+					KANTE_H = profile.getPrfId();  
+					KANTE_H_L = df.format(profile.getPrfLen());
+					MO = profileType(profile.getPrfb());
+				}
 			}
 			profile = imosPart.getProfile(IMOSPartProfile.POS_L);
 			if (profile != null && !profile.getPrfId().equals(IMOSPartProfile.NO_PROFILE)) {
-				KANTE_L = profile.getPrfId();  
-				KANTE_L_L = df.format(profile.getPrfLen());
-				ML = profileType(profile.getPrfb());
+				int profileType = profileType(profile.getPrfb());
+				if (profileType != -1) {
+					KANTE_L = profile.getPrfId();  
+					KANTE_L_L = df.format(profile.getPrfLen());
+					ML = profileType(profile.getPrfb());
+				}
 			}
 			
 			RU = profileCorner(imosPart.getProfile(

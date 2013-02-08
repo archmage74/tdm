@@ -13,8 +13,8 @@ public class IMOSPartProfile {
 	private String prfId;
 	private double prfLen;
 
-	private int prfp;   // kante v/n
-	private int prfb;   // ecksituation der kante zur folgekante  
+	private int prfp;   // ecksituation der kante zur folgekante
+	private int prfb;   // kante v/n  
 	
 	public String getPrfId() {
 		return prfId;
