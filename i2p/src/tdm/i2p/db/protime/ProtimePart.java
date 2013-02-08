@@ -196,7 +196,7 @@ public class ProtimePart {
 			value = 2;
 			break;
 		default: // default = kein uebergang
-			value = 3;
+			value = -1;
 		}
 
 		return value;
