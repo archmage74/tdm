@@ -16,36 +16,38 @@ public class PlaneHelper {
 
 	protected static PlaneHelper planeHelper = new PlaneHelper();
 	
-	protected Map<Plane, Vector3> planeVectors = new HashMap<Plane, Vector3>();
+	protected Map<Vector3, Plane> planeVectors = new HashMap<Vector3, Plane>();
 
 	protected PlaneHelper() {
-		planeVectors.put(Plane.FRONT, VECTOR_FRONT_SIDE);
-		planeVectors.put(Plane.BACK, VECTOR_BACK_SIDE);
-		planeVectors.put(Plane.TOP, VECTOR_PLANE_TOP);
-		planeVectors.put(Plane.BOTTOM, VECTOR_PLANE_BOTTOM);
-		planeVectors.put(Plane.LEFT, VECTOR_PLANE_LEFT);
-		planeVectors.put(Plane.RIGHT, VECTOR_PLANE_RIGHT);
+		planeVectors.put(VECTOR_FRONT_SIDE, Plane.FRONT);
+		planeVectors.put(VECTOR_BACK_SIDE, Plane.BACK);
+		planeVectors.put(VECTOR_PLANE_TOP, Plane.TOP);
+		planeVectors.put(VECTOR_PLANE_BOTTOM, Plane.BOTTOM);
+		planeVectors.put(VECTOR_PLANE_LEFT, Plane.LEFT);
+		planeVectors.put(VECTOR_PLANE_RIGHT, Plane.RIGHT);
 	}
 	
 	public static PlaneHelper getInstance() {
 		return planeHelper;
 	}
 	
-	public Plane getPlaneForDirection(IDirection direction) {
+	public Plane getPlaneForRotations(double angleX, double angleY, double angleZ) {
 		Vector3 drillDirection = new Vector3(0, 0, 1);
-		drillDirection.rotateXDegrees(direction.getAngleX()).rotateYDegrees(direction.getAngleY()).rotateZDegrees(direction.getAngleZ());
+		drillDirection.rotateXDegrees(angleX).rotateYDegrees(angleZ).rotateZDegrees(angleZ);
+		return getPlaneForDirection(drillDirection);
+	}
 
-		for (Map.Entry<Plane, Vector3> planeVector : planeVectors.entrySet()) {
-			if (drillDirection.equals(planeVector.getValue())) {
-				return planeVector.getKey();
+	public Plane getPlaneForDirection(Vector3 direction) {
+		for (Map.Entry<Vector3, Plane> planeVector : planeVectors.entrySet()) {
+			if (planeVector.getKey().equals(direction)) {
+				return planeVector.getValue();
 			}
 		}
-		
 		return Plane.DIAGONAL;
 	}
 	
 	public boolean isHorizontal(ImosDrilling drilling) {
-		Plane plane = getPlaneForDirection(drilling);
+		Plane plane = getPlaneForDirection(drilling.getDirection());
 		if (plane == Plane.FRONT || plane == Plane.BACK || plane == Plane.DIAGONAL) {
 			return false;
 		} else {

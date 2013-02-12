@@ -7,97 +7,94 @@ import javax.xml.bind.annotation.XmlType;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import tdm.cam.model.math.IDirection;
+import tdm.cam.model.math.Vector3;
 
-
-@XmlType(name="drilling")
+@XmlType(name = "drilling")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ImosDrilling implements IDirection, IsSerializable {
 
-	protected double x;
+	protected Vector3 position = new Vector3();
 
-	protected double y;
-	
-	protected double z;
-	
-	protected double endX;
-	
-	protected double endY;
-	
-	protected double angleX;
-	
-	protected double angleY;
-	
-	protected double angleZ;
+	protected Vector3 endPosition = new Vector3();
+
+	protected Vector3 direction = new Vector3(Vector3.Z_UNIT_VECTOR);
 
 	protected double diameter;
 
 	protected double deep;
-	
+
 	protected int numDrillings;
 
-	
+	public Vector3 getPosition() {
+		return new Vector3(position);
+	}
+
+	public void setPosition(Vector3 position) {
+		this.position = new Vector3(position);
+	}
+
+	public Vector3 getEndPosition() {
+		return new Vector3(endPosition);
+	}
+
+	public void setEndPosition(Vector3 endPosition) {
+		this.endPosition = new Vector3(endPosition);
+	}
+
+	public Vector3 getDirection() {
+		return new Vector3(direction);
+	}
+
+	public void setDirection(Vector3 direction) {
+		this.direction = new Vector3(direction);
+	}
+
 	public double getX() {
-		return x;
+		return position.getX();
 	}
 
 	public void setX(double x) {
-		this.x = x;
+		position.setX(x);
 	}
 
 	public double getY() {
-		return y;
+		return position.getY();
 	}
 
 	public void setY(double y) {
-		this.y = y;
+		position.setY(y);
 	}
 
 	public double getZ() {
-		return z;
+		return position.getZ();
 	}
 
 	public void setZ(double z) {
-		this.z = z;
+		position.setZ(z);
 	}
 
 	public double getEndX() {
-		return endX;
+		return endPosition.getX();
 	}
 
 	public void setEndX(double endX) {
-		this.endX = endX;
+		endPosition.setX(endX);
 	}
 
 	public double getEndY() {
-		return endY;
+		return endPosition.getY();
 	}
 
 	public void setEndY(double endY) {
-		this.endY = endY;
+		endPosition.setY(endY);
 	}
 
-	public double getAngleX() {
-		return angleX;
+	public double getEndZ() {
+		return endPosition.getZ();
 	}
 
-	public void setAngleX(double angleX) {
-		this.angleX = angleX;
-	}
-
-	public double getAngleY() {
-		return angleY;
-	}
-
-	public void setAngleY(double angleY) {
-		this.angleY = angleY;
-	}
-
-	public double getAngleZ() {
-		return angleZ;
-	}
-
-	public void setAngleZ(double angleZ) {
-		this.angleZ = angleZ;
+	public void setEndZ(double endZ) {
+		endPosition.setZ(endZ);
 	}
 
 	public double getDiameter() {
@@ -126,24 +123,19 @@ public class ImosDrilling implements IDirection, IsSerializable {
 
 	public ImosDrilling clone() {
 		ImosDrilling clone = new ImosDrilling();
-		clone.x = x;
-		clone.y = y;
-		clone.z = z;
-		clone.endX = endX;
-		clone.endY = endY;
-		clone.angleX = angleX;
-		clone.angleY = angleY;
-		clone.angleZ = angleZ;
+		clone.position = new Vector3(position);
+		clone.endPosition = new Vector3(endPosition);
+		clone.direction = new Vector3(direction);
 		clone.deep = deep;
 		clone.diameter = diameter;
 		clone.numDrillings = numDrillings;
 		return clone;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "ImosDrilling [x=" + x + ", y=" + y + ", z=" + z + ", endX=" + endX + ", endY=" + endY + ", angleX=" + angleX + ", angleY=" + angleY
-				+ ", angleZ=" + angleZ + ", diameter=" + diameter + ", deep=" + deep + ", numDrillings=" + numDrillings + "]";
+		return "ImosDrilling [ position=" + position + ", endPosition=" + endPosition + ", direction=" + direction + ", diameter=" + diameter
+				+ ", deep=" + deep + ", numDrillings=" + numDrillings + "]";
 	}
 
 }

@@ -1,19 +1,37 @@
 package tdm.cam.model.math;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+@XmlType(name="vector3")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Vector3 implements IsSerializable {
 
-	private static final double COMPARE_EPSILON = 0.00001; 
+	private static final double COMPARE_EPSILON = 0.00001;
+
+	public static final Vector3 Z_UNIT_VECTOR = new Vector3(0, 0, 1); 
 	
 	private double x = 0;
 	private double y = 0;
 	private double z = 0;
 	
+	public Vector3() {
+		this(0, 0, 0);
+	}
+
 	public Vector3(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	
+	public Vector3(Vector3 v) {
+		this.x = v.getX();
+		this.y = v.getY();
+		this.z = v.getZ();
 	}
 	
 	public Vector3 rotateXDegrees(double angleInDegrees) {
@@ -51,6 +69,10 @@ public class Vector3 implements IsSerializable {
 		y = ty;
 		return this;
 	}
+	
+	public double multiply(Vector3 v) {
+		return x * v.getX() + y * v.getY() + z * v.getZ(); 
+	}
 
 	public double getX() {
 		return x;
@@ -74,6 +96,19 @@ public class Vector3 implements IsSerializable {
 
 	public void setZ(double z) {
 		this.z = z;
+	}
+	
+	public double get(int index) {
+		switch (index) {
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			throw new RuntimeException("Vector3 allows index 0, 1 or 2");
+		}
 	}
 
 	@Override

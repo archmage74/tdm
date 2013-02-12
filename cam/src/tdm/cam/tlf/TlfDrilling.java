@@ -7,6 +7,7 @@ import tdm.cam.model.math.Dimensions;
 import tdm.cam.model.math.IDirection;
 import tdm.cam.model.math.Plane;
 import tdm.cam.model.math.PlaneHelper;
+import tdm.cam.model.math.Vector3;
 import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
@@ -19,9 +20,7 @@ public class TlfDrilling implements ITlfEngineHolder, ITlfNode, IDirection {
 	protected double x;
 	protected double y;
 	protected double z;
-	protected double angleX;
-	protected double angleY;
-	protected double angleZ;
+	protected Vector3 direction;
 	protected double deep;
 
 	/** resulting X coordinate on the masterwork plane */
@@ -114,28 +113,12 @@ public class TlfDrilling implements ITlfEngineHolder, ITlfNode, IDirection {
 		this.z = z;
 	}
 
-	public double getAngleX() {
-		return angleX;
+	public Vector3 getDirection() {
+		return new Vector3(direction);
 	}
 
-	public void setAngleX(double angleX) {
-		this.angleX = angleX;
-	}
-
-	public double getAngleY() {
-		return angleY;
-	}
-
-	public void setAngleY(double angleY) {
-		this.angleY = angleY;
-	}
-
-	public double getAngleZ() {
-		return angleZ;
-	}
-
-	public void setAngleZ(double angleZ) {
-		this.angleZ = angleZ;
+	public void setDirection(Vector3 direction) {
+		this.direction = new Vector3(direction);
 	}
 
 	public double getDeep() {
@@ -150,7 +133,7 @@ public class TlfDrilling implements ITlfEngineHolder, ITlfNode, IDirection {
 	}
 
 	public boolean isHorizontal() {
-		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(this);
+		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(direction);
 		if (plane == Plane.FRONT || plane == Plane.BACK || plane == Plane.DIAGONAL) {
 			return false;
 		} else {
@@ -238,9 +221,7 @@ public class TlfDrilling implements ITlfEngineHolder, ITlfNode, IDirection {
 		sb.append("x=").append(x).append(", ");
 		sb.append("y=").append(y).append(", ");
 		sb.append("z=").append(z).append(", ");
-		sb.append("angleX=").append(angleX).append(", ");
-		sb.append("angleY=").append(angleY).append(", ");
-		sb.append("angleZ=").append(angleZ).append(", ");
+		sb.append("direction=" + direction).append(", ");
 		sb.append("deep=").append(deep).append(", ");
 		sb.append("diameter=").append(diameter).append(", ");
 		sb.append("paramVelentrata=").append(paramVelentrata).append(", ");

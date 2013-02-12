@@ -77,9 +77,7 @@ public class TlfDrillingFactory {
 		drilling.setX(imosDrilling.getX());
 		drilling.setY(imosDrilling.getY());
 		drilling.setZ(imosDrilling.getZ());
-		drilling.setAngleX(imosDrilling.getAngleX());
-		drilling.setAngleY(imosDrilling.getAngleY());
-		drilling.setAngleZ(imosDrilling.getAngleZ());
+		drilling.setDirection(imosDrilling.getDirection());
 	}
 
 	private TlfRowDrilling createRowDrillingForDiameter(double diameter, double deep, Dimensions dimensions) {

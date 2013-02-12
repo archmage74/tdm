@@ -1,6 +1,9 @@
 package tdm.cam.model.imos;
 
 import tdm.cam.model.imos.ImosDrilling;
+import tdm.cam.model.math.Matrix3x3;
+import tdm.cam.model.math.RotationMatrixFactory;
+import tdm.cam.model.math.Vector3;
 
 
 public class TestDrillingParameters {
@@ -17,7 +20,6 @@ public class TestDrillingParameters {
 	private double diameter = 10;
 	private int numDrillings = 1;
 
-	
 	public TestDrillingParameters() {
 	}
 
@@ -77,6 +79,8 @@ public class TestDrillingParameters {
 	}
 	
 	public ImosDrilling create() {
+		RotationMatrixFactory rotationMatrixFactory = new RotationMatrixFactory();
+		Matrix3x3 rot = rotationMatrixFactory.createXYZRotationInDegrees(-angleX, -angleY, -angleZ);
 		ImosDrilling d = new ImosDrilling();
 		d.setNumDrillings(1);
 		d.setX(x);
@@ -84,9 +88,7 @@ public class TestDrillingParameters {
 		d.setZ(z);
 		d.setEndX(endX);
 		d.setEndY(endY);
-		d.setAngleX(angleX);
-		d.setAngleY(angleY);
-		d.setAngleZ(angleZ);
+		d.setDirection(rot.multiply(new Vector3(0, 0, 1)));
 		d.setDeep(deep);
 		d.setDiameter(diameter);
 		d.setNumDrillings(numDrillings);

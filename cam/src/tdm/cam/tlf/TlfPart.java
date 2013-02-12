@@ -9,10 +9,18 @@ import tdm.cam.model.math.Dimensions;
 import tdm.cam.model.math.Plane;
 import tdm.cam.model.math.PlaneHelper;
 
-/**
- * plane 1 top |---------------| | | plane 3 | | plane 4 left | | right | | |---------------| plane 2 bottom
- * 
- */
+//
+//              plane 1 
+//                top 
+//         |---------------| 
+//         |               | 
+// plane 3 |               | plane 4 
+//    left |               | right 
+//         |               | 
+//         |---------------| 
+//              plane 2 
+//              bottom
+// 
 public class TlfPart implements ITlfEngineHolder {
 
 	public static String header = "TlfDocument.header.jmte";
@@ -34,11 +42,10 @@ public class TlfPart implements ITlfEngineHolder {
 
 	private TlfPartSide backSide = new TlfBackSide(dimensions);
 
-
 	public TlfPart() {
 
 	}
-	
+
 	public List<TlfDocument> createTlfDocuments() {
 		List<TlfDocument> docs = new ArrayList<TlfDocument>();
 		if (!getFrontSide().isEmpty()) {
@@ -61,7 +68,7 @@ public class TlfPart implements ITlfEngineHolder {
 		tlf.append(ENGINE.transform(header, docModel));
 		tlf.append(frontSide.exportTlf());
 		tlf.append(ENGINE.transform(footer, docModel));
-		
+
 		return tlf.toString();
 	}
 
@@ -205,7 +212,7 @@ public class TlfPart implements ITlfEngineHolder {
 	}
 
 	public void addDrilling(TlfDrilling drilling) {
-		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(drilling);
+		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(drilling.getDirection());
 		if (plane == Plane.FRONT) {
 			frontSide.addNode(drilling);
 		} else if (plane == Plane.BACK) {

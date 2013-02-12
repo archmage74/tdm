@@ -105,7 +105,7 @@ public class PartStatsView implements IDisplayPart {
 		}
 		
 		for (ImosDrilling drilling : part.getDrillings()) {
-			Plane plane = planeHelper.getPlaneForDirection(drilling);
+			Plane plane = planeHelper.getPlaneForDirection(drilling.getDirection());
 			drillNumbers.put(plane, drillNumbers.get(plane) + drilling.getNumDrillings());
 		}
 

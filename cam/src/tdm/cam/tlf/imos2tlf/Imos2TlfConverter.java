@@ -34,8 +34,8 @@ public class Imos2TlfConverter {
 		TlfPart tlfPart = partFactory.createTlfPart(imosPart);
 		
 		for (ImosDrilling imosDrilling : imosPart.getDrillings()) {
-			TlfDrilling tldDrilling = drillingFactory.createDrilling(tlfPart, imosDrilling);
-			tlfPart.addDrilling(tldDrilling);
+			TlfDrilling tlfDrilling = drillingFactory.createDrilling(tlfPart, imosDrilling);
+			tlfPart.addDrilling(tlfDrilling);
 		}
 
 		for (ImosProfile imosProfile : imosPart.getProfiles()) {

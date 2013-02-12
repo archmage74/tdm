@@ -8,10 +8,16 @@ import java.sql.SQLException;
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.math.Dimensions;
+import tdm.cam.model.math.Matrix3x3;
+import tdm.cam.model.math.RotationMatrixFactory;
+import tdm.cam.model.math.Vector3;
 
 public class ImosDrillingFactory {
 
 	public static final String READ_DRILLINGS_SQL = "SELECT ip_x, ip_y, ip_z, or_x, or_y, or_z, dia, de, ep_x, ep_y, ep_z, cnt FROM idbwg WHERE orderId=? AND id=?";
+	
+	protected RotationMatrixFactory rotationMatrixFactory = new RotationMatrixFactory();
+	
 	public ImosDrillingFactory() {
 
 	}
@@ -23,9 +29,8 @@ public class ImosDrillingFactory {
 		drilling.setZ(rs.getDouble("ip_z"));
 		drilling.setEndX(rs.getDouble("ep_x"));
 		drilling.setEndY(rs.getDouble("ep_y"));
-		drilling.setAngleX(rs.getDouble("or_x"));
-		drilling.setAngleY(rs.getDouble("or_y"));
-		drilling.setAngleZ(rs.getDouble("or_z"));
+		Matrix3x3 rot = rotationMatrixFactory.createXYZRotationInDegrees(-rs.getDouble("or_x"), -rs.getDouble("or_y"), -rs.getDouble("or_z"));
+		drilling.setDirection(rot.multiply(Vector3.Z_UNIT_VECTOR));
 		drilling.setDiameter(rs.getInt("dia"));
 		double deep = rs.getDouble("de");
 		if (deep < 0) {

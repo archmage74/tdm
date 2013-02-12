@@ -7,17 +7,21 @@ import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProfile;
 import tdm.cam.model.math.Dimensions;
+import tdm.cam.model.math.Matrix3x3;
+import tdm.cam.model.math.RotationMatrixFactory;
 import tdm.cam.model.math.Vector3;
-import tdm.cam.model.math.VectorUtil;
 
 public class PartRotator {
 
-	public static final int ROTATION_ANGLE = 90;
+	protected RotationMatrixFactory rotationMatrixFactory = new RotationMatrixFactory();
 
+	
 	public void rotatePart(ImosPart part, double angleInDegrees) {
-		Dimensions rotatedDimensions = rotateDimensions(part.getDimensions(), angleInDegrees);
-		List<ImosDrilling> rotatedDrillings = rotateDrillings(part.getDrillings(), angleInDegrees);
-		List<ImosProfile> rotatedProfiles = rotateProfiles(part.getProfiles());
+		Matrix3x3 rot = rotationMatrixFactory.createZRotationInDegrees(angleInDegrees);
+
+		Dimensions rotatedDimensions = rotateDimensions(part.getDimensions(), rot);
+		List<ImosDrilling> rotatedDrillings = rotateDrillings(part.getDrillings(), rot);
+		List<ImosProfile> rotatedProfiles = rotateProfiles(part.getProfiles(), Math.round(angleInDegrees) / 90);
 
 		leftBottomAlign(rotatedDimensions, rotatedDrillings);
 
@@ -47,55 +51,50 @@ public class PartRotator {
 		dimensions.setWidth(Math.abs(dimensions.getWidth()));
 	}
 
-	private Dimensions rotateDimensions(Dimensions d, double angleInDegrees) {
+	private Dimensions rotateDimensions(Dimensions d, Matrix3x3 rot) {
 		Vector3 v = new Vector3(d.getLength(), d.getWidth(), d.getThick());
-		Vector3 rv = VectorUtil.rotateByZInDegrees(v, angleInDegrees);
+		Vector3 rv = rot.multiply(v);
 		Dimensions rotatedDimensions = new Dimensions(rv.getX(), rv.getY(), rv.getZ());
 		return rotatedDimensions;
 	}
 
-	private List<ImosDrilling> rotateDrillings(List<ImosDrilling> drillings, double angleInDegrees) {
+	private List<ImosDrilling> rotateDrillings(List<ImosDrilling> drillings, Matrix3x3 rot) {
 		List<ImosDrilling> rotatedDrillings = new ArrayList<ImosDrilling>();
 		for (ImosDrilling drilling : drillings) {
-			ImosDrilling rotatedDrilling = rotateDrilling(drilling, angleInDegrees);
+			ImosDrilling rotatedDrilling = rotateDrilling(drilling, rot);
 			rotatedDrillings.add(rotatedDrilling);
 		}
 		return rotatedDrillings;
 	}
 
-	private ImosDrilling rotateDrilling(ImosDrilling drilling, double angleInDegrees) {
-		Vector3 sv = new Vector3(drilling.getX(), drilling.getY(), drilling.getZ());
-		Vector3 rsv = VectorUtil.rotateByZInDegrees(sv, angleInDegrees);
-
-		Vector3 ev = new Vector3(drilling.getEndX(), drilling.getEndY(), 0);
-		Vector3 rev = VectorUtil.rotateByZInDegrees(ev, angleInDegrees);
+	private ImosDrilling rotateDrilling(ImosDrilling drilling, Matrix3x3 rot) {
+		Vector3 rsv = rot.multiply(drilling.getPosition());
+		Vector3 rev = rot.multiply(drilling.getEndPosition());
+		Vector3 rd = rot.multiply(drilling.getDirection());
 
 		ImosDrilling rotatedDrilling = drilling.clone();
-		rotatedDrilling.setX(rsv.getX());
-		rotatedDrilling.setY(rsv.getY());
-		rotatedDrilling.setZ(rsv.getZ());
-		rotatedDrilling.setEndX(rev.getX());
-		rotatedDrilling.setEndY(rev.getY());
-		rotatedDrilling.setAngleZ(rotatedDrilling.getAngleZ() + angleInDegrees);
+		rotatedDrilling.setPosition(rsv);
+		rotatedDrilling.setEndPosition(rev);
+		rotatedDrilling.setDirection(rd);
 
 		return rotatedDrilling;
 	}
 
-	private List<ImosProfile> rotateProfiles(List<ImosProfile> profiles) {
+	private List<ImosProfile> rotateProfiles(List<ImosProfile> profiles, long l) {
 		List<ImosProfile> rotatedProfiles = new ArrayList<ImosProfile>();
 		for (ImosProfile profile : profiles) {
-			ImosProfile rotatedProfile = rotateProfile(profile);
+			ImosProfile rotatedProfile = rotateProfile(profile, l);
 			rotatedProfiles.add(rotatedProfile);
 		}
 		return rotatedProfiles;
 	}
 
-	private ImosProfile rotateProfile(ImosProfile profile) {
+	private ImosProfile rotateProfile(ImosProfile profile, long profileDifference) {
 		ImosProfile rotatedProfile = profile.clone();
 		int prfNo = profile.getPrfNo();
-		prfNo -= getRotateProfileDifference();
-		if (prfNo < 1) {
-			prfNo += 4;
+		prfNo += profileDifference;
+		if (prfNo > 4) {
+			prfNo -= 4;
 		}
 		rotatedProfile.setPrfNo(prfNo);
 		return rotatedProfile;

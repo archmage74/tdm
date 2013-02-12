@@ -29,10 +29,10 @@ public class RotatePartCmd implements KeyDownHandler {
 		selectedPart = project.getPartByIndex(selectedPartIndex);
 		switch (event.getNativeKeyCode()) {
 		case KeyCodes.KEY_LEFT:
-			selectedPart.rotateLeft();
+			selectedPart.rotateRight();
 			break;
 		case KeyCodes.KEY_RIGHT:
-			selectedPart.rotateRight();
+			selectedPart.rotateLeft();
 			break;
 		}
 		drawPartCmd.refresh();

@@ -107,9 +107,7 @@ public class TlfRowDrilling extends TlfDrilling {
 		sb.append("x=").append(x).append(", ");
 		sb.append("y=").append(y).append(", ");
 		sb.append("z=").append(z).append(", ");
-		sb.append("angleX=").append(angleX).append(", ");
-		sb.append("angleY=").append(angleY).append(", ");
-		sb.append("angleZ=").append(angleZ).append(", ");
+		sb.append("direction=" + direction).append(", ");
 		sb.append("deep=").append(deep).append(", ");
 		sb.append("diameter=").append(diameter).append(", ");
 		sb.append("numDrillings=").append(numDrillings).append(", ");
