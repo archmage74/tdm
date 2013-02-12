@@ -6,22 +6,17 @@ import java.util.List;
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProfile;
+import tdm.cam.model.imos.ProfileType;
 import tdm.cam.model.math.Dimensions;
 import tdm.cam.model.math.Matrix3x3;
-import tdm.cam.model.math.RotationMatrixFactory;
 import tdm.cam.model.math.Vector3;
 
 public class PartRotator {
 
-	protected RotationMatrixFactory rotationMatrixFactory = new RotationMatrixFactory();
-
-	
-	public void rotatePart(ImosPart part, double angleInDegrees) {
-		Matrix3x3 rot = rotationMatrixFactory.createZRotationInDegrees(angleInDegrees);
-
+	public void rotatePart(ImosPart part, Matrix3x3 rot) {
 		Dimensions rotatedDimensions = rotateDimensions(part.getDimensions(), rot);
 		List<ImosDrilling> rotatedDrillings = rotateDrillings(part.getDrillings(), rot);
-		List<ImosProfile> rotatedProfiles = rotateProfiles(part.getProfiles(), Math.round(angleInDegrees) / 90);
+		List<ImosProfile> rotatedProfiles = rotateProfiles(part.getProfiles(), rot);
 
 		leftBottomAlign(rotatedDimensions, rotatedDrillings);
 
@@ -80,28 +75,21 @@ public class PartRotator {
 		return rotatedDrilling;
 	}
 
-	private List<ImosProfile> rotateProfiles(List<ImosProfile> profiles, long l) {
+	private List<ImosProfile> rotateProfiles(List<ImosProfile> profiles, Matrix3x3 rot) {
 		List<ImosProfile> rotatedProfiles = new ArrayList<ImosProfile>();
 		for (ImosProfile profile : profiles) {
-			ImosProfile rotatedProfile = rotateProfile(profile, l);
+			ImosProfile rotatedProfile = rotateProfile(profile, rot);
 			rotatedProfiles.add(rotatedProfile);
 		}
 		return rotatedProfiles;
 	}
 
-	private ImosProfile rotateProfile(ImosProfile profile, long profileDifference) {
+	private ImosProfile rotateProfile(ImosProfile profile, Matrix3x3 rot) {
 		ImosProfile rotatedProfile = profile.clone();
-		int prfNo = profile.getPrfNo();
-		prfNo += profileDifference;
-		if (prfNo > 4) {
-			prfNo -= 4;
-		}
-		rotatedProfile.setPrfNo(prfNo);
+		Vector3 direction = rot.multiply(profile.getProfileType().getDirection());
+		
+		rotatedProfile.setProfileType(ProfileType.createByDirection(direction));
 		return rotatedProfile;
-	}
-
-	protected int getRotateProfileDifference() {
-		return 1;
 	}
 
 }

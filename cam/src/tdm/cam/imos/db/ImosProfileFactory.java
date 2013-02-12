@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProfile;
+import tdm.cam.model.imos.ProfileType;
 import tdm.cam.model.math.Dimensions;
 
 public class ImosProfileFactory {
@@ -22,7 +23,11 @@ public class ImosProfileFactory {
 
 	public ImosProfile createProfile(ResultSet profileResultSet, Dimensions dimensions) throws SQLException {
 		ImosProfile profile = new ImosProfile();
-		profile.setPrfNo(profileResultSet.getInt("prfno"));
+		int profileNumber = profileResultSet.getInt("prfno");
+		if (profileNumber < 1 || profileNumber > 4) {
+			throw new RuntimeException("Unsupported profileNumber prfNo=" + profileNumber);
+		}
+		profile.setProfileType(ProfileType.createByProfileNumber(profileNumber));
 		profile.setPrfId(profileResultSet.getString("prfid"));
 		profile.setPrfLen(profileResultSet.getDouble("prflen"));
 		profile.setThick(profileResultSet.getDouble("prfthk"));

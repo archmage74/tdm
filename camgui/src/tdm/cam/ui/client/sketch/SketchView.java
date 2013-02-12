@@ -87,7 +87,7 @@ public class SketchView implements IDisplayPart {
 	}
 	
 	private void drawProfile(DrawList drawList, ImosProfile profile, ImosPart part) {
-		ProfileType type = ProfileType.create(profile.getPrfNo());
+		ProfileType type = profile.getProfileType();
 		double x; 
 		double y;
 		double l;

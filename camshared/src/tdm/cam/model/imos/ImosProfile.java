@@ -10,23 +10,15 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ImosProfile implements IsSerializable {
 
-	private int prfNo;
-	private String prfId;
-	private double prfLen;
+	protected String prfId;
+	protected ProfileType profileType;
+	protected double prfLen;
 
-	private double thick;
+	protected double thick;
 
-	private int prfp; // kante v/n
-	private int prfb; // ecksituation der kante zur folgekante
+	protected int prfp; // kante v/n
+	protected int prfb; // ecksituation der kante zur folgekante
 	
-	public int getPrfNo() {
-		return prfNo;
-	}
-
-	public void setPrfNo(int prfNo) {
-		this.prfNo = prfNo;
-	}
-
 	public String getPrfId() {
 		return prfId;
 	}
@@ -67,15 +59,23 @@ public class ImosProfile implements IsSerializable {
 		this.prfb = prfb;
 	}
 
+	public ProfileType getProfileType() {
+		return profileType;
+	}
+
+	public void setProfileType(ProfileType profileType) {
+		this.profileType = profileType;
+	}
+	
 	public ImosProfile clone() {
 		ImosProfile clone = new ImosProfile();
 		clone.prfb = prfb;
 		clone.prfId = prfId;
 		clone.prfLen = prfLen;
-		clone.prfNo = prfNo;
 		clone.prfp = prfp;
 		clone.thick = thick;
+		clone.profileType = profileType;
 		return clone;
 	}
-	
+
 }

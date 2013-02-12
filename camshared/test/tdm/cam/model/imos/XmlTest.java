@@ -30,7 +30,7 @@ public class XmlTest {
 		part.addDrilling(drilling5);
 		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
 		part.addDrilling(drilling10);
-		ImosProfile profile = new TestProfileParameters().prfNo(ProfileType.POS_R.getValue()).prfLen(404).create();
+		ImosProfile profile = new TestProfileParameters().profileType(ProfileType.POS_R).prfLen(404).create();
 		part.addProfile(profile);
 		
 		project.addPart(part);

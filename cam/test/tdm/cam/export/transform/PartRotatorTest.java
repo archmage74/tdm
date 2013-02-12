@@ -7,8 +7,11 @@ import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.TestDrillingParameters;
 import tdm.cam.model.math.Dimensions;
+import tdm.cam.model.math.RotationMatrixFactory;
 
 public class PartRotatorTest {
+
+	protected RotationMatrixFactory rotationMatrixFactory = new RotationMatrixFactory();
 
 	@Test
 	public void dimension90() {
@@ -17,7 +20,7 @@ public class PartRotatorTest {
 		Dimensions d = new Dimensions(500, 200, 19);
 		part.setDimensions(d);
 
-		new PartRotator().rotatePart(part, angle);
+		new PartRotator().rotatePart(part, rotationMatrixFactory.createZRotationInDegrees(angle));
 
 		Dimensions actual = part.getDimensions();
 		Dimensions expected = new Dimensions(200, 500, 19);
@@ -32,7 +35,7 @@ public class PartRotatorTest {
 		part.setDimensions(d);
 		part.addDrilling(new TestDrillingParameters().x(200).y(50).z(0).endX(0).endY(0).create());
 
-		new PartRotator().rotatePart(part, angle);
+		new PartRotator().rotatePart(part, rotationMatrixFactory.createZRotationInDegrees(angle));
 
 		double expectedX = 150;
 		double expectedY = 200;
@@ -49,7 +52,7 @@ public class PartRotatorTest {
 		part.setDimensions(d);
 		part.addDrilling(new TestDrillingParameters().x(74).y(378).z(0).endX(0).endY(0).create());
 
-		new PartRotator().rotatePart(part, angle);
+		new PartRotator().rotatePart(part, rotationMatrixFactory.createZRotationInDegrees(angle));
 
 		double expectedX = 404 - 378;
 		double expectedY = 74;

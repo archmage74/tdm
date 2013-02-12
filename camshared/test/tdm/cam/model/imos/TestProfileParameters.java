@@ -6,15 +6,15 @@ import tdm.cam.model.imos.ImosProfile;
 public class TestProfileParameters {
 
 //	private PartDimensions dimensions = new PartDimensions(714, 404, 19);
-	private int prfNo = 1;
+	private ProfileType profileType = ProfileType.POS_V;
 	private double prfLen = 714;
 	private double thick = 2;
 	
 	public TestProfileParameters() {
 	}
 	
-	public TestProfileParameters prfNo(int prfNo) {
-		this.prfNo = prfNo;
+	public TestProfileParameters profileType(ProfileType profileType) {
+		this.profileType= profileType;
 		return this;
 	}
 	
@@ -30,7 +30,7 @@ public class TestProfileParameters {
 	
 	public ImosProfile create() {
 		ImosProfile p = new ImosProfile();
-		p.setPrfNo(prfNo);
+		p.setProfileType(profileType);
 		p.setPrfLen(prfLen);
 		p.setThick(thick);
 		return p;
