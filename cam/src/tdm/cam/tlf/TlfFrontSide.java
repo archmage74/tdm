@@ -16,8 +16,8 @@ public class TlfFrontSide extends TlfPartSide {
 	IPlaneCoordinatesTransformer leftTransformer = new FrontsideLeftTransformer();
 	IPlaneCoordinatesTransformer rightTransformer = new FrontsideRightTransformer();
 	
-	public TlfFrontSide(Dimensions dimensions) {
-		super(dimensions);
+	public TlfFrontSide(String sideName, Dimensions dimensions) {
+		super(sideName, dimensions);
 	}
 	
 	@Override

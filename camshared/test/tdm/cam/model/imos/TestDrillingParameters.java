@@ -80,7 +80,7 @@ public class TestDrillingParameters {
 	
 	public ImosDrilling create() {
 		RotationMatrixFactory rotationMatrixFactory = new RotationMatrixFactory();
-		Matrix3x3 rot = rotationMatrixFactory.createXYZRotationInDegrees(-angleX, -angleY, -angleZ);
+		Matrix3x3 rot = rotationMatrixFactory.createXYZRotationInDegrees(angleX, angleY, angleZ);
 		ImosDrilling d = new ImosDrilling();
 		d.setNumDrillings(1);
 		d.setX(x);

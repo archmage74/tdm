@@ -15,7 +15,7 @@ public class FrontsideTopTransformer implements IPlaneCoordinatesTransformer {
 
 	@Override
 	public double getPlaneY(Dimensions dim, double x, double y, double z) {
-		return z;
+		return dim.getThick() - z;
 	}
 
 }

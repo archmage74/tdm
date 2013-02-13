@@ -20,6 +20,10 @@ public class Dimensions implements Cloneable, IsSerializable {
 		this.thick = thick;
 	}
 
+	public Dimensions(Dimensions dimensions) {
+		this(dimensions.getLength(), dimensions.getWidth(), dimensions.getThick());
+	}
+
 	public double getLength() {
 		return length;
 	}

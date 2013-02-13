@@ -36,14 +36,22 @@ public class PartRotator {
 			dy = -dimensions.getWidth();
 		}
 		
+		double dz = 0;
+		if (dimensions.getThick() < 0) {
+			dz = -dimensions.getThick();
+		}
+		
 		for (ImosDrilling drilling : drillings) {
 			drilling.setX(drilling.getX() + dx);
 			drilling.setY(drilling.getY() + dy);
+			drilling.setZ(drilling.getZ() + dz);
 			drilling.setEndX(drilling.getEndX() + dx);
 			drilling.setEndY(drilling.getEndY() + dy);
+			drilling.setEndZ(drilling.getEndZ() + dz);
 		}
 		dimensions.setLength(Math.abs(dimensions.getLength()));
 		dimensions.setWidth(Math.abs(dimensions.getWidth()));
+		dimensions.setThick(Math.abs(dimensions.getThick()));
 	}
 
 	private Dimensions rotateDimensions(Dimensions d, Matrix3x3 rot) {

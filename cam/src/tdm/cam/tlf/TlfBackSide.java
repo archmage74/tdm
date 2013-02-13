@@ -8,6 +8,7 @@ import tdm.cam.tlf.transformer.BacksideTopTransformer;
 import tdm.cam.tlf.transformer.BacksideUpTransformer;
 import tdm.cam.tlf.transformer.IPlaneCoordinatesTransformer;
 
+@Deprecated
 public class TlfBackSide extends TlfPartSide {
 
 	IPlaneCoordinatesTransformer upTransformer = new BacksideUpTransformer();
@@ -17,7 +18,7 @@ public class TlfBackSide extends TlfPartSide {
 	IPlaneCoordinatesTransformer rightTransformer = new BacksideRightTransformer();
 	
 	public TlfBackSide(Dimensions dimensions) {
-		super(dimensions);
+		super("xxx", dimensions);
 	}
 
 	@Override

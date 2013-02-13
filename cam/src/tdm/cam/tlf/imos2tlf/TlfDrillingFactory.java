@@ -10,8 +10,6 @@ import tdm.cam.model.math.Dimensions;
 import tdm.cam.model.math.PlaneHelper;
 import tdm.cam.tlf.TlfDrilling;
 import tdm.cam.tlf.TlfRowDrilling;
-import tdm.cam.tlf.TlfPart;
-import tdm.cam.tlf.imos2tlf.TlfDrillingTemplate;
 
 public class TlfDrillingFactory {
 
@@ -30,11 +28,11 @@ public class TlfDrillingFactory {
 		drillings = parser.readDrillConfiguration();
 	}
 	
-	public TlfDrilling createDrilling(TlfPart tlfPart, ImosDrilling imosDrilling) {
+	public TlfDrilling createDrilling(Dimensions dimensions, ImosDrilling imosDrilling) {
 		if (imosDrilling.getNumDrillings() == 1) {
-			return createSingleDrilling(tlfPart.getDimensions(), imosDrilling);
+			return createSingleDrilling(dimensions, imosDrilling);
 		} else {
-			return createRowDrilling(tlfPart.getDimensions(), imosDrilling);
+			return createRowDrilling(dimensions, imosDrilling);
 		}
 	}
 

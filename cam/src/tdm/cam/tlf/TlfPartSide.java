@@ -15,6 +15,7 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 	public static String works = "CamPartSide.works.jmte";
 
 	protected Dimensions dimensions;
+	protected String sideName;
 
 	protected List<ITlfNode> drillings = new ArrayList<ITlfNode>();
 	protected List<ITlfNode> plane1Drillings = new ArrayList<ITlfNode>();
@@ -22,8 +23,9 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 	protected List<ITlfNode> plane3Drillings = new ArrayList<ITlfNode>();
 	protected List<ITlfNode> plane4Drillings = new ArrayList<ITlfNode>();
 
-	public TlfPartSide(Dimensions dimensions) {
-		this.dimensions = dimensions;
+	public TlfPartSide(String sideName, Dimensions dimensions) {
+		this.dimensions = new Dimensions(dimensions);
+		this.sideName = new String(sideName);
 	}
 
 	protected abstract IPlaneCoordinatesTransformer getUpTransformer();
@@ -108,14 +110,6 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 		Map<String, Object> entitiesModel = new HashMap<String, Object>();
 		String p0 = createPlaneEntities(drillings);
 		
-//		StringBuffer lineBuffer = new StringBuffer();
-//		for (ITlfNode node : profileMap.values()) {
-//			node.setPlaneCoordinatesTransformer(getUpTransformer());
-//			node.calculatePlaneCoordinates(dimensions);
-//			lineBuffer.append(node.exportEntity());
-//		}
-//		p0 += lineBuffer.toString();
-
 		entitiesModel.put("entitiesPlane0", p0);
 		entitiesModel.put("entitiesPlane1", createPlaneEntities(plane1Drillings));
 		entitiesModel.put("entitiesPlane2", createPlaneEntities(plane2Drillings));
@@ -198,7 +192,6 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 		return drillings;
 	}
 
-
 	public List<ITlfNode> getPlane1Drillings() {
 		return plane1Drillings;
 	}
@@ -219,32 +212,19 @@ public abstract class TlfPartSide implements ITlfEngineHolder {
 		return dimensions;
 	}
 
-	public String toString() {
-		return toString(this.getClass().getCanonicalName());
+	public String getSideName() {
+		return sideName;
 	}
 
-	public String toString(String classname) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(classname).append(" { ");
-		sb.append("dimensions={ ");
-		if (dimensions == null) {
-			sb.append("null");
-		} else {
-			sb.append(dimensions.toString());
-		}
-		sb.append(" }");
-		sb.append("drillings={ ");
-		if (drillings == null) {
-			sb.append("null");
-		} else {
-			for (ITlfNode drilling : drillings) {
-				sb.append(drilling.toString()).append(", ");
-			}
-		}
-		sb.append(" }");
+	public void setSideName(String sideName) {
+		this.sideName = sideName;
+	}
 
-		sb.append(" }");
-		return sb.toString();
+	@Override
+	public String toString() {
+		return "TlfPartSide [dimensions=" + dimensions + ", sideName=" + sideName + ", drillings=" + drillings + ", plane1Drillings="
+				+ plane1Drillings + ", plane2Drillings=" + plane2Drillings + ", plane3Drillings=" + plane3Drillings + ", plane4Drillings="
+				+ plane4Drillings + "]";
 	}
 
 }

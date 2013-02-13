@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import tdm.cam.model.math.Dimensions;
-import tdm.cam.model.math.Plane;
-import tdm.cam.model.math.PlaneHelper;
 
 //
 //              plane 1 
@@ -20,7 +18,8 @@ import tdm.cam.model.math.PlaneHelper;
 //         |---------------| 
 //              plane 2 
 //              bottom
-// 
+// plane 1, 3, 4: z measured from top
+// plane 2: z measured from bottom
 public class TlfPart implements ITlfEngineHolder {
 
 	public static String header = "TlfDocument.header.jmte";
@@ -38,49 +37,36 @@ public class TlfPart implements ITlfEngineHolder {
 
 	private Dimensions dimensions = new Dimensions();
 
-	private TlfPartSide frontSide = new TlfFrontSide(dimensions);
-
-	private TlfPartSide backSide = new TlfBackSide(dimensions);
-
+	protected List<TlfPartSide> sides = new ArrayList<TlfPartSide>(2);
+	
 	public TlfPart() {
 
 	}
 
 	public List<TlfDocument> createTlfDocuments() {
 		List<TlfDocument> docs = new ArrayList<TlfDocument>();
-		if (!getFrontSide().isEmpty()) {
-			String name = getBarcode() + TlfDocument.FRONT_SIDE_SUFFIX;
-			String tlf = exportFrontSideTlf();
-			docs.add(new TlfDocument(name, tlf));
-		}
-		if (!getBackSide().isEmpty()) {
-			String name = getBarcode() + TlfDocument.BACK_SIDE_SUFFIX;
-			String tlf = exportBackSideTlf();
-			docs.add(new TlfDocument(name, tlf));
-		}
+		for (TlfPartSide side : sides) {
+			if (!side.isEmpty()) {
+				String name = getBarcode() + side.getSideName();
+				String tlf = exportSideTlf(side);
+				docs.add(new TlfDocument(name, tlf));
+			}
+		}			
 		return docs;
 	}
 
-	public String exportFrontSideTlf() {
+	public String exportSideTlf(TlfPartSide side) {
 		StringBuffer tlf = new StringBuffer();
 		Map<String, Object> docModel = new HashMap<String, Object>();
 
 		tlf.append(ENGINE.transform(header, docModel));
-		tlf.append(frontSide.exportTlf());
+		tlf.append(side.exportTlf());
 		tlf.append(ENGINE.transform(footer, docModel));
 
 		return tlf.toString();
 	}
 
-	public String exportBackSideTlf() {
-		StringBuffer tlf = new StringBuffer();
-		Map<String, Object> docModel = new HashMap<String, Object>();
-		tlf.append(ENGINE.transform(header, docModel));
-		tlf.append(backSide.exportTlf());
-		tlf.append(ENGINE.transform(footer, docModel));
-		return tlf.toString();
-	}
-
+	/*
 	public void moveThroughDrillingsToFrontside() {
 		// FIXME better rule: move all to one side (prefer inner side) if possible
 		List<ITlfNode> toMove = new ArrayList<ITlfNode>();
@@ -144,7 +130,15 @@ public class TlfPart implements ITlfEngineHolder {
 		toMove.clear();
 
 	}
-
+*/
+	public void addSide(TlfPartSide side) {
+		sides.add(side);
+	}
+	
+	public List<TlfPartSide> getSides() {
+		return new ArrayList<TlfPartSide>(sides);
+	}
+	
 	public void setThick(int thick) {
 		this.dimensions.setThick(thick);
 	}
@@ -203,34 +197,6 @@ public class TlfPart implements ITlfEngineHolder {
 		this.dimensions.setThick(dimensions.getThick());
 	}
 
-	public TlfPartSide getFrontSide() {
-		return frontSide;
-	}
-
-	public TlfPartSide getBackSide() {
-		return backSide;
-	}
-
-	public void addDrilling(TlfDrilling drilling) {
-		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(drilling.getDirection());
-		if (plane == Plane.FRONT) {
-			frontSide.addNode(drilling);
-		} else if (plane == Plane.BACK) {
-			backSide.addNode(drilling);
-		} else if (plane == Plane.TOP) {
-			frontSide.addPlane1Drilling(drilling);
-		} else if (plane == Plane.BOTTOM) {
-			frontSide.addPlane2Drilling(drilling);
-		} else if (plane == Plane.LEFT) {
-			frontSide.addPlane3Drilling(drilling);
-		} else if (plane == Plane.RIGHT) {
-			frontSide.addPlane4Drilling(drilling);
-		} else {
-			// throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
-			System.out.println("Schraegbohrung gefunden, wird ignoriert");
-		}
-	}
-
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("CamPart { ");
@@ -242,17 +208,21 @@ public class TlfPart implements ITlfEngineHolder {
 		sb.append("length=").append(dimensions.getLength()).append(", ");
 		sb.append("width=").append(dimensions.getWidth()).append(", ");
 		sb.append("thick=").append(dimensions.getThick()).append(", ");
-		sb.append("frontSide={ ").append(frontSide).append(" }");
+		sb.append("sides=[");
+		for (TlfPartSide side : sides) {
+			sb.append(side).append(", ");
+		}
+		sb.append("]");
 		sb.append(" }");
 		return sb.toString();
 	}
 
-	public void optimizeSides() {
-		moveThroughDrillingsToFrontside();
-		if (!backSide.isEmpty() && frontSide.hasOnlyHorizontalDrillings()) {
-			moveHorizontalToBackside();
-		}
-
-	}
+//	public void optimizeSides() {
+//		moveThroughDrillingsToFrontside();
+//		if (!backSide.isEmpty() && frontSide.hasOnlyHorizontalDrillings()) {
+//			moveHorizontalToBackside();
+//		}
+//
+//	}
 
 }

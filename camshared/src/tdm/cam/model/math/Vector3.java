@@ -10,8 +10,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Vector3 implements IsSerializable {
 
-	private static final double COMPARE_EPSILON = 0.00001;
-
 	public static final Vector3 Z_UNIT_VECTOR = new Vector3(0, 0, 1); 
 	
 	private double x = 0;
@@ -137,13 +135,13 @@ public class Vector3 implements IsSerializable {
 			return false;
 		}
 		Vector3 other = (Vector3) obj;
-		if (Math.abs(x - other.x) > COMPARE_EPSILON) {
+		if (!Epsilon.equals(x,  other.x)) { 
 			return false;
 		}
-		if (Math.abs(y - other.y) > COMPARE_EPSILON) {
+		if (!Epsilon.equals(y,  other.y)) {
 			return false;
 		}
-		if (Math.abs(z - other.z) > COMPARE_EPSILON) {
+		if (!Epsilon.equals(z,  other.z)) {
 			return false;
 		}
 		return true;
