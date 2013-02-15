@@ -7,7 +7,7 @@ public class FrontDrillingFilter extends SingleSideDrillingFilter {
 
 	@Override
 	public Vector3 getFilterVector() {
-		return PlaneHelper.VECTOR_FRONT_SIDE;
+		return PlaneHelper.VECTOR_VISIBLE_SIDE;
 	}
 		
 }

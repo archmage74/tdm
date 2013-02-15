@@ -29,7 +29,7 @@ public class CamPartTestDataFactory {
 		return camPart;
 	}
 	
-	public ImosPart createDrilling10BacksideCamPart() {
+	public ImosPart createDrilling10FrontsideCamPart() {
 		ImosPart camPart = createCamPart();
 		
 		ImosDrilling drilling = new TestDrillingParameters().z(19).angleX(180).angleZ(180).create();
@@ -61,7 +61,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createPlane1Drilling6CamPart() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling = new TestDrillingParameters().diameter(6).x(100).y(404).z(8).angleX(-90).deep(25).create();
+		ImosDrilling drilling = new TestDrillingParameters().diameter(6).x(100).y(404).z(8).angleX(90).deep(25).create();
 		camPart.addDrilling(drilling);
 		return camPart;
 	}
@@ -69,7 +69,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createPlane2Drilling6CamPart() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling = new TestDrillingParameters().diameter(6).x(100).y(0).z(8).angleX(-90).angleZ(180).deep(11).create();
+		ImosDrilling drilling = new TestDrillingParameters().diameter(6).x(100).y(0).z(8).angleX(90).angleZ(180).deep(11).create();
 		camPart.addDrilling(drilling);
 		return camPart;
 	}
@@ -78,7 +78,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createPlane3Drilling5CamPart() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling = new TestDrillingParameters().diameter(5).x(0).y(50).z(8).angleX(-90).angleZ(-90).deep(11).create();
+		ImosDrilling drilling = new TestDrillingParameters().diameter(5).x(0).y(50).z(8).angleX(90).angleZ(90).deep(11).create();
 		camPart.addDrilling(drilling);
 		return camPart;
 	}
@@ -94,9 +94,9 @@ public class CamPartTestDataFactory {
 	public ImosPart createDrilling10BacksideAndPlane1Drilling5CamPart() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(404).z(8).angleX(-90).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(404).z(8).angleX(90).deep(15).create();
 		camPart.addDrilling(drilling5);
-		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).deep(11).create();
 		camPart.addDrilling(drilling10);
 
 		return camPart;
@@ -105,9 +105,9 @@ public class CamPartTestDataFactory {
 	public ImosPart createDrilling10BacksideAndPlane2Drilling5CamPart() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(0).z(8).angleX(-90).angleZ(180).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(0).z(8).angleX(90).angleZ(180).deep(15).create();
 		camPart.addDrilling(drilling5);
-		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).deep(11).create();
 		camPart.addDrilling(drilling10);
 
 		return camPart;
@@ -116,9 +116,9 @@ public class CamPartTestDataFactory {
 	public ImosPart createDrilling10BacksideAndPlane3Drilling5CamPart() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(714).y(50).z(8).angleX(-90).angleZ(-90).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(714).y(50).z(8).angleX(-90).angleZ(90).deep(15).create();
 		camPart.addDrilling(drilling5);
-		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).deep(11).create();
 		camPart.addDrilling(drilling10);
 
 		return camPart;
@@ -127,9 +127,9 @@ public class CamPartTestDataFactory {
 	public ImosPart createDrilling10BacksideAndPlane4Drilling5CamPart() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(0).y(50).z(8).angleX(-90).angleZ(90).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(0).y(50).z(8).angleX(-90).angleZ(-90).deep(15).create();
 		camPart.addDrilling(drilling5);
-		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).deep(11).create();
 		camPart.addDrilling(drilling10);
 
 		return camPart;
@@ -138,7 +138,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createRowDrilling6Frontside() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling = new TestDrillingParameters().x(80).y(60).endX(380).endY(200).diameter(6).numDrillings(7).create();
+		ImosDrilling drilling = new TestDrillingParameters().angleX(180).x(80).y(60).endX(380).endY(200).diameter(6).numDrillings(7).create();
 		camPart.addDrilling(drilling);
 
 		return camPart;
@@ -147,7 +147,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createRowDrilling6Backside() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling = new TestDrillingParameters().angleX(180).x(80).y(60).endX(380).endY(200).diameter(6).numDrillings(7).create();
+		ImosDrilling drilling = new TestDrillingParameters().x(80).y(60).endX(380).endY(200).diameter(6).numDrillings(7).create();
 		camPart.addDrilling(drilling);
 		
 		return camPart;
@@ -156,7 +156,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createProfileBottom() {
 		ImosPart camPart = createCamPart();
 
-		ImosDrilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().angleX(180).create();
 		camPart.addDrilling(drilling);
 		ImosProfile profile = new TestProfileParameters().profileType(ProfileType.POS_V).create();
 		camPart.addProfile(profile);
@@ -167,7 +167,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createProfileBottomBackSide() {
 		ImosPart camPart = createCamPart();
 
-		ImosDrilling drilling = new TestDrillingParameters().angleX(180).create();
+		ImosDrilling drilling = new TestDrillingParameters().create();
 		camPart.addDrilling(drilling);
 		ImosProfile profile = new  TestProfileParameters().profileType(ProfileType.POS_V).create();
 		camPart.addProfile(profile);
@@ -178,7 +178,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createProfileTop() {
 		ImosPart camPart = createCamPart();
 
-		ImosDrilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().angleY(180).create();
 		camPart.addDrilling(drilling);
 		ImosProfile profile = new  TestProfileParameters().profileType(ProfileType.POS_H).create();
 		camPart.addProfile(profile);
@@ -189,7 +189,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createProfileLeft() {
 		ImosPart camPart = createCamPart();
 
-		ImosDrilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().angleY(180).create();
 		camPart.addDrilling(drilling);
 		ImosProfile profile = new  TestProfileParameters().profileType(ProfileType.POS_L).prfLen(404).create();
 		camPart.addProfile(profile);
@@ -200,7 +200,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createProfileRight() {
 		ImosPart camPart = createCamPart();
 
-		ImosDrilling drilling = new TestDrillingParameters().create();
+		ImosDrilling drilling = new TestDrillingParameters().angleY(180).create();
 		camPart.addDrilling(drilling);
 		ImosProfile profile = new  TestProfileParameters().profileType(ProfileType.POS_R).prfLen(404).create();
 		camPart.addProfile(profile);
@@ -211,7 +211,7 @@ public class CamPartTestDataFactory {
 	public ImosPart createProfileRightBackSide() {
 		ImosPart camPart = createCamPart();
 
-		ImosDrilling drilling = new TestDrillingParameters().angleX(180).create();
+		ImosDrilling drilling = new TestDrillingParameters().create();
 		camPart.addDrilling(drilling);
 		ImosProfile profile = new  TestProfileParameters().profileType(ProfileType.POS_R).prfLen(404).create();
 		camPart.addProfile(profile);
@@ -222,9 +222,9 @@ public class CamPartTestDataFactory {
 	public ImosPart createDrillingsBackSideAndHorizontalAndProfileCamPart() {
 		ImosPart camPart = createCamPart();
 		
-		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(404).z(8).angleX(-90).deep(15).create();
+		ImosDrilling drilling5 = new TestDrillingParameters().diameter(5).x(100).y(404).z(8).angleX(90).deep(15).create();
 		camPart.addDrilling(drilling5);
-		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
+		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).deep(11).create();
 		camPart.addDrilling(drilling10);
 		ImosProfile profile = new  TestProfileParameters().profileType(ProfileType.POS_R).prfLen(404).create();
 		camPart.addProfile(profile);

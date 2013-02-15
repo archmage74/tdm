@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import tdm.cam.export.transform.PartRotator;
 import tdm.cam.export.transform.TransformationService;
+import tdm.cam.imos.PartRotator;
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProfile;
@@ -52,8 +52,8 @@ public class Imos2TlfConverter {
 		TlfPart tlfPart = partFactory.createTlfPart(imosPart);
 
 		// frontside
-		Matrix3x3 turnOver = rotationMatrixFactory.createXRotationInDegrees(180);
-		partRotator.rotatePart(imosPart, turnOver);
+//		Matrix3x3 turnOver = rotationMatrixFactory.createXRotationInDegrees(180);
+//		partRotator.rotatePart(imosPart, turnOver);
 		
 		int numDrillingsUp = countNonThroughUpDrillings(imosPart.getDrillings(), imosPart.getDimensions().getThick());
 		int numDrillingsDown = countNonThroughDownDrillings(imosPart.getDrillings(), imosPart.getDimensions().getThick());

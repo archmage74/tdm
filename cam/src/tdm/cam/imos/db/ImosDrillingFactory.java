@@ -29,7 +29,7 @@ public class ImosDrillingFactory {
 		drilling.setZ(rs.getDouble("ip_z"));
 		drilling.setEndX(rs.getDouble("ep_x"));
 		drilling.setEndY(rs.getDouble("ep_y"));
-		Matrix3x3 rot = rotationMatrixFactory.createXYZRotationInDegrees(-rs.getDouble("or_x"), -rs.getDouble("or_y"), -rs.getDouble("or_z"));
+		Matrix3x3 rot = rotationMatrixFactory.createXYZRotationInDegrees(rs.getDouble("or_x"), rs.getDouble("or_y"), rs.getDouble("or_z"));
 		drilling.setDirection(rot.multiply(Vector3.Z_UNIT_VECTOR));
 		drilling.setDiameter(rs.getInt("dia"));
 		double deep = rs.getDouble("de");

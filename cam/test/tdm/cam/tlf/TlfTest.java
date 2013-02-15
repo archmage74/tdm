@@ -37,7 +37,7 @@ public class TlfTest {
 	private static final String EXPECTED_PLANE_2_DRILLING_6 = EXPECTED_PREFIX + "plane2Drilling6.tlf";
 	private static final String EXPECTED_PLANE_3_DRILLING_5 = EXPECTED_PREFIX + "plane3Drilling5.tlf";
 	private static final String EXPECTED_PLANE_4_DRILLING_5 = EXPECTED_PREFIX + "plane4Drilling5.tlf";
-	private static final String EXPECTED_DRILLING_10_BACKSIDE = EXPECTED_PREFIX + "drilling10_backside.tlf";
+	private static final String EXPECTED_DRILLING_10_FRONTSIDE = EXPECTED_PREFIX + "drilling10_frontside.tlf";
 	private static final String EXPECTED_DRILLING_8_THROUGH = EXPECTED_PREFIX + "drilling8_through.tlf";
 	private static final String EXPECTED_PLANE_1_AND_BACKSIDE = EXPECTED_PREFIX + "plane1FromBackside.tlf";
 	private static final String EXPECTED_PLANE_2_AND_BACKSIDE = EXPECTED_PREFIX + "plane2FromBackside.tlf";
@@ -56,6 +56,14 @@ public class TlfTest {
 	private static final String EXPECTED_DRILLINGS_BACKSIDE_AND_HORIZONTAL_AND_PROFILE = EXPECTED_PREFIX + "drillingsBacksideAndHorizontalProfile__backside.tlf";
 
 	private static final String EXPECTED_DRILLING_10_ROT_90 = EXPECTED_PREFIX + "drilling10Rot90.tlf";
+	private static final String EXPECTED_DRILLING_10_ROT_180 = EXPECTED_PREFIX + "drilling10Rot180.tlf";
+	private static final String EXPECTED_DRILLING_10_ROT_270 = EXPECTED_PREFIX + "drilling10Rot270.tlf";
+
+	private static final String EXPECTED_DRILLING_TOP_6_ROT_90 = EXPECTED_PREFIX + "drillingTop6Rot90.tlf";
+	private static final String EXPECTED_DRILLING_TOP_6_ROT_180 = EXPECTED_PREFIX + "drillingTop6Rot180.tlf";
+	private static final String EXPECTED_DRILLING_TOP_6_ROT_270 = EXPECTED_PREFIX + "drillingTop6Rot270.tlf";
+
+	private static final String EXPECTED_DRILLING_LEFT_5_ROT_90 = EXPECTED_PREFIX + "drillingLeft5Rot90.tlf";
 
 	@Before
 	public void setup() {
@@ -79,6 +87,16 @@ public class TlfTest {
 	}
 
 	@Test
+	public void jmteEngineTest() {
+		String input = "${name}";
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", "Minimal Template Engine");
+		Engine engine = new Engine();
+		String transformed = engine.transform(input, model);
+		Assert.assertEquals(transformed, "Minimal Template Engine");
+	}
+
+	@Test
 	public void drilling10Test() {
 		ImosPart camPart = camPartFactory.createDrilling10CamPart();
 
@@ -86,6 +104,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_backside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10, fileName);
 	}
@@ -104,21 +123,60 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_backside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10_ROT_90, fileName);
 	}
 
 	@Test
-	public void drilling10BacksideTest() {
-		ImosPart camPart = camPartFactory.createDrilling10BacksideCamPart();
-
-		TlfPart tlfPart = imos2Tlf.convert(camPart);
+	public void drilling10Rot180Test() {
+		ImosPart camPart = camPartFactory.createDrilling10CamPart();
+		camPart.setBarcode(camPart.getBarcode() + "Rot180");
+		Map<String, Integer> rotMap = new HashMap<String, Integer>();
+		rotMap.put(camPart.getBarcode(), 180);
+		
+		ImosProject prj = new ImosProject();
+		prj.addPart(camPart);
+		
+		TlfPart tlfPart = imos2Tlf.convert(prj, rotMap).iterator().next();
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
 		TlfAssert.assertTrue(fileName.contains("_backside"));
 
-		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10_BACKSIDE, fileName);
+		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10_ROT_180, fileName);
+	}
+
+	@Test
+	public void drilling10Rot270Test() {
+		ImosPart camPart = camPartFactory.createDrilling10CamPart();
+		camPart.setBarcode(camPart.getBarcode() + "Rot270");
+		Map<String, Integer> rotMap = new HashMap<String, Integer>();
+		rotMap.put(camPart.getBarcode(), 270);
+		
+		ImosProject prj = new ImosProject();
+		prj.addPart(camPart);
+		
+		TlfPart tlfPart = imos2Tlf.convert(prj, rotMap).iterator().next();
+		List<TlfDocument> docs = tlfPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_backside"));
+
+		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10_ROT_270, fileName);
+	}
+
+	@Test
+	public void drilling10FrontsideTest() {
+		ImosPart camPart = camPartFactory.createDrilling10FrontsideCamPart();
+
+		TlfPart tlfPart = imos2Tlf.convert(camPart);
+		List<TlfDocument> docs = tlfPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
+
+		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10_FRONTSIDE, fileName);
 	}
 
 	@Test
@@ -129,7 +187,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
-		TlfAssert.assertTrue(fileName.contains("_frontside")); // only through drilling from backside -> same as frontside
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_DRILLING_8_THROUGH, fileName);
 	}
@@ -142,6 +200,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_backside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_DRILLING_10_AND_35, fileName);
 	}
@@ -154,6 +213,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_PLANE_1_DRILLING_6, fileName);
 	}
@@ -166,6 +226,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_PLANE_2_DRILLING_6, fileName);
 	}
@@ -274,6 +335,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_PROFILE_FRONTSIDE_BOTTOM, fileName);
 	}
@@ -299,6 +361,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_PROFILE_FRONTSIDE_TOP, fileName);
 	}
@@ -311,6 +374,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_PROFILE_FRONTSIDE_LEFT, fileName);
 	}
@@ -322,6 +386,7 @@ public class TlfTest {
 		List<TlfDocument> docs = tlfPart.createTlfDocuments();
 		TlfAssert.assertEquals(1, docs.size());
 		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
 
 		TlfAssert.assertFileEquals(EXPECTED_PROFILE_FRONTSIDE_RIGHT, fileName);
 	}
@@ -350,15 +415,83 @@ public class TlfTest {
 		TlfAssert.assertFileEquals(EXPECTED_DRILLINGS_BACKSIDE_AND_HORIZONTAL_AND_PROFILE, fileName);
 	}
 	
+	@Test
+	public void drillingTop6Rot90Test() {
+		ImosPart camPart = camPartFactory.createPlane1Drilling6CamPart();
+		camPart.setBarcode(camPart.getBarcode() + "Rot90");
+		Map<String, Integer> rotMap = new HashMap<String, Integer>();
+		rotMap.put(camPart.getBarcode(), 90);
+		
+		ImosProject prj = new ImosProject();
+		prj.addPart(camPart);
+		
+		TlfPart tlfPart = imos2Tlf.convert(prj, rotMap).iterator().next();
+		List<TlfDocument> docs = tlfPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
+
+		TlfAssert.assertFileEquals(EXPECTED_DRILLING_TOP_6_ROT_90, fileName);
+	}
 
 	@Test
-	public void jmteEngineTest() {
-		String input = "${name}";
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("name", "Minimal Template Engine");
-		Engine engine = new Engine();
-		String transformed = engine.transform(input, model);
-		Assert.assertEquals(transformed, "Minimal Template Engine");
+	public void drillingTop6Rot180Test() {
+		int angle = 180;
+		ImosPart camPart = camPartFactory.createPlane1Drilling6CamPart();
+		camPart.setBarcode(camPart.getBarcode() + "Rot" + angle);
+		Map<String, Integer> rotMap = new HashMap<String, Integer>();
+		rotMap.put(camPart.getBarcode(), angle);
+		
+		ImosProject prj = new ImosProject();
+		prj.addPart(camPart);
+		
+		TlfPart tlfPart = imos2Tlf.convert(prj, rotMap).iterator().next();
+		List<TlfDocument> docs = tlfPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
+
+		TlfAssert.assertFileEquals(EXPECTED_DRILLING_TOP_6_ROT_180, fileName);
+	}
+
+	@Test
+	public void drillingTop6Rot270Test() {
+		int angle = 270;
+		ImosPart camPart = camPartFactory.createPlane1Drilling6CamPart();
+		camPart.setBarcode(camPart.getBarcode() + "Rot" + angle);
+		Map<String, Integer> rotMap = new HashMap<String, Integer>();
+		rotMap.put(camPart.getBarcode(), angle);
+		
+		ImosProject prj = new ImosProject();
+		prj.addPart(camPart);
+		
+		TlfPart tlfPart = imos2Tlf.convert(prj, rotMap).iterator().next();
+		List<TlfDocument> docs = tlfPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
+
+		TlfAssert.assertFileEquals(EXPECTED_DRILLING_TOP_6_ROT_270, fileName);
+	}
+
+	@Test
+	public void drillingLeft5Rot90Test() {
+		int angle = 90;
+		ImosPart camPart = camPartFactory.createPlane3Drilling5CamPart();
+		camPart.setBarcode(camPart.getBarcode() + "Rot" + angle);
+		Map<String, Integer> rotMap = new HashMap<String, Integer>();
+		rotMap.put(camPart.getBarcode(), angle);
+		
+		ImosProject prj = new ImosProject();
+		prj.addPart(camPart);
+		
+		TlfPart tlfPart = imos2Tlf.convert(prj, rotMap).iterator().next();
+		List<TlfDocument> docs = tlfPart.createTlfDocuments();
+		TlfAssert.assertEquals(1, docs.size());
+		String fileName = writeOutputFiles(docs).get(0);
+		TlfAssert.assertTrue(fileName.contains("_frontside"));
+
+		TlfAssert.assertFileEquals(EXPECTED_DRILLING_LEFT_5_ROT_90, fileName);
 	}
 
 }

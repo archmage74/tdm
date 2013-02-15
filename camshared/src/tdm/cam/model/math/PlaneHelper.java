@@ -7,8 +7,8 @@ import tdm.cam.model.imos.ImosDrilling;
 
 public class PlaneHelper {
 
-	public static final Vector3 VECTOR_FRONT_SIDE = new Vector3(0, 0, -1);
-	public static final Vector3 VECTOR_BACK_SIDE = new Vector3(0, 0, 1);
+	public static final Vector3 VECTOR_VISIBLE_SIDE = new Vector3(0, 0, -1);
+	public static final Vector3 VECTOR_INVISIBLE_SIDE = new Vector3(0, 0, 1);
 	public static final Vector3 VECTOR_PLANE_TOP = new Vector3(0, -1, 0);
 	public static final Vector3 VECTOR_PLANE_BOTTOM = new Vector3(0, 1, 0);
 	public static final Vector3 VECTOR_PLANE_LEFT = new Vector3(1, 0, 0);
@@ -19,8 +19,8 @@ public class PlaneHelper {
 	protected Map<Vector3, Plane> planeVectors = new HashMap<Vector3, Plane>();
 
 	protected PlaneHelper() {
-		planeVectors.put(VECTOR_FRONT_SIDE, Plane.FRONT);
-		planeVectors.put(VECTOR_BACK_SIDE, Plane.BACK);
+		planeVectors.put(VECTOR_VISIBLE_SIDE, Plane.FRONT);
+		planeVectors.put(VECTOR_INVISIBLE_SIDE, Plane.BACK);
 		planeVectors.put(VECTOR_PLANE_TOP, Plane.TOP);
 		planeVectors.put(VECTOR_PLANE_BOTTOM, Plane.BOTTOM);
 		planeVectors.put(VECTOR_PLANE_LEFT, Plane.LEFT);

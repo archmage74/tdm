@@ -24,6 +24,7 @@ public class ImosServiceMock implements IImosService {
 	@Override
 	public void init() {
 		CamPartTestDataFactory f = new CamPartTestDataFactory();
+		parts.add(f.createDrilling10FrontsideCamPart());
 		parts.add(f.createDrillingsBackSideAndHorizontalAndProfileCamPart());
 		parts.add(f.createDrilling10And35CamPart());
 		parts.add(f.createBigPart());

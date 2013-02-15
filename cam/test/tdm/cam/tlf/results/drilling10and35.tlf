@@ -102,9 +102,9 @@ L
 DIAM_UT
 0
 X
-74 I
+640 I
 Y
-74 I
+330 I
 R
 17.5
 \CIR
@@ -118,9 +118,9 @@ L
 DIAM_UT
 0
 X
-74 I
+640 I
 Y
-26 I
+378 I
 R
 5
 \CIR
@@ -134,9 +134,9 @@ L
 DIAM_UT
 0
 X
-124 I
+590 I
 Y
-26 I
+378 I
 R
 5
 \CIR
