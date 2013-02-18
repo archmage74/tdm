@@ -3,9 +3,9 @@ package tdm.cam.export.transform;
 import java.util.Collection;
 import java.util.Map;
 
-import tdm.cam.imos.PartRotator;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProject;
+import tdm.cam.model.imos.PartRotator;
 import tdm.cam.model.math.Matrix3x3;
 import tdm.cam.model.math.RotationMatrixFactory;
 

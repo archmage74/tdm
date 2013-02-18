@@ -3,9 +3,9 @@ package tdm.cam.export.transform;
 import org.junit.Assert;
 import org.junit.Test;
 
-import tdm.cam.imos.PartRotator;
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
+import tdm.cam.model.imos.PartRotator;
 import tdm.cam.model.imos.TestDrillingParameters;
 import tdm.cam.model.math.Dimensions;
 import tdm.cam.model.math.RotationMatrixFactory;

@@ -6,7 +6,9 @@ import java.util.List;
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProfile;
+import tdm.cam.model.imos.PartRotator;
 import tdm.cam.model.imos.ProfileType;
+import tdm.cam.model.math.Matrix3x3;
 import tdm.cam.model.math.PlaneHelper;
 import tdm.cam.ui.client.IDisplayPart;
 import tdm.cam.ui.client.prj.Part;
@@ -15,7 +17,6 @@ import tdm.cam.ui.client.sketch.draw.DrawList;
 import tdm.cam.ui.client.sketch.draw.FillRectangle;
 import tdm.cam.ui.client.sketch.draw.StrokeRectangle;
 import tdm.cam.ui.client.sketch.transform.ICoordinateTransformerFactory;
-import tdm.cam.ui.client.sketch.transform.RotationTransformer;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -42,6 +43,10 @@ public class SketchView implements IDisplayPart {
 
 	protected List<IDrillingFilter> drillingFilters = new ArrayList<IDrillingFilter>();
 	
+	protected PartRotator partRotator = new PartRotator();
+	
+	protected Matrix3x3 viewRotation = new Matrix3x3(Matrix3x3.IDENTITY_MATRIX);
+	
 	protected ICoordinateTransformerFactory transformerFactory;
 	
 	public SketchView(Canvas canvas) {
@@ -64,13 +69,12 @@ public class SketchView implements IDisplayPart {
 	}
 
 	private DrawList constructDrawList(Part part) {
-		ImosPart imosPart = part.getImosPart();
+		ImosPart imosPart = part.getTransformedImosPart();
 		DrawList drawList = new DrawList();
-		drawList.addTransformers(transformerFactory.createTransformers(imosPart.getDimensions()));
-		drawList.addTransformer(new RotationTransformer(part.getRotation()));
-		drawPartOutline(drawList, imosPart);
-		drawPartDrillings(drawList, imosPart);
-		drawPartProfiles(drawList, imosPart);
+		ImosPart rotatedPart = partRotator.createRotatedPart(imosPart, viewRotation);
+		drawPartOutline(drawList, rotatedPart);
+		drawPartDrillings(drawList, rotatedPart);
+		drawPartProfiles(drawList, rotatedPart);
 		return drawList;
 	}
 
@@ -171,6 +175,14 @@ public class SketchView implements IDisplayPart {
 
 	public void setTransformerFactory(ICoordinateTransformerFactory transformerFactory) {
 		this.transformerFactory = transformerFactory;
+	}
+
+	public Matrix3x3 getViewRotation() {
+		return viewRotation;
+	}
+
+	public void setViewRotation(Matrix3x3 viewRotation) {
+		this.viewRotation = viewRotation;
 	}
 
 }

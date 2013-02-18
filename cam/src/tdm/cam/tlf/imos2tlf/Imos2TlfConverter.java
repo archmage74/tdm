@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import tdm.cam.export.transform.TransformationService;
-import tdm.cam.imos.PartRotator;
 import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProfile;
 import tdm.cam.model.imos.ImosProject;
+import tdm.cam.model.imos.PartRotator;
 import tdm.cam.model.math.Epsilon;
 import tdm.cam.model.math.Matrix3x3;
 import tdm.cam.model.math.Plane;

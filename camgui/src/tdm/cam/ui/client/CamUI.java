@@ -3,12 +3,11 @@ package tdm.cam.ui.client;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import tdm.cam.model.math.RotationMatrixFactory;
 import tdm.cam.ui.client.prj.Project;
 import tdm.cam.ui.client.sketch.BackDrillingFilter;
-import tdm.cam.ui.client.sketch.FrontDrillingFilter;
 import tdm.cam.ui.client.sketch.HorizontalDrillingFilter;
 import tdm.cam.ui.client.sketch.SketchView;
-import tdm.cam.ui.client.sketch.transform.BackCoordinateTransformerFactory;
 import tdm.cam.ui.client.sketch.transform.FrontCoordinateTransformerFactory;
 
 import com.google.gwt.canvas.client.Canvas;
@@ -34,6 +33,9 @@ public class CamUI implements EntryPoint {
 	private static final int STATS_WIDTH = 250;
 	private static final int SKETCH_WIDTH = 972;
 	private static final int SKETCH_HEIGHT = 378;
+
+	private RotationMatrixFactory rotationMatrixFactory = new RotationMatrixFactory();
+	
 	private RootPanel rootPanel;
 	private WindowSize windowSize;
 	
@@ -120,9 +122,10 @@ public class CamUI implements EntryPoint {
 		sketchCanvas.setWidth(SKETCH_WIDTH + "px");
 		sketchCanvas.setHeight(SKETCH_HEIGHT + "px");
 		SketchView sketch = new SketchView(sketchCanvas);
-		sketch.addDrillingFilter(new FrontDrillingFilter());
+		sketch.setViewRotation(rotationMatrixFactory.createYRotationInDegrees(180));
+		sketch.addDrillingFilter(new BackDrillingFilter());
 		sketch.addDrillingFilter(new HorizontalDrillingFilter());
-		sketch.setTransformerFactory(new BackCoordinateTransformerFactory());
+		sketch.setTransformerFactory(new FrontCoordinateTransformerFactory());
 		partDisplays.add(sketch);
 		return sketchCanvas;
 	}

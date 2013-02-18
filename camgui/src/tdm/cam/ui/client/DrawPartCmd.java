@@ -39,7 +39,7 @@ public class DrawPartCmd implements ChangeHandler, IDisplayProject {
 		// FIXME updating the listbox should be moved to a partlistbox specialized class
 		getPartListBox().clear();
 		for (Part part : project.getParts()) {
-			getPartListBox().addItem(part.getImosPart().getBarcode());
+			getPartListBox().addItem(part.getTransformedImosPart().getBarcode());
 		}
 
 		setParts(project.getParts());

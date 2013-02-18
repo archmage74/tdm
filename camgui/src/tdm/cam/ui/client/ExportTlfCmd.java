@@ -47,7 +47,7 @@ public class ExportTlfCmd implements ClickHandler, AsyncCallback<Void>, IDisplay
 				if (part.getRotationInDegrees() != 0) {
 					Rotation rotation = new Rotation();
 					rotation.setAngle((int) part.getRotationInDegrees());
-					rotation.setBarcode(part.getImosPart().getBarcode());
+					rotation.setBarcode(part.getTransformedImosPart().getBarcode());
 					rotationList.addRotation(rotation);
 				}
 			}

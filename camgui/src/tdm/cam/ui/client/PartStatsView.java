@@ -78,7 +78,7 @@ public class PartStatsView implements IDisplayPart {
 	
 	@Override
 	public void displayPart(Part part) {
-		ImosPart imosPart = part.getImosPart();
+		ImosPart imosPart = part.getTransformedImosPart();
 		String barcode = imosPart.getBarcode() == null ? EMPTY : imosPart.getBarcode(); 
 		barcodeValueLabel.setText(barcode);
 

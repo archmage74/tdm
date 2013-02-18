@@ -17,3 +17,5 @@ camgui/war/WEB-INF/classes
 camgui/bin
 camrest/build
 camshared/bin
+camshared/gwt-unitCache
+
