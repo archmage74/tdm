@@ -249,11 +249,19 @@ public class CamPartTestDataFactory {
 		return camPart;
 	}
 	
+	public ImosPart createDiagonalDrillingPart() {
+		ImosPart camPart = new ImosPart();
+		camPart.setBarcode(Thread.currentThread().getStackTrace()[1].getMethodName());
+		ImosDrilling drilling = new TestDrillingParameters().diameter(5).angleX(45).create();
+		camPart.addDrilling(drilling);
+		return camPart;
+	}
+	
 	private ImosPart createCamPart() {
 		ImosPart camPart = new ImosPart();
 		camPart.setDimensions(new Dimensions(714.0, 404.0, 19.0));
 		camPart.setBarcode(Thread.currentThread().getStackTrace()[2].getMethodName());
 		return camPart;
 	}
-	
+
 }

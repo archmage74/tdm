@@ -4,6 +4,7 @@ import tdm.cam.model.cmd.Rotation;
 import tdm.cam.model.cmd.RotationList;
 import tdm.cam.ui.client.prj.Part;
 import tdm.cam.ui.client.prj.Project;
+import tdm.cam.ui.shared.ExportResult;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -11,7 +12,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 
-public class ExportTlfCmd implements ClickHandler, AsyncCallback<Void>, IDisplayProject {
+public class ExportTlfCmd implements ClickHandler, AsyncCallback<ExportResult>, IDisplayProject {
 
 	private static final String EXPORT_BUTTON_TEXT = "Export CNC (*.tlf): ";
 
@@ -61,8 +62,20 @@ public class ExportTlfCmd implements ClickHandler, AsyncCallback<Void>, IDisplay
 	}
 	
 	@Override
-	public void onSuccess(Void result) {
-		new MessageDialog("Export abgeschlossen").show();
+	public void onSuccess(ExportResult exportResult) {
+		switch (exportResult.getResult()) {
+		case OK:
+			new MessageDialog("Export abgeschlossen").show();
+			break;
+		case WARNING:
+			new MessageDialog("Export mit Warnung(en) abgeschlossen:", exportResult.getDetails()).show();
+			break;
+		case ERROR:
+			new MessageDialog("Export fehlerhaft:", exportResult.getDetails()).show();
+			break;
+		default:
+			new MessageDialog("Unknown export result: " + exportResult.getResult()).show();
+		}
 	}
 	
 	private void updateButton() {

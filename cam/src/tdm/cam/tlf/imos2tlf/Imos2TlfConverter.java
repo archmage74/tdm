@@ -23,7 +23,9 @@ import tdm.cam.tlf.TlfFrontSide;
 import tdm.cam.tlf.TlfPart;
 import tdm.cam.tlf.TlfPartSide;
 import tdm.cam.tlf.TlfProfile;
-import tdm.cam.tlf.imos2tlf.filter.DrillingFilter;
+import tdm.cam.tlf.imos2tlf.filter.DiagonalFailAndWarningFilter;
+import tdm.cam.tlf.imos2tlf.filter.DiagonalFailFilter;
+import tdm.cam.tlf.imos2tlf.filter.IDrillingFilter;
 import tdm.cam.tlf.imos2tlf.filter.HorizontalFailFilter;
 import tdm.cam.tlf.imos2tlf.filter.NonThroughUpFailFilter;
 import tdm.cam.tlf.imos2tlf.filter.ThroughFailFilter;
@@ -61,8 +63,8 @@ public class Imos2TlfConverter {
 		// down > 0 -> vollgas front
 		// beide 0 -> vollgas front
 		// nur down 0 -> vollgas back
-		List<DrillingFilter> frontSideFilters = new ArrayList<DrillingFilter>();
-		List<DrillingFilter> backSideFilters = new ArrayList<DrillingFilter>();
+		List<IDrillingFilter> frontSideFilters = new ArrayList<IDrillingFilter>();
+		List<IDrillingFilter> backSideFilters = new ArrayList<IDrillingFilter>();
 
 		if (numDrillingsDown == 0 && numDrillingsUp != 0) {
 			frontSideFilters.add(new NonThroughUpFailFilter(imosPart.getDimensions().getThick()));
@@ -77,23 +79,25 @@ public class Imos2TlfConverter {
 			backSideFilters.add(new ThroughFailFilter(imosPart.getDimensions().getThick()));
 			backSideFilters.add(new HorizontalFailFilter());
 		}
-			
-		TlfPartSide frontside = createSide(TlfDocument.FRONT_SIDE_SUFFIX, imosPart, frontSideFilters);
+		frontSideFilters.add(new DiagonalFailAndWarningFilter(tlfPart.getConvertionWarnings()));
+		backSideFilters.add(new DiagonalFailFilter());
+
+		TlfPartSide frontside = createSide(TlfDocument.FRONT_SIDE_SUFFIX, imosPart, frontSideFilters, tlfPart.getConvertionWarnings());
 		tlfPart.addSide(frontside);
 
 		// backside
 		Matrix3x3 toBackSide = rotationMatrixFactory.createYRotationInDegrees(180);
 		partRotator.rotatePart(imosPart, toBackSide);
 		
-		TlfPartSide backside = createSide(TlfDocument.BACK_SIDE_SUFFIX, imosPart, backSideFilters);
+		TlfPartSide backside = createSide(TlfDocument.BACK_SIDE_SUFFIX, imosPart, backSideFilters, tlfPart.getConvertionWarnings());
 		tlfPart.addSide(backside);
 		
 		return tlfPart;
 	}
 
-	private TlfPartSide createSide(String sideName, ImosPart imosPart, List<DrillingFilter> frontSideFilters) {
+	private TlfPartSide createSide(String sideName, ImosPart imosPart, List<IDrillingFilter> frontSideFilters, List<String> warnings) {
 		TlfFrontSide side = new TlfFrontSide(sideName, imosPart.getDimensions());
-		addDrillingsFiltered(side, imosPart, frontSideFilters);
+		addDrillingsFiltered(side, imosPart, frontSideFilters, warnings);
 		for (ImosProfile imosProfile : imosPart.getProfiles()) {
 			TlfProfile tlfSideProfile = profileFactory.createProfile(imosProfile);
 			side.addNode(tlfSideProfile);
@@ -101,18 +105,18 @@ public class Imos2TlfConverter {
 		return side;
 	}
 	
-	private void addDrillingsFiltered(TlfFrontSide side, ImosPart imosPart, List<DrillingFilter> filters) {
+	private void addDrillingsFiltered(TlfFrontSide side, ImosPart imosPart, List<IDrillingFilter> filters, List<String> warnings) {
 		for (ImosDrilling imosDrilling : imosPart.getDrillings()) {
 			ImosDrilling filteredDrilling = applyFilters(imosDrilling, filters);
 			if (filteredDrilling != null) {
 				TlfDrilling tlfDrilling = drillingFactory.createDrilling(side.getDimensions(), filteredDrilling);
-				addDrilling(side, tlfDrilling);
+				addDrilling(side, tlfDrilling, warnings);
 			}
 		}
 	}
 
-	private ImosDrilling applyFilters(ImosDrilling drilling, List<DrillingFilter> filters) {
-		for (DrillingFilter filter : filters) {
+	private ImosDrilling applyFilters(ImosDrilling drilling, List<IDrillingFilter> filters) {
+		for (IDrillingFilter filter : filters) {
 			drilling = filter.filter(drilling);
 			if (drilling == null) {
 				return null;
@@ -121,7 +125,7 @@ public class Imos2TlfConverter {
 		return drilling;
 	}
 	
-	private void addDrilling(TlfFrontSide frontSide, TlfDrilling drilling) {
+	private void addDrilling(TlfFrontSide frontSide, TlfDrilling drilling, List<String> warnings) {
 		Plane plane = PlaneHelper.getInstance().getPlaneForDirection(drilling.getDirection());
 		if (plane == Plane.FRONT) {
 			frontSide.addNode(drilling);
@@ -136,8 +140,7 @@ public class Imos2TlfConverter {
 		} else if (plane == Plane.RIGHT) {
 			frontSide.addPlane4Drilling(drilling);
 		} else {
-			// throw new DrillingAngleException(drilling.getAngleX(), drilling.getAngleY(), drilling.getAngleZ());
-			System.out.println("Schraegbohrung gefunden, wird ignoriert");
+			throw new RuntimeException("Unexpected diagonal-drilling encountered:" + drilling);
 		}
 	}
 

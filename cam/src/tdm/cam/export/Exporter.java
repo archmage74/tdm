@@ -20,21 +20,26 @@ public class Exporter {
 
 	private String exportPath = ".";
 
-	public void export(String orderId, Map<String, Integer> rotationMap) {
+	public String export(String orderId, Map<String, Integer> rotationMap) {
 		ImosProject imosProject = imosService.readProject(orderId);
 		Collection<TlfPart> tlfParts = imos2Tlf.convert(imosProject, rotationMap);
 		
 		File exportDir = createEmptySubfolder(orderId);
 		
+		StringBuffer warnings = new StringBuffer("");
 		for (TlfPart camPart : tlfParts) {
+			for (String warning : camPart.getConvertionWarnings()) {
+				warnings.append("[").append(camPart.getBarcode()).append("] ").append(warning);
+			}
 			for (TlfDocument doc : camPart.createTlfDocuments()) {
 				textFileWriter.writeEscapedTlf(doc.getTlf(), exportDir.getPath() + "/" + doc.getName());
 			}
 		}
+		return warnings.toString();
 	}
 
-	public void export(String orderId) {
-		export(orderId, new HashMap<String, Integer>());
+	public String export(String orderId) {
+		return export(orderId, new HashMap<String, Integer>());
 	}
 	
 	private File createEmptySubfolder(String orderId) {

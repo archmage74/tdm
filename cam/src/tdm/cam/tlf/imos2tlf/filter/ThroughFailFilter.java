@@ -7,7 +7,7 @@ import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.math.Epsilon;
 import tdm.cam.model.math.Vector3;
 
-public class ThroughFailFilter implements DrillingFilter {
+public class ThroughFailFilter implements IDrillingFilter {
 
 	protected List<Vector3> directions;
 	

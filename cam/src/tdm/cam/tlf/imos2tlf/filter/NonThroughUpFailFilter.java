@@ -4,7 +4,7 @@ import tdm.cam.model.imos.ImosDrilling;
 import tdm.cam.model.math.Epsilon;
 import tdm.cam.model.math.Vector3;
 
-public class NonThroughUpFailFilter implements DrillingFilter {
+public class NonThroughUpFailFilter implements IDrillingFilter {
 
 	protected Vector3 allowDirection = new Vector3(0, 0, 1);
 	

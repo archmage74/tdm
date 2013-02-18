@@ -1,6 +1,7 @@
 package tdm.cam.tlf;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ public class TlfPart implements ITlfEngineHolder {
 	private Dimensions dimensions = new Dimensions();
 
 	protected List<TlfPartSide> sides = new ArrayList<TlfPartSide>(2);
+	
+	protected List<String> convertionWarnings = new ArrayList<String>();
 	
 	public TlfPart() {
 
@@ -197,6 +200,18 @@ public class TlfPart implements ITlfEngineHolder {
 		this.dimensions.setThick(dimensions.getThick());
 	}
 
+	public List<String> getConvertionWarnings() {
+		return convertionWarnings;
+	}
+	
+	public void addConvertionWarning(String convertionWarning) {
+		convertionWarnings.add(convertionWarning);
+	}
+
+	public void addConvertionWarning(Collection<String> convertionWarnings) {
+		convertionWarnings.addAll(convertionWarnings);
+	}
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("CamPart { ");
@@ -216,13 +231,5 @@ public class TlfPart implements ITlfEngineHolder {
 		sb.append(" }");
 		return sb.toString();
 	}
-
-//	public void optimizeSides() {
-//		moveThroughDrillingsToFrontside();
-//		if (!backSide.isEmpty() && frontSide.hasOnlyHorizontalDrillings()) {
-//			moveHorizontalToBackside();
-//		}
-//
-//	}
 
 }

@@ -32,6 +32,7 @@ public class ImosServiceMock implements IImosService {
 		parts.add(f.createProfileLeft());
 		parts.add(f.createProfileRight());
 		parts.add(f.createProfileTop());
+		parts.add(f.createDiagonalDrillingPart());
 	}
 
 	public void setCamPart(ImosPart camPart) {

@@ -493,5 +493,12 @@ public class TlfTest {
 
 		TlfAssert.assertFileEquals(EXPECTED_DRILLING_LEFT_5_ROT_90, fileName);
 	}
+	
+	@Test 
+	public void drillingDiagonal() {
+		ImosPart camPart = camPartFactory.createDiagonalDrillingPart();
+		TlfPart tlfPart = imos2Tlf.convert(camPart);
+		Assert.assertEquals(1, tlfPart.getConvertionWarnings().size());
+	}
 
 }

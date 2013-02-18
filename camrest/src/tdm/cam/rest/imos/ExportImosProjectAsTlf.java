@@ -1,6 +1,7 @@
 package tdm.cam.rest.imos;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,26 +43,35 @@ public class ExportImosProjectAsTlf extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("ExportImosProjectAsTlf - POST");
-		List<String> params = getParameters(req);
-		if (params.size() != 1) {
-			throw new RuntimeException("wrong amount of parameters");
+		try {
+			List<String> params = getParameters(req);
+			if (params.size() != 1) {
+				throw new RuntimeException("wrong amount of parameters");
+			}
+			String orderId = params.get(0);
+	
+			Map<String, Integer> rotationMap = parseRotationMap(req.getParameter("rotations"));
+	
+			ImosProject project = imosService.readProject(orderId);
+			if (project == null) {
+				throw new ServletException("no project with orderId='" + orderId + "'");
+			}
+			Exporter exporter = new Exporter();
+			exporter.setImosService(imosService);
+			exporter.setExportPath("D:/werner/tlf");
+			String warnings = exporter.export(orderId, rotationMap);
+	
+			resp.setContentType("text/plain");
+			if (warnings == null || warnings.isEmpty()) {
+				resp.getOutputStream().println("OK");
+			} else {
+				resp.getOutputStream().println("WARNING");
+				resp.getOutputStream().println(warnings);
+			}
+		} catch (Exception e) {
+			resp.getOutputStream().println("ERROR");
+			e.printStackTrace(new PrintStream(resp.getOutputStream()));
 		}
-		String orderId = params.get(0);
-
-		Map<String, Integer> rotationMap = parseRotationMap(req.getParameter("rotations"));
-
-		ImosProject project = imosService.readProject(orderId);
-		if (project == null) {
-			throw new ServletException("no project with orderId='" + orderId + "'");
-		}
-		Exporter exporter = new Exporter();
-		exporter.setImosService(imosService);
-		exporter.setExportPath("D:/werner/tlf");
-		exporter.export(orderId, rotationMap);
-
-		resp.setContentType("text/plain");
-		resp.getOutputStream().println("OK");
 	}
 
 	protected Map<String, Integer> parseRotationMap(String parameter) throws ServletException {

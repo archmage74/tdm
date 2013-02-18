@@ -1,7 +1,9 @@
 package tdm.cam.ui.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,8 @@ import tdm.cam.model.imos.ImosProject;
 import tdm.cam.ui.RestClient;
 import tdm.cam.ui.RestParameters;
 import tdm.cam.ui.client.ImosService;
+import tdm.cam.ui.shared.ExportResult;
+import tdm.cam.ui.shared.ExportResultType;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -62,18 +66,34 @@ public class ImosServiceImpl extends RemoteServiceServlet implements ImosService
 	}
 
 	@Override
-	public void exportTlf(String orderId, RotationList rotationList) {
+	public ExportResult exportTlf(String orderId, RotationList rotationList) {
 		System.out.println("ImosServiceImpl.exportTlf() started");
 		RestParameters params = new RestParameters().addParam(orderId);
 		Map<String, String> postParams = new HashMap<String, String>();
 		postParams.put("rotations", createRotationMapParam(rotationList));
 		System.out.println("ImosServiceImpl.exportTlf() doing post request");
 		InputStream ris = imosClient.doPostRequest(EXPORT_TLF_SERVICE, params.getParams(), postParams);
+		ExportResult exportResult = readExportResult(ris);
 		try {
 			ris.close();
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+			return new ExportResult(ExportResultType.ERROR, e.getMessage());
+		}
+		return exportResult;
+	}
+
+	private ExportResult readExportResult(InputStream ris) {
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(ris));
+			String resultLine = br.readLine();
+			StringBuffer content = new StringBuffer();
+			String line;
+			while ((line = br.readLine()) != null) {
+				content.append(line);
+			}
+			return new ExportResult(ExportResultType.valueOf(resultLine), content.toString());
+		} catch (Exception e) {
+			return new ExportResult(ExportResultType.ERROR, "Error while reading response from ImosService");
 		}
 	}
 
