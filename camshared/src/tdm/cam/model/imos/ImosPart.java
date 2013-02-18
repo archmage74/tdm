@@ -37,6 +37,21 @@ public class ImosPart implements IsSerializable {
 	@XmlElement(name="profile")
 	private List<ImosProfile> profiles = new ArrayList<ImosProfile>();
 
+	public ImosPart() {
+		
+	}
+	
+	public ImosPart(ImosPart other) {
+		this.id = new String(other.getId() == null ? "" : other.getId());
+		this.barcode = new String(other.getBarcode() == null ? "" : other.getBarcode());
+		this.matId = new String(other.getMatId() == null ? "" : other.getMatId());
+		this.name = new String(other.getName() == null ? "" : other.getName());
+		this.orderId = new String(other.getOrderId() == null ? "" : other.getOrderId());
+		this.setDimensions(other.getDimensions());
+		this.setDrillings(other.getDrillings());
+		this.setProfiles(other.getProfiles());
+	}
+
 	public String getId() {
 		return id;
 	}
