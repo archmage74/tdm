@@ -241,7 +241,7 @@ public class CamPartTestDataFactory {
 		camPart.addDrilling(drilling5);
 		ImosDrilling drilling10 = new TestDrillingParameters().diameter(10).z(19).angleX(180).angleZ(180).deep(11).create();
 		camPart.addDrilling(drilling10);
-		ImosProfile profile = new  TestProfileParameters().profileType(ProfileType.POS_R).prfLen(404).create();
+		ImosProfile profile = new TestProfileParameters().profileType(ProfileType.POS_R).prfLen(404).create();
 		camPart.addProfile(profile);
 		ImosDrilling drilling = new TestDrillingParameters().x(80).y(60).endX(380).endY(200).diameter(6).numDrillings(7).create();
 		camPart.addDrilling(drilling);
@@ -250,7 +250,7 @@ public class CamPartTestDataFactory {
 	}
 	
 	public ImosPart createDiagonalDrillingPart() {
-		ImosPart camPart = new ImosPart();
+		ImosPart camPart = createCamPart();
 		camPart.setBarcode(Thread.currentThread().getStackTrace()[1].getMethodName());
 		ImosDrilling drilling = new TestDrillingParameters().diameter(5).angleX(45).create();
 		camPart.addDrilling(drilling);

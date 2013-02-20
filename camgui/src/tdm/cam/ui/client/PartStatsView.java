@@ -10,6 +10,7 @@ import tdm.cam.model.math.Plane;
 import tdm.cam.model.math.PlaneHelper;
 import tdm.cam.ui.client.prj.Part;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
@@ -24,6 +25,7 @@ public class PartStatsView implements IDisplayPart {
 	private static final String TITLE_DRILL_BOTTOM = "Bohrungen unten:";
 	private static final String TITLE_DRILL_LEFT = "Bohrungen links:";
 	private static final String TITLE_DRILL_RIGHT = "Bohrungen rechts:";
+	private static final String TITLE_DRILL_DIAGONAL = "Bohrungen schräg:";
 	private static final String TITLE_LENGTH = "Länge:";
 	private static final String TITLE_WIDTH = "Breite:";
 	private static final String TITLE_HEIGHT = "Höhe:";
@@ -41,6 +43,8 @@ public class PartStatsView implements IDisplayPart {
 	private Label rotationValueLabel;
 
 	private PlaneHelper planeHelper = PlaneHelper.getInstance();
+
+	protected UIMessages messages = GWT.create(UIMessages.class);
 	
 	public PartStatsView(Panel parentPanel) {
 		VerticalPanel panel = new VerticalPanel();
@@ -71,6 +75,7 @@ public class PartStatsView implements IDisplayPart {
 		drillValueLabels.put(Plane.BOTTOM, addInfo(infoGrid, row++, TITLE_DRILL_BOTTOM));
 		drillValueLabels.put(Plane.LEFT, addInfo(infoGrid, row++, TITLE_DRILL_LEFT));
 		drillValueLabels.put(Plane.RIGHT, addInfo(infoGrid, row++, TITLE_DRILL_RIGHT));
+		drillValueLabels.put(Plane.DIAGONAL, addInfo(infoGrid, row++, TITLE_DRILL_DIAGONAL));
 		rotationValueLabel = addInfo(infoGrid, row++, TITLE_ROTATION);
 
 		return infoGrid;
@@ -86,9 +91,9 @@ public class PartStatsView implements IDisplayPart {
 		nameValueLabel.setText(name);
 		
 		Dimensions d = imosPart.getDimensions();
-		lengthValueLabel.setText("" + d.getLength());
-		widthValueLabel.setText("" + d.getWidth());
-		heightValueLabel.setText("" + d.getThick());
+		lengthValueLabel.setText(messages.mm(d.getLength()));
+		widthValueLabel.setText(messages.mm(d.getWidth()));
+		heightValueLabel.setText(messages.mm(d.getThick()));
 		
 		Map<Plane, Integer> drillNumbers = calculateDrillNumbers(imosPart);
 		for (Plane plane : drillValueLabels.keySet()) {

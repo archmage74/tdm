@@ -17,6 +17,7 @@ public class ImosServiceMock implements IImosService {
 		project.setOrderId(orderId);
 		project.setName("mock-project");
 		project.setParts(parts);
+		project.addWarning("just a stupid warning");
 
 		return project;
 	}

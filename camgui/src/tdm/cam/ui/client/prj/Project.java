@@ -2,6 +2,8 @@ package tdm.cam.ui.client.prj;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,8 @@ import tdm.cam.model.imos.ImosPart;
 import tdm.cam.model.imos.ImosProject;
 
 public class Project {
+
+	public static final double DEFAULT_ROTATION = Math.PI;
 	
 	protected ImosProject imosProject;
 	
@@ -27,10 +31,15 @@ public class Project {
 		partsByBarcode.clear();
 		
 		for (ImosPart imosPart : imosProject.getParts()) {
-			Part part = new Part(imosPart);
-			parts.add(part);
-			partsByBarcode.put(imosPart.getBarcode(), part);
+			if (imosPart.getDrillings().size() > 0) {
+				Part part = new Part(imosPart);
+				part.rotate(DEFAULT_ROTATION);
+				parts.add(part);
+				partsByBarcode.put(imosPart.getBarcode(), part);
+			}
 		}
+		Comparator<Part> listOrder = new AlphabeticalPartListOrder();
+		Collections.sort(parts, listOrder);
 	}
 
 	public Collection<Part> getParts() {

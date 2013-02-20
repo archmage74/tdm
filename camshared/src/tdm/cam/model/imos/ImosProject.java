@@ -19,6 +19,10 @@ public class ImosProject implements IsSerializable {
 	
 	private String name;
 	
+	@XmlElementWrapper(name="warnings")
+	@XmlElement(name="warning")
+	private List<String> warnings = new ArrayList<String>();
+	
 	@XmlElementWrapper(name="parts")
 	@XmlElement(name="part")
 	private List<ImosPart> parts = new ArrayList<ImosPart>();
@@ -49,6 +53,19 @@ public class ImosProject implements IsSerializable {
 	
 	public void setParts(List<ImosPart> parts) {
 		this.parts = parts;
+	}
+
+	public List<String> getWarnings() {
+		return warnings;
+	}
+
+	public void addWarning(String warning) {
+		warnings.add(warning);
+	}
+	
+	public void setWarnings(List<String> warnings) {
+		this.warnings.clear();
+		this.warnings.addAll(warnings);
 	}
 
 }

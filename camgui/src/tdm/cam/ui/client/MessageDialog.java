@@ -46,6 +46,7 @@ public class MessageDialog implements ClickHandler {
 		closeButtonRegistration = closeButton.addClickHandler(this);
 		panel.add(closeButton);
 		dialogBox.add(panel);
+		dialogBox.setGlassEnabled(true);
 		dialogBox.center();
 		dialogBox.show();
 	}

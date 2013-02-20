@@ -36,6 +36,17 @@ public class LoadProjectCmd implements AsyncCallback<ImosProject>, ClickHandler 
 		for (IDisplayProject display : projectDisplays) {
 			display.displayProject(project);
 		}
+		if (!imosProject.getWarnings().isEmpty()) {
+			showLoadWarnings(project);
+		}
+	}
+
+	private void showLoadWarnings(Project p) {
+		StringBuffer sb = new StringBuffer();
+		for (String s : p.getImosProject().getWarnings()) {
+			sb.append(s).append("\n");
+		}
+		new MessageDialog("Projekt erfolgreich geladen", sb.toString()).show();
 	}
 
 	@Override

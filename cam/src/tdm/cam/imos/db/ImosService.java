@@ -42,12 +42,20 @@ public class ImosService implements IImosService {
 		ImosProject project = new ImosProject();
 		project.setOrderId(orderId);
 
-		List<ImosPart> parts = readCamParts(orderId);
-		for (ImosPart part : parts) {
+		List<ImosPart> partsRead = readCamParts(orderId);
+		List<ImosPart> partsToExport = new ArrayList<ImosPart>();
+		for (ImosPart part : partsRead) {
 			readDrillings(part);
-			readProfiles(part);
+			try {
+				readProfiles(part);
+				partsToExport.add(part);
+			} catch (UnsupportedProfileException e) {
+				String warning = "[" + part.getBarcode() + "] " + e.getMessage();
+				project.addWarning(warning);
+				System.out.println("error while reading profiles of part " + part.getBarcode() + ":" + e.getMessage());
+			}
 		}
-		project.setParts(parts);
+		project.setParts(partsToExport);
 		
 		return project;
 	}

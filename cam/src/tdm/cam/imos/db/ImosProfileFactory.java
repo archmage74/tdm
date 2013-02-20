@@ -25,7 +25,7 @@ public class ImosProfileFactory {
 		ImosProfile profile = new ImosProfile();
 		int profileNumber = profileResultSet.getInt("prfno");
 		if (profileNumber < 1 || profileNumber > 4) {
-			throw new RuntimeException("Unsupported profileNumber prfNo=" + profileNumber);
+			throw new UnsupportedProfileException("Unsupported profileNumber prfNo=" + profileNumber);
 		}
 		profile.setProfileType(ProfileType.createByProfileNumber(profileNumber));
 		profile.setPrfId(profileResultSet.getString("prfid"));
